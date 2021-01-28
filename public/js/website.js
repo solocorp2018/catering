@@ -126,6 +126,7 @@ function triggerOtp() {
         data: formData, 
         success: function( data ) {
             alert( data.message );
+            alert("Integerate SMS Gatewat here");
         }
     });
 }
