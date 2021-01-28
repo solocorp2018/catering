@@ -1,0 +1,82 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+
+use Validator;
+use App\Models\VerifyOtp;
+
+class LoginController extends Controller
+{
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
+
+    use AuthenticatesUsers;
+
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/dashboard';
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+
+    public function triggerOtp(Request $request) {
+
+        $this->validate($request,['contactNumber'=>'required']);
+
+        $mobileNumber = $request->contactNumber;
+
+        $otp = $this->generateNumericOTP();
+
+        VerifyOtp::updateOrCreate(['mobile'=>$mobileNumber],['mobile'=>$mobileNumber,'otp'=>$otp]);
+
+        return response(['message'=>'OTP sent successfully !']);
+    }
+
+    public function validateOtp(Request $request) {
+        $this->validate($request,[
+            'contactNumber'=>'required|exists:verify_otps,mobile',
+            'otp' => 'required|min:4|exists:verify_otps,otp,mobile,'.$request->contactNumber
+        ]);        
+
+        $mobileNumber = $request->contactNumber;
+
+        return response(['message'=>'OTP verified successfully !']);   
+    }
+
+    public function generateNumericOTP($n = 4) {       
+    
+        $generator = "1357902468";     
+  
+        $result = ""; 
+  
+        for ($i = 1; $i <= $n; $i++) { 
+            $result .= substr($generator, (rand()%(strlen($generator))), 1); 
+        } 
+    
+        return $result; 
+    } 
+
+
+}
