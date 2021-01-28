@@ -9,7 +9,7 @@
       <meta name="csrf-token" content="{{ csrf_token() }}" />
       <meta name="base-url" content="{{ url('/') }}" />
       <title>M R GrandSon Caters - @yield('title')</title>
-      <link rel="icon" type="image/png" href="{{asset('website/img/logo/favicon.png')}}">
+      <link rel="icon" type="image/png" href="{{asset('website/img/logo/favicon-1.png')}}">
       <link href="{{asset('website/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
       <link href="{{asset('website/vendor/fontawesome/css/all.min.css')}}" rel="stylesheet">
       <link href="{{asset('website/vendor/icofont/icofont.min.css')}}" rel="stylesheet">

@@ -17,10 +17,14 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('lang1_name')->nullable();
+            
             $table->unsignedSmallInteger('type_id')->default(0);
             $table->float('price',8,2);
             $table->text('image_path')->nullable();
+            
             $table->longText('description')->nullable();
+            $table->longText('lang1_description')->nullable();
             $table->unsignedSmallInteger('quantity_type_id');
             $table->unsignedBigInteger('created_by');
             

@@ -145,5 +145,5 @@
 </body>
 
 
-<!-- Mirrored from eliteadmin.themedesigner.in/demos/bt4/hospital/starter-kit.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 15 Jul 2018 06:07:19 GMT -->
+
 </html>

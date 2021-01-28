@@ -6,7 +6,7 @@
       <section class="restaurant-detailed-banner">
          <div class="text-center">
             <!-- <img class="img-fluid cover" src="{{asset('website/img/mall-dedicated-banner.png')}}"> -->
-            <img class="img-fluid cover" src="{{asset('website/img/bg-6.jpg')}}">
+            <img class="img-fluid cover" src="{{asset('website/img/banner-1.png')}}">
          </div>
 
          <div class="restaurant-detailed-header">
@@ -18,10 +18,10 @@
                         <h2 class="text-white">M R Grandson Caters</h2>
                         <p class="text-white mb-1">
                            <i class="icofont-location-pin"></i>
-                           Avinashi Road, Coimbatore - 641602 
+                           NO 6B, Site Somu Avenue, LIC Colony, Selvapuram, Coimbatore - 641039
                            </p>
                            <p class="text-white mb-0"><i class="icofont-food-cart"></i> 
-                           North Indian, Chinese, Fast Food, South Indian
+                           North Indian, Chinese, Fast Food, South Indian (Pure Veg)
                         </p>
                      </div>
                   </div>

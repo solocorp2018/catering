@@ -17,8 +17,10 @@ class CreateComplimentariesTable extends Migration
         Schema::create('complimentaries', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('lang1_name');
             $table->text('image_path')->nullable();
             $table->longText('description')->nullable();
+            $table->longText('lang1_description')->nullable();
             $table->unsignedSmallInteger('quantity_type_id');
             
             $table->unsignedBigInteger('created_by');            

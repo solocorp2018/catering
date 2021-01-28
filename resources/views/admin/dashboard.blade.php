@@ -53,7 +53,7 @@
                      <div class="card-body">
                         <h5 class="card-title">Total Orders</h5>
                         <div class="d-flex m-t-30 m-b-20 no-block align-items-center">
-                           <span class="display-5 text-info"><i class="icon-trophy"></i></span>
+                           <span class="display-5 text-info"><i class="icon-speedometer"></i></span>
                            <a href="javscript:void(0)" class="link display-5 ml-auto">100</a>
                         </div>
                      </div>
@@ -65,7 +65,7 @@
                      <div class="card-body">
                         <h5 class="card-title">Today Orders</h5>
                         <div class="d-flex m-t-30 m-b-20 no-block align-items-center">
-                           <span class="display-5 text-purple"><i class="icon-hourglass"></i></span>
+                           <span class="display-5 text-purple"><i class="icon-basket"></i></span>
                            <a href="javscript:void(0)" class="link display-5 ml-auto">20</a>
                         </div>
                      </div>
@@ -77,7 +77,7 @@
                      <div class="card-body">
                         <h5 class="card-title">Today Amount</h5>
                         <div class="d-flex m-t-30 m-b-20 no-block align-items-center">
-                           <span class="display-5 text-primary"><i class="icon-close"></i></span>
+                           <span class="display-5 text-primary"><i class="icon-credit-card"></i></span>
                            <a href="javscript:void(0)" class="link display-5 ml-auto">30</a>
                         </div>
                      </div>
@@ -89,7 +89,7 @@
                      <div class="card-body">
                         <h5 class="card-title">Total Customers</h5>
                         <div class="d-flex m-t-30 m-b-20 no-block align-items-center">
-                           <span class="display-5 text-success"><i class="icon-graph"></i></span>
+                           <span class="display-5 text-success"><i class="icon-people"></i></span>
                            <a href="javscript:void(0)" class="link display-5 ml-auto">100</a>
                         </div>
                      </div>

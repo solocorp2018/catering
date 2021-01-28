@@ -4,11 +4,10 @@ return [
 
 	'status' => [
 		0 => 'InActive',
-		1 => 'Active',
-		2 => 'Published'		
+		1 => 'Active',	
 	],
 
-	'file_storage_disk' => 'static',
+	'file_storage_disk' => 'local',
 	
 	"page_length_dropdown" => [			
 			10 => 10,

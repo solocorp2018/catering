@@ -2,17 +2,17 @@
 
 
 function siteName() {	
-    return env('APP_NAME');
+    return "M R Grandson Caters";
 }
 
 function logo() {
-	return asset('packa/logo/1.png');
+	return asset('packa/logo/2.png');
 	
 }
 
 function favicon() {
 	
-    return  asset('packa/logo/1.png');
+    return  asset('packa/logo/favicon-2.png');
 }
 
 function userimage() {
