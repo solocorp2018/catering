@@ -1,6 +1,6 @@
 function token(){
 return $('meta[name="csrf-token"]').attr('content');
-}	
+}
 function feedUrl(url=''){
 	var base_url = $('meta[name="base-url"]').attr('content');
 	if(url) {
@@ -19,8 +19,8 @@ $("#register-form").validate({
 			},
 			email: {
 				required: false,
-				email: true				
-			},			
+				email: true
+			},
 			contact_number:{
 				required: true,
 				digits: true,
@@ -38,29 +38,29 @@ $("#register-form").validate({
 			address_line_1:{
 				required:true,
 				minlength:1,
-				maxlength:100	
+				maxlength:100
 			},
 			address_line_2:{
 				required:false,
 				minlength:1,
-				maxlength:100	
+				maxlength:100
 			},
 			city:{
 				required:true,
 				minlength:1,
-				maxlength:50	
+				maxlength:50
 			},
 			pincode:{
 				required:true,
 				digits:true,
 				minlength:6,
-				maxlength:7	
-			},		
+				maxlength:7
+			},
 			otpVerified:{
 				required:true
 			}
 		},
-		messages: {			
+		messages: {
 			name: "Please enter your name",
 			email: "Please enter a valid email address",
 			contact_number: "Please enter a valid mobile number",
@@ -73,7 +73,7 @@ $("#register-form").validate({
 		},
 		errorPlacement: function (error, element) {
 		    error.insertAfter(element.parent('div'));
-		},		
+		},
 		submitHandler: function(form) {
 		    registerForm();
 		}
@@ -84,27 +84,27 @@ $(document).on('keyup','#contact_number', function(){
 	if(contactNumber.length == 10) {
 		$("#opt").val('');
 		triggerOtp();
-	} 
+	}
 });
 
 $(document).on('keyup','#otp', function(){
 	var otp = $(this).val();
-	if(otp.length == 4) {		
+	if(otp.length == 4) {
 		if($("#contact_number").val().length == 10) {
-			validateOtp();	
+			validateOtp();
 		} else {
 			alert("Please Enter Valid Mobile Number");
-		}		
-	} 
+		}
+	}
 });
 
 $(document).on('click','.openRegisterModal',function() {
 	$('.close').click();
 });
 
-$(document).on('click','.openLoginModal',function() {	
+$(document).on('click','.openLoginModal',function() {
 	$('.close').click();
-	
+
 });
 
 function triggerOtp() {
@@ -123,7 +123,7 @@ function triggerOtp() {
 	$.ajax({
         method:"POST",
         url: feedUrl('/api/trigger-otp'),
-        data: formData, 
+        data: formData,
         success: function( data ) {
             alert( data.message );
         }
@@ -149,7 +149,7 @@ function validateOtp() {
 	$.ajax({
         type: "POST",
         url: feedUrl('/api/validate-otp'),
-        data: formData, 
+        data: formData,
         success: function( data ) {
             alert( data.message );
             $("#contact_number").attr('disable',true);
@@ -164,7 +164,7 @@ function registerForm() {
 	var formData = {
 		_token:$("#otpVerified").val(),
 		name : $("#name").val(),
-		contactNumber : $("#contact_number").val(),
+		contact_number : $("#contact_number").val(),
 		otp : $("#otp").val(),
 		email : $("#email").val(),
 		address_line_1 : $("#address_line_1").val(),
@@ -175,9 +175,47 @@ function registerForm() {
 	$.ajax({
         type: "POST",
         url: feedUrl('/api/register-user'),
-        data: formData, 
+        data: formData,
         success: function( data ) {
             alert( data.message );
+						$('#register-modal').modal('toggle');
         }
     });
 }
+
+$("#login-form").validate({
+		rules: {
+			contact_number:{
+				required: true,
+				digits: true,
+				minlength:10,
+				maxlength:10,
+			}
+		},
+		messages: {
+			contact_number: "Please enter a valid mobile number",
+		},
+		errorPlacement: function (error, element) {
+		    error.insertAfter(element.parent('div'));
+		},
+		submitHandler: function(form) {
+		    loginForm();
+		}
+});
+
+function loginForm() {
+
+		var formData = {
+			_token:token(),
+			contact_number : $("#inputEmail").val(),
+		};
+		$.ajax({
+	        type: "POST",
+	        url: feedUrl('/api/login'),
+	        data: formData,
+	        success: function( data ) {
+	            alert( data.message );
+							$('#login-modal').modal('toggle');
+	        }
+	    });
+	}

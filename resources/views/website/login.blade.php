@@ -8,21 +8,22 @@
                   </button>
                </div>
                <div class="modal-body">
-                  <form>
+                  <form id="login-form">
                               <div class="form-label-group">
-                                 <input type="email" id="inputEmail" class="form-control" placeholder="Mobile Number">
+                                 <input type="number" id="inputEmail" name="contact_number" class="form-control" placeholder="Mobile Number">
                                  <label for="inputEmail">Mobile Number</label>
-                              </div>                              
+                              </div>
                               <div class="text-center pt-3">
                                  Don’t have an account? <a class="font-weight-bold openRegisterModal" data-toggle="modal" data-target="#register-modal" href="/register">Register</a>
                               </div>
-                           </form>
+
                </div>
                <div class="modal-footer">
                   <button type="button" class="btn d-flex w-50 text-center justify-content-center btn-outline-primary" data-dismiss="modal">CANCEL
                   </button>
-                  <button type="button" class="btn d-flex w-50 text-center justify-content-center btn-primary">SUBMIT</button>
+                  <button type="submit" class="btn d-flex w-50 text-center justify-content-center btn-primary">SUBMIT</button>
                </div>
+               </form>
             </div>
          </div>
       </div>
