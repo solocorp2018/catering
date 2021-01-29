@@ -115,7 +115,7 @@ class RegisterController extends Controller
 
         UserAddress::create($userAddressData);
 
-        Auth::login($user->id);
+        Auth::loginUsingId($user->id);
 
         return response(['message' => 'User Logged In Successfully !']);
     }

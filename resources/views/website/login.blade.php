@@ -8,7 +8,7 @@
                   </button>
                </div>
                <div class="modal-body">
-                  <form id="login-form">
+                  <form id="login-form" action="{{ url('/api/login') }}" method="post">
                               <div class="form-label-group">
                                  <input type="number" id="inputEmail" name="contact_number" class="form-control" placeholder="Mobile Number">
                                  <label for="inputEmail">Mobile Number</label>

@@ -94,10 +94,10 @@ class LoginController extends Controller
 
         Auth::loginUsingId($user->id);
 
-        return response(['message' => 'User Logged In Successfully !']);
+        return redirect()->intended('/');
       } else {
 
-        return response(['error' => 'User not found !']);
+        return redirect()->intended('/');
       }
 
     }

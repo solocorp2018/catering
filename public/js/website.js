@@ -199,23 +199,24 @@ $("#login-form").validate({
 		    error.insertAfter(element.parent('div'));
 		},
 		submitHandler: function(form) {
-		    loginForm();
+		    //loginForm();
+				$( "#login-form" ).submit();
 		}
 });
 
-function loginForm() {
-
-		var formData = {
-			_token:token(),
-			contact_number : $("#inputEmail").val(),
-		};
-		$.ajax({
-	        type: "POST",
-	        url: feedUrl('/api/login'),
-	        data: formData,
-	        success: function( data ) {
-	            alert( data.message );
-							$('#login-modal').modal('toggle');
-	        }
-	    });
-	}
+// function loginForm() {
+//
+// 		var formData = {
+// 			_token:token(),
+// 			contact_number : $("#inputEmail").val(),
+// 		};
+// 		$.ajax({
+// 	        type: "POST",
+// 	        url: feedUrl('/api/login'),
+// 	        data: formData,
+// 	        success: function( data ) {
+// 	            alert( data.message );
+// 							$('#login-modal').modal('toggle');
+// 	        }
+// 	    });
+// 	}
