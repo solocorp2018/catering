@@ -8,7 +8,7 @@ Route::middleware(['admin'])->group(function () {
 	Route::get('/change-password','Admin\PasswordController@managePassword')->name('password.manage');
 	Route::post('/update-password','Admin\PasswordController@updatePassword')->name('password.update');
 
-	Route::resource('/items','Admin\ItemController');
+	Route::resource('items','Admin\ItemController');
 	
 	Route::get('/leads','Admin\LeadController@index')->name('leads.index');
 	Route::get('/leads/{id}','Admin\LeadController@show')->name('leads.show');

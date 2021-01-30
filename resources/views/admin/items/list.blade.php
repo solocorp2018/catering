@@ -62,6 +62,7 @@
                                        <th>Quantity Type</th>
                                        <th>Image</th>
                                        <th>Status</th>
+                                       <th>Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
@@ -74,7 +75,14 @@
                                        <td>{{$result->lang1_name ?? ''}}</td>     
                                        <td>{{$result->price ?? ''}}</td>     
                                        <td>{{$result->quantityType->name ?? ""}}</td>  
-                                       <td>{{$result->image_path ?? ""}}</td>   
+                                       <td>
+                                            @if(!empty($result->image_path))
+                                                <image src="{{showDiskImage($result->image_path)}}" height="50" width="50"/>
+                                            @else
+                                                --
+                                            @endif
+                                            
+                                        </td>   
                                        <td>
                                         @if(isset($result->status) && $result->status == 1)
                                         <span class="text-success">Active</span>
@@ -82,6 +90,10 @@
                                           <span class="text-danger">In-Active</span>
                                         @endif
                                       </td>
+                                      <td>
+                                        <a class="waves-effect waves-dark" href="{{route('items.edit',$result->id)}}">Edit</a>
+                                        
+                                        </td>
                                     </tr>
                                   @endforeach
                                   @else

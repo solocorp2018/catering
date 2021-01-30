@@ -7,7 +7,7 @@ return [
 		1 => 'Active',	
 	],
 
-	'file_storage_disk' => 'local',
+	'file_storage_disk' => 'catering',
 	
 	"page_length_dropdown" => [			
 			10 => 10,

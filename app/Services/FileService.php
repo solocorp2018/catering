@@ -30,7 +30,7 @@ class FileService {
 		$saltedFilename = saltFileName($originalFilename);
 
 		$response = Storage::disk($disk)->putFileAs($root,$file,$saltedFilename);
-
+		
 		$returnArray = array();
 		$returnArray['original_filename'] = $originalFilename;
 		$returnArray['stored_filename'] = $saltedFilename;
@@ -38,6 +38,7 @@ class FileService {
 		$returnArray['size'] = $size;
 		$returnArray['disk'] = $disk;
 		$returnArray['path'] = $root;
+		$returnArray['stored_file_path'] = $response;
 
 		return $returnArray;
 	}
@@ -115,7 +116,7 @@ class FileService {
 		/*if file not exists no image will be returned*/
 		if(!static::fileExists($filename,$root,$disk)) {
 
-			return noImage();			
+			return NULL;			
 		}
 
 		return Storage::disk($disk)->url($root.'/'.$filename);	
@@ -141,11 +142,20 @@ class FileService {
 	public static function updateAndStoreFile($new_file,$new_root,$old_filename,$old_root='/',$disk='') {
 
 
-		static::deleteFile($old_filename,$old_root,$disk);
+		static::deleteDiskFile($old_filename,$old_root);
 
 		return static::storeFile($new_file,$new_root);
 	}
 
+	public static function deleteDiskFile($filename,$old_root) {
+		$old_filename = $filename;
+		$disk = storageDisk();		
+
+		if($old_filename && $old_root && static::fileExists($old_filename,$old_root)) {
+			Storage::disk($disk)->delete($old_root.'/'.$old_filename);
+		}
+		return true;
+	}
 	public static function deleteFile($fileCollection) {
 
 		$old_filename = $fileCollection->stored_filename;

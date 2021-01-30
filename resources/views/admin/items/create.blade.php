@@ -70,7 +70,7 @@
                                                 <label for="quantity_type" class="required">Quantity Type </label>
                                                 <select name="quantity_type" id="quantity_type" class="form-control">
                                                     @foreach($quantityTypes as $quantity)
-                                                    <option value="{{$quantity->id}}">{{$quantity->name}}</option>
+                                                    <option value="{{$quantity->id}}" {{SELECT($quantity->id,old('quantity_type'))}}>{{$quantity->name}}</option>
                                                     @endforeach                
                                                 </select>
                                             </div>
@@ -82,7 +82,7 @@
                                                 <label for="status" class="required">Status </label>
                                                 <select name="status" id="status" class="form-control">
                                                     @foreach($statuses as $key => $value)
-                                                    <option value="{{$value}}">{{$key}}</option>
+                                                    <option value="{{$value}}" {{SELECT($value,old('status'))}}>{{$key}}</option>
                                                     @endforeach                
                                                 </select>
                                             </div>

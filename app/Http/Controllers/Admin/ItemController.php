@@ -19,9 +19,11 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     protected $quantityTypeModel;
+    
 
     public function __construct() {
         $this->quantityTypeModel = new QuantityType();
+     
     }
 
     public function index()
@@ -66,6 +68,7 @@ class ItemController extends Controller
                 'lang1_name' => $request->lang1_name,
                 'description' => $request->description,
                 'lang1_name' => $request->lang1_name,
+                'lang1_description' => $request->lang1_description,
                 'quantity_type_id' => $request->quantity_type,
 
                 'price' => $request->price,
@@ -73,9 +76,13 @@ class ItemController extends Controller
                 'created_by'=> Auth::user()->id
             ];
 
-        if($request->has('image') && $file = $request->file('image')) {
-            $storedFileArray = FileService::storeFile($file);                
-            $input['image_path'] = $storedFileArray['path'] ?? '';            
+        if($request->hasFile('image') && $file = $request->file('image')) {
+
+            if($file->isValid()) {
+                $storedFileArray = FileService::storeFile($file);
+            
+                $input['image_path'] = $storedFileArray['stored_file_path'] ?? '';    
+            }                        
         }
 
         $result = Item::create($input);
@@ -108,7 +115,7 @@ class ItemController extends Controller
         $result = $item;
         $statuses = _getGlobalStatus();
         $quantityTypes = $this->quantityTypeModel->getActiveRecord();
-        return view('admin.items.edit',compact('result'));
+        return view('admin.items.edit',compact('result','quantityTypes','statuses'));
     }
 
     /**
@@ -118,9 +125,41 @@ class ItemController extends Controller
      * @param  \App\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Item $item)
+    public function update(Request $request,$id)
     {
-        //
+        $validator = Validator::make($request->all(),$this->rules($id),$this->messages(),$this->attributes());
+
+        if($validator->fails()) {
+            return redirect()->back()->withErrors($validator)
+                        ->withInput();
+        }
+
+        $item = Item::find($id);
+
+        $input = array();
+        $input = [
+                'name' => $request->name,
+                'lang1_name' => $request->lang1_name,
+                'description' => $request->description,
+                'lang1_description' => $request->lang1_description,
+                'lang1_name' => $request->lang1_name,
+                'quantity_type_id' => $request->quantity_type,
+                'price' => $request->price,
+                'status' => $request->status,                
+            ];
+
+        if($request->hasFile('image') && $file = $request->file('image')) {
+            if($file->isValid()) {                
+                $storedFileArray = FileService::updateAndStoreFile($file,'/',$item->image_path);            
+                $input['image_path'] = $storedFileArray['stored_file_path'] ?? '';
+            }            
+        }
+
+        $result = $item->update($input);
+
+        updatedResponse("Item Updated Successfully");
+
+        return redirect()->route('items.index');
     }
 
     /**
