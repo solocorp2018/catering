@@ -75,7 +75,7 @@
       <section class="offer-dedicated-body pt-2 pb-2 mt-4 mb-4">
          <div class="container">
             <div class="row">
-               <div class="col-md-8">
+               <div class="{{ (Auth::user())?'col-md-8':'col-md-12'}}">
                   <div class="offer-dedicated-body-left">
                      <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-order-online" role="tabpanel" aria-labelledby="pills-order-online-tab">                         
@@ -167,6 +167,7 @@
                   </div>
                </div>
 
+               @if(Auth::user())
                <div class="col-md-4">
 
                   <div class="generator-bg rounded shadow-sm mb-4 p-4 osahan-cart-item">
@@ -212,6 +213,7 @@
                   </div>
 
                </div>
+               @endif
             </div>
          </div>
       </section>

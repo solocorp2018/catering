@@ -17,7 +17,7 @@ Route::get('/checkout','Website\HomePageController@checkout');
 Route::get('/thankyou','Website\HomePageController@thankyou');
 Route::get('/track-order','Website\HomePageController@trackOrder');
 
-
+Route::post('customer/login','Auth\LoginController@customerLogin');
 Route::get('/user-dashboard','Website\HomePageController@userDashboard');
 Route::get('/invoice','Website\HomePageController@invoice');
 

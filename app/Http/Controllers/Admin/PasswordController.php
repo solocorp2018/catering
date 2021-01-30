@@ -24,7 +24,7 @@ class PasswordController extends Controller
     	]);
 
     	$user_id = Auth::user()->id;
-
+      
     	$user = new User();
     	$userData = $user->find($user_id);
 

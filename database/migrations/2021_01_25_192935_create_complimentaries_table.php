@@ -24,6 +24,7 @@ class CreateComplimentariesTable extends Migration
             $table->unsignedSmallInteger('quantity_type_id');
             
             $table->unsignedBigInteger('created_by');            
+            $table->boolean('is_visible')->default(0);
             $table->boolean('status')->default(0);
             $table->softDeletes();
             $table->timestamps();

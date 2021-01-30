@@ -16,7 +16,7 @@ $(window).on('hashchange', function() {
     if (url.match('#')) {
     //$('.nav-tabs a[href=#'+url.split('#')[1]+']').tab('show') ;
     $('a[href="' + window.location.hash + '"]').trigger('click');
-    } 
+    }
    $('.nav-tabs a').on('shown', function (e) {
     window.location.hash = e.target.hash;
    })
@@ -25,7 +25,7 @@ var url = document.location.toString();
 if (url.match('#')) {
     //$('.nav-tabs a[href=#'+url.split('#')[1]+']').tab('show') ;
     $('a[href="' + window.location.hash + '"]').trigger('click');
-} 
+}
 // Change hash for page-reload
 $('.nav-tabs a').on('shown', function (e) {
     window.location.hash = e.target.hash;
@@ -60,8 +60,8 @@ $('.nav-tabs a').on('shown', function (e) {
       navText:["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],
     });
   }
-  
-// Homepage Owl Carousel  
+
+// Homepage Owl Carousel
 var fiveobjowlcarousel = $(".owl-carousel-four");
   if (fiveobjowlcarousel.length > 0) {
      fiveobjowlcarousel.owlCarousel({
@@ -149,49 +149,49 @@ var fiveobjowlcarousel = $(".owl-carousel-five");
       autoplayHoverPause: true,
     });
 }
-	
+
 // Tooltip
 $('[data-toggle="tooltip"]').tooltip();
 
 //
-$("body").on("contextmenu",function(e){
-        return false;
-    });
-    $(document).keydown(function(e){
-         if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 117)){
-           return false;
-         }
-         if(e.which === 123){
-             return false;
-         }
-         if(e.metaKey){
-             return false;
-         }
-         //document.onkeydown = function(e) {
-         // "I" key
-         if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
-             return false;
-         }
-         // "J" key
-         if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
-             return false;
-         }
-         // "S" key + macOS
-         if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-             return false;
-         }
-         if (e.keyCode == 224 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-             return false;
-         }
-         // "U" key
-         if (e.ctrlKey && e.keyCode == 85) {
-            return false;
-         }
-         // "F12" key
-         if (event.keyCode == 123) {
-            return false;
-         }
-    });
-
-
-})(jQuery); // End of use strict
+// $("body").on("contextmenu",function(e){
+//         return false;
+//     });
+//     $(document).keydown(function(e){
+//          if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 117)){
+//            return false;
+//          }
+//          if(e.which === 123){
+//              return false;
+//          }
+//          if(e.metaKey){
+//              return false;
+//          }
+//          //document.onkeydown = function(e) {
+//          // "I" key
+//          if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+//              return false;
+//          }
+//          // "J" key
+//          if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+//              return false;
+//          }
+//          // "S" key + macOS
+//          if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+//              return false;
+//          }
+//          if (e.keyCode == 224 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+//              return false;
+//          }
+//          // "U" key
+//          if (e.ctrlKey && e.keyCode == 85) {
+//             return false;
+//          }
+//          // "F12" key
+//          if (event.keyCode == 123) {
+//             return false;
+//          }
+//     });
+//
+//
+ })(jQuery); // End of use strict

@@ -1,18 +1,18 @@
 @extends('admin.layouts.layout')
-@section('title', 'Create Item')
+@section('title', 'Create Complimentary')
 @section('content')
 <div class="page-wrapper">
    <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">Create Item</h4>
+            <h4 class="text-themecolor">Create Complimentary</h4>
         </div>
         <div class="col-md-7 align-self-center text-right">
             <div class="d-flex justify-content-end align-items-center">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{url('/dashboard')}}">Dashboard</a></li>
-                    <li class="breadcrumb-item active"><a href="{{route('items.index')}}">Item</a></li>
-                    <li class="breadcrumb-item active">Create Item</li>
+                    <li class="breadcrumb-item active"><a href="{{route('complimentaries.index')}}">Complimentary</a></li>
+                    <li class="breadcrumb-item active">Create Complimentary</li>
                 </ol>                
             </div>
         </div>
@@ -33,7 +33,7 @@
                           
                             <div class="row">
                                 <div class="col-sm-12 col-xs-12">
-                                    <form action="{{route('items.store')}}" enctype="multipart/form-data" method="post">
+                                    <form action="{{route('complimentaries.store')}}" enctype="multipart/form-data" method="post">
                                         {{csrf_field()}}
 
                                         <div class="row pt-3">
@@ -74,10 +74,15 @@
                                                     @endforeach                
                                                 </select>
                                             </div>
+                                             
                                             <div class="form-group col-sm-3 col-xs-3">
-                                                <label for="image" class="required">Price </label>
-                                                <input type="text" name="price" class="form-control" id="price" placeholder="Enter Price" value="{{old('price')}}">
-                                            </div> 
+                                                <label for="is_visible" class="required">Show With Menu Item ? </label>
+                                                <select name="is_visible" id="is_visible" class="form-control">
+                                                    @foreach($statuses as $key => $value)
+                                                    <option value="{{$value}}" {{SELECT($value,old('is_visible'))}}>{{$key}}</option>
+                                                    @endforeach                
+                                                </select>
+                                            </div>
                                             <div class="form-group col-sm-3 col-xs-3">
                                                 <label for="status" class="required">Status </label>
                                                 <select name="status" id="status" class="form-control">

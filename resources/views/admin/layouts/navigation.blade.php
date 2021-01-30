@@ -3,9 +3,9 @@
    <div class="scroll-sidebar">
       <!-- Sidebar navigation-->
       <nav class="sidebar-nav">
-         <ul id="sidebarnav">            
+         <ul id="sidebarnav">
             <li> <a class="waves-effect waves-dark" href="{{url('/dashboard')}}"><i class="fa fa-home" aria-hidden="true"></i><span class="hide-menu">&nbsp;Dashboard</span></a>
-            </li>                       
+            </li>
 
             <li> <a class="waves-effect waves-dark" href="{{url('/session-configuration')}}"><i class="fa fa-tv" aria-hidden="true"></i><span class="hide-menu">&nbsp;Menu</span></a>
             </li>
@@ -22,10 +22,10 @@
 
             <li class="nav-small-cap">--- Masters</li>
              <li> <a class="waves-effect waves-dark" href="{{url('/items')}}"><i class="fa fa-utensils" aria-hidden="true"></i><span class="hide-menu">&nbsp;Items</span></a>
-            </li>           
-            <li> <a class="waves-effect waves-dark" href="{{url('/complimentaries')}}"><i class="fa fa-coffee" aria-hidden="true"></i><span class="hide-menu">&nbsp;Complimentaries</span></a>
-            </li>           
-<!-- 
+            </li>
+            <li> <a class="waves-effect waves-dark" href="{{url('/complimentary')}}"><i class="fa fa-coffee" aria-hidden="true"></i><span class="hide-menu">&nbsp;Complimentaries</span></a>
+            </li>
+<!--
             <li class="nav-small-cap">--- Website</li>
             <li> <a class="waves-effect waves-dark" href="{{url('/')}}"><i class="fa fa-archive" aria-hidden="true"></i><span class="hide-menu">&nbsp;Gallery</span></a>
             </li>            -->

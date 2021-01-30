@@ -78,7 +78,7 @@ class RegisterController extends Controller
 
         $rules = [
             'name' => 'required|min:2|max:100',
-            'contactNumber' => 'required|exists:verify_otps,mobile',
+            'contact_number' => 'required|exists:verify_otps,mobile',
             'otp' => 'required',
             'email' => 'sometimes|email|unique:users,email',
             'address_line_1' => 'required|min:2|max:100',
@@ -92,10 +92,10 @@ class RegisterController extends Controller
             'name' => $request->name,
             'contact_number' => $request->contact_number,
             'otp' => $request->otp,
-            'email' => $request->email,    
-            'user_type_id' => array_flip(config('constant.user_type'))[2] ?? 2,    
+            'email' => $request->email,
+            'user_type_id' => array_flip(config('constant.user_type'))[2] ?? 2,
             'country_code' => '+91',
-            'status'=> _active(),            
+            'status'=> _active(),
         ];
 
         $user = User::create($userData);

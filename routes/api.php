@@ -20,4 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('trigger-otp','Auth\LoginController@triggerOtp');
 Route::post('validate-otp','Auth\LoginController@validateOtp');
-Route::post('register-user','Auth\RegisterController@registerUser');
+Route::post('register-user','Auth\RegisterController@registerUser'); Route::post('login','Auth\LoginController@login')->name('login');

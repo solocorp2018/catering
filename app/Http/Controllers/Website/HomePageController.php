@@ -4,17 +4,27 @@ namespace App\Http\Controllers\Website;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Auth;   
 
 class HomePageController extends Controller
 {
+
+    protected $userModel;
+
+    public function __construct() {
+        $this->userModel = new User();
+    }
+
     public function homepage(Request $request) {
 
-    	return view('website.homepage');
+    	return view('website.homepage');   
     }
 
     public function userDashboard(Request $request) {
 
-    	return view('website.user-dashboard');
+        $userData = $this->userModel->getUserData(Auth::user()->id);
+    	return view('website.user-dashboard',compact('userData'));
     }
 
     public function checkout(Request $request) {

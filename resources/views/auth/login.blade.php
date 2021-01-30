@@ -8,16 +8,16 @@
                 <form class="form-horizontal form-material text-center" id="loginform" method="POST" action="{{ route('login') }}">
 
                     @csrf
-                    
+
                     <a href="javascript:void(0)" class="db"><img src="{{logo()}}" alt="Logo" width="100px" /><br/>
-                    
 
 
-                    @if(count($errors))                    
+
+                    @if(count($errors))
                     <div class="form-group m-t-40">
                         <div class="col-xs-12">
-                            <p style="color:red;">These credentials do not match our records</p>             
-                        </div>                        
+                            <p style="color:red;">These credentials do not match our records</p>
+                        </div>
                     </div>
                     @endif
 
@@ -25,7 +25,7 @@
                         <div class="col-xs-12">
                             <input class="form-control" type="email" required="" name="email" value="{{old('email')}}" placeholder="{{ __('Username') }}">
                         </div>
-                        
+
                     </div>
 
                     <div class="form-group">
@@ -41,11 +41,11 @@
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" name="remember_me" id="customCheck1" {{ old('remember') ? 'checked' : '' }}>
                                     <label class="custom-control-label" for="customCheck1">{{ __('Remember Me') }}</label>
-                                </div> 
-                                <div class="ml-auto">
-                                    <!-- <a href="{{ route('password.request') }}" class="text-muted"><i class="fas fa-lock m-r-5"></i> {{ __('Forgot Your Password?') }}</a> --> 
                                 </div>
-                            </div>   
+                                <div class="ml-auto">
+                                    <!-- <a href="{{ route('password.request') }}" class="text-muted"><i class="fas fa-lock m-r-5"></i> {{ __('Forgot Your Password?') }}</a> -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group text-center m-t-20">
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                     </div> -->
-                    
+
                 </form>
 
                 <!-- <form class="form-horizontal" id="recoverform" action="">

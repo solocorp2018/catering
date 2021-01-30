@@ -15,9 +15,9 @@
                            <div class="osahan-user-media">
                               <img class="mb-3 rounded-pill shadow-sm mt-1" src="{{asset('website/img/user/no-user.jpg')}}" alt="gurdeep singh osahan">
                               <div class="osahan-user-media-body">
-                                 <h6 class="mb-2">User 1</h6>
-                                 <p class="mb-1">+91 999999999</p>
-                                 <p>user@mailinator.com</p>                                 
+                                 <h6 class="mb-2">{{$userData->name ??''}}</h6>
+                                 <p class="mb-1">{{$userData->country_code ??''}} {{$userData->contact_number ??''}}</p>
+                                 <p>{{$userData->email ??''}}</p>                                 
                               </div>
                            </div>
                         </div>

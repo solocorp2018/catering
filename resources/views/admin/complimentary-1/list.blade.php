@@ -5,15 +5,15 @@
    <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">Items</h4>
+            <h4 class="text-themecolor">Complimentary</h4>
         </div>
         <div class="col-md-7 align-self-center text-right">
             <div class="d-flex justify-content-end align-items-center">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{url('/dashboard')}}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Items</li>
-                </ol>            
-                <a class="btn btn-info d-none d-lg-block m-l-15" href="{{route('items.create')}}"><i class="fa fa-plus-circle"></i> Create New</a>  
+                    <li class="breadcrumb-item active">Complimentary</li>
+                </ol>
+                <a class="btn btn-info d-none d-lg-block m-l-15" href="{{route('complimentary.create')}}"><i class="fa fa-plus-circle"></i> Create New</a>
             </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
                                        <option value="100" {{SELECT('pageLength',100)}}>100</option>
                                     </select>
                                     <label> </label>
-                                 
+
                               </div>
                            </div>
 
@@ -54,35 +54,22 @@
                               <table class="table table-hover">
                                  <thead>
                                     <tr>
-                                       
+
                                        <th><a class="sort" data-column="name"><i class="fa fa-sort" aria-hidden="true"></i>Name</a></th>
-                                      
-                                       <th> Name (Lang 1)</th>
-                                       <th><a class="sort" data-column="amount"><i class="fa fa-sort" aria-hidden="true"></i>Price</th>
                                        <th>Quantity Type</th>
                                        <th>Image</th>
                                        <th>Status</th>
-                                       <th>Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                  
+
                                   @if(!empty($results) && $results->count())
                                   @foreach($results as $result)
                                     <tr>
-                                      
+
                                        <td>{{$result->name ?? ''}}</td>
-                                       <td>{{$result->lang1_name ?? ''}}</td>     
-                                       <td>{{$result->price ?? ''}}</td>     
-                                       <td>{{$result->quantityType->name ?? ""}}</td>  
-                                       <td>
-                                            @if(!empty($result->image_path))
-                                                <image src="{{showDiskImage($result->image_path)}}" height="50" width="50"/>
-                                            @else
-                                                --
-                                            @endif
-                                            
-                                        </td>   
+                                       <td>{{$result->quantityType->name ?? ""}}</td>
+                                       <td>{{$result->image_path ?? ""}}</td>
                                        <td>
                                         @if(isset($result->status) && $result->status == 1)
                                         <span class="text-success">Active</span>
@@ -90,14 +77,10 @@
                                           <span class="text-danger">In-Active</span>
                                         @endif
                                       </td>
-                                      <td>
-                                        <a class="waves-effect waves-dark" href="{{route('items.edit',$result->id)}}">Edit</a>
-                                        
-                                        </td>
                                     </tr>
                                   @endforeach
                                   @else
-                                  <tr> 
+                                  <tr>
                                     <td collspan="6">No Records Found..</td>
                                   </tr>
                                   @endif
@@ -108,9 +91,9 @@
                         <div class="row">
                            <div class="col-sm-12 col-md-6">
                               <div>
-                                   @if(!empty($results) && $results->count())              
+                                   @if(!empty($results) && $results->count())
                                         Showing {{$results->firstItem()}} to {{$results->lastItem()}} of {{ $results->total() }} entries
-                                        
+
                                     @endif
                               </div>
                            </div>
@@ -133,7 +116,7 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function(){
-    setPageUrl('/items?');  
-  }); 
+    setPageUrl('/items?');
+  });
 </script>
 @endsection

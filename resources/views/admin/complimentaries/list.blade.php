@@ -1,19 +1,19 @@
 @extends('admin.layouts.layout')
-@section('title', 'List Items')
+@section('title', 'List Complimentaries')
 @section('content')
 <div class="page-wrapper">
    <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">Items</h4>
+            <h4 class="text-themecolor">Complimentaries</h4>
         </div>
         <div class="col-md-7 align-self-center text-right">
             <div class="d-flex justify-content-end align-items-center">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{url('/dashboard')}}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Items</li>
+                    <li class="breadcrumb-item active">Complimentaries</li>
                 </ol>            
-                <a class="btn btn-info d-none d-lg-block m-l-15" href="{{route('items.create')}}"><i class="fa fa-plus-circle"></i> Create New</a>  
+                <a class="btn btn-info d-none d-lg-block m-l-15" href="{{route('complimentaries.create')}}"><i class="fa fa-plus-circle"></i> Create New</a>  
             </div>
         </div>
     </div>
@@ -57,10 +57,10 @@
                                        
                                        <th><a class="sort" data-column="name"><i class="fa fa-sort" aria-hidden="true"></i>Name</a></th>
                                       
-                                       <th> Name (Lang 1)</th>
-                                       <th><a class="sort" data-column="amount"><i class="fa fa-sort" aria-hidden="true"></i>Price</th>
+                                       <th> Name (Lang 1) </th>          
                                        <th>Quantity Type</th>
                                        <th>Image</th>
+                                       <th>Show with Item</th>
                                        <th>Status</th>
                                        <th>Action</th>
                                     </tr>
@@ -73,7 +73,7 @@
                                       
                                        <td>{{$result->name ?? ''}}</td>
                                        <td>{{$result->lang1_name ?? ''}}</td>     
-                                       <td>{{$result->price ?? ''}}</td>     
+                                       
                                        <td>{{$result->quantityType->name ?? ""}}</td>  
                                        <td>
                                             @if(!empty($result->image_path))
@@ -83,6 +83,13 @@
                                             @endif
                                             
                                         </td>   
+                                        <td>
+                                      @if(isset($result->is_visible) && $result->is_visible == 1)
+                                        <span class="text-success">Active</span>
+                                        @else
+                                          <span class="text-danger">In-Active</span>
+                                        @endif
+                                      </td>
                                        <td>
                                         @if(isset($result->status) && $result->status == 1)
                                         <span class="text-success">Active</span>
@@ -91,7 +98,7 @@
                                         @endif
                                       </td>
                                       <td>
-                                        <a class="waves-effect waves-dark" href="{{route('items.edit',$result->id)}}">Edit</a>
+                                        <a class="waves-effect waves-dark" href="{{route('complimentaries.edit',$result->id)}}">Edit</a>
                                         
                                         </td>
                                     </tr>
@@ -133,7 +140,7 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function(){
-    setPageUrl('/items?');  
+    setPageUrl('/complimentaries?');  
   }); 
 </script>
 @endsection

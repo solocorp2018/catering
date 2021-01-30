@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 use Validator;
 use App\Models\VerifyOtp;
+use App\Models\User;
+use App\Services\TextLocalSmsGateway;
+use Auth;
 
 class LoginController extends Controller
 {
@@ -51,6 +54,9 @@ class LoginController extends Controller
 
         VerifyOtp::updateOrCreate(['mobile'=>$mobileNumber],['mobile'=>$mobileNumber,'otp'=>$otp]);
 
+        $message = $otp." is the OTP for your ".env('APP_NAME')." registration.";
+        TextLocalSmsGateway::sendSms($mobileNumber,$message);
+
         return response(['message'=>'OTP sent successfully !']);
     }
 
@@ -58,25 +64,65 @@ class LoginController extends Controller
         $this->validate($request,[
             'contactNumber'=>'required|exists:verify_otps,mobile',
             'otp' => 'required|min:4|exists:verify_otps,otp,mobile,'.$request->contactNumber
-        ]);        
+        ]);
 
         $mobileNumber = $request->contactNumber;
 
-        return response(['message'=>'OTP verified successfully !']);   
+        return response(['message'=>'OTP verified successfully !']);
     }
 
-    public function generateNumericOTP($n = 4) {       
-    
-        $generator = "1357902468";     
-  
-        $result = ""; 
-  
-        for ($i = 1; $i <= $n; $i++) { 
-            $result .= substr($generator, (rand()%(strlen($generator))), 1); 
-        } 
-    
-        return $result; 
-    } 
+    public function generateNumericOTP($n = 4) {
+
+        $generator = "1357902468";
+
+        $result = "";
+
+        for ($i = 1; $i <= $n; $i++) {
+            $result .= substr($generator, (rand()%(strlen($generator))), 1);
+        }
+
+        return $result;
+    }
+
+    public function customerLogin(Request $request) {
+      
+      $contact_number = $request->contact_number;
+
+      $user = User::where('contact_number', $contact_number)->first();
+
+      if(!empty($user)) {
+
+        Auth::loginUsingId($user->id);
+
+        return redirect()->intended('/');
+      } else {
+
+        session()->flash('Invalid credentials for login');
+        return redirect()->intended('/');
+      }
+
+    }
+
+    public function login(Request $request) {
+
+      $credentials = array(
+        'email' => $request->email,
+        'password' => $request->password
+      );
+
+      if (Auth::attempt($credentials)) {
+
+        $request->session()->regenerate();
+
+        return redirect()->intended('/dashboard');
+
+
+      } else {
+        return redirect()->intended('/');
+      }
+
+    }
+
 
 
 }

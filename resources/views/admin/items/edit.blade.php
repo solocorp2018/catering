@@ -38,12 +38,12 @@
 
                                         <div class="row pt-3">
                                             <div class="form-group col-sm-6 col-xs-6">
-                                                <label for="name" class="required">Item Name</label>
+                                                <label for="name" class="required">Name</label>
                                                 <input type="text" name="name" class="form-control" id="name" placeholder="Enter Item Name" value="{{old('name',$result->name)}}">
                                             </div> 
 
                                             <div class="form-group col-sm-6 col-xs-6">
-                                                <label for="lang1_name" class="required">Item Name (Lang 1)</label>
+                                                <label for="lang1_name" class="required">Name (Lang 1)</label>
                                                 <input type="text" name="lang1_name" class="form-control" id="lang1_name" placeholder="Enter Item Name (Lang 1)" value="{{old('lang1_name',$result->lang1_name)}}"> 
                                             </div>     
                                         </div>
@@ -76,7 +76,7 @@
                                             </div>
                                             <div class="form-group col-sm-3 col-xs-3">
                                                 <label for="image" class="required">Price </label>
-                                                <input type="text" name="price" class="form-control" id="price" placeholder="Enter Item Price" value="{{old('price',$result->price)}}">
+                                                <input type="text" name="price" class="form-control" id="price" placeholder="Enter Price" value="{{old('price',$result->price)}}">
                                             </div> 
                                             <div class="form-group col-sm-3 col-xs-3">
                                                 <label for="status" class="required">Status </label>
