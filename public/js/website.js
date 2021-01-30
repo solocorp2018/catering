@@ -122,7 +122,7 @@ function triggerOtp() {
 
 	$.ajax({
         method:"POST",
-        url: feedUrl('/api/trigger-otp'),
+        url: feedUrl('/trigger-otp'),
         data: formData,
         success: function( data ) {
             alert( data.message );
@@ -149,7 +149,7 @@ function validateOtp() {
 	};
 	$.ajax({
         type: "POST",
-        url: feedUrl('/api/validate-otp'),
+        url: feedUrl('/validate-otp'),
         data: formData,
         success: function( data ) {
             alert( data.message );
@@ -175,7 +175,7 @@ function registerForm() {
 	};
 	$.ajax({
         type: "POST",
-        url: feedUrl('/api/register-user'),
+        url: feedUrl('/register-user'),
         data: formData,
         success: function( data ) {
             alert( data.message );
@@ -213,7 +213,7 @@ $("#login-form").validate({
 // 		};
 // 		$.ajax({
 // 	        type: "POST",
-// 	        url: feedUrl('/api/login'),
+// 	        url: feedUrl('/login'),
 // 	        data: formData,
 // 	        success: function( data ) {
 // 	            alert( data.message );

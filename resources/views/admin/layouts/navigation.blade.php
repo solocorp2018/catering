@@ -23,7 +23,7 @@
             <li class="nav-small-cap">--- Masters</li>
              <li> <a class="waves-effect waves-dark" href="{{url('/items')}}"><i class="fa fa-utensils" aria-hidden="true"></i><span class="hide-menu">&nbsp;Items</span></a>
             </li>
-            <li> <a class="waves-effect waves-dark" href="{{url('/complimentary')}}"><i class="fa fa-coffee" aria-hidden="true"></i><span class="hide-menu">&nbsp;Complimentaries</span></a>
+            <li> <a class="waves-effect waves-dark" href="{{url('/complimentaries')}}"><i class="fa fa-coffee" aria-hidden="true"></i><span class="hide-menu">&nbsp;Complimentaries</span></a>
             </li>
 <!--
             <li class="nav-small-cap">--- Website</li>
