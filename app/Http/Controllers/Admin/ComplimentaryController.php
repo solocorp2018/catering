@@ -19,18 +19,18 @@ class ComplimentaryController extends Controller
      * @return \Illuminate\Http\Response
      */
     protected $quantityTypeModel;
-    
+
 
     public function __construct() {
         $this->quantityTypeModel = new QuantityType();
-     
+
     }
 
     public function index()
     {
         $results = Complimentary::getQueriedResult();
-        
-        return view('admin.complimentaries.list',compact('results'));   
+
+        return view('admin.complimentaries.list',compact('results'));
     }
 
     /**
@@ -80,9 +80,9 @@ class ComplimentaryController extends Controller
 
             if($file->isValid()) {
                 $storedFileArray = FileService::storeFile($file);
-            
-                $input['image_path'] = $storedFileArray['stored_file_path'] ?? '';    
-            }                        
+
+                $input['image_path'] = $storedFileArray['stored_file_path'] ?? '';
+            }
         }
 
         $result = Complimentary::create($input);
@@ -145,14 +145,14 @@ class ComplimentaryController extends Controller
                 'lang1_name' => $request->lang1_name,
                 'quantity_type_id' => $request->quantity_type,
                 'is_visible' => $request->is_visible,
-                'status' => $request->status,                
+                'status' => $request->status,
             ];
 
         if($request->hasFile('image') && $file = $request->file('image')) {
-            if($file->isValid()) {                
-                $storedFileArray = FileService::updateAndStoreFile($file,'/',$complimentary->image_path);            
+            if($file->isValid()) {
+                $storedFileArray = FileService::updateAndStoreFile($file,'/',$complimentary->image_path);
                 $input['image_path'] = $storedFileArray['stored_file_path'] ?? '';
-            }            
+            }
         }
 
         $result = $complimentary->update($input);
@@ -178,14 +178,14 @@ class ComplimentaryController extends Controller
         $rules = array();
 
         if($id) {
-            $rules['name'] = "required|unique:complimentaries,name,{$id},id|min:2|max:99"; 
-            $rules['lang1_name'] = "required|unique:complimentaries,lang1_name,{$id},id|min:2|max:99";     
+            $rules['name'] = "required|unique:complimentaries,name,{$id},id|min:2|max:99";
+            $rules['lang1_name'] = "required|unique:complimentaries,lang1_name,{$id},id|min:2|max:99";
 
         } else {
-            $rules['name'] = "required|unique:complimentaries,name|min:2|max:99"; 
-            $rules['lang1_name'] = "required|unique:complimentaries,lang1_name|min:2|max:99";     
+            $rules['name'] = "required|unique:complimentaries,name|min:2|max:99";
+            $rules['lang1_name'] = "required|unique:complimentaries,lang1_name|min:2|max:99";
         }
-        
+
         $rules['description'] = 'sometimes|min:2|max:200';
         $rules['lang1_description'] = 'sometimes|min:2|max:200';
         $rules['image'] = 'sometimes|file|mimes:png,jpeg,jpg|max:5026';

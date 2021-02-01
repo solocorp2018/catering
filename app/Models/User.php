@@ -43,7 +43,35 @@ class User extends Authenticatable
 
     }
 
+    public function scopeFilter($query) {
+
+         if($keyword = request('keyword')) {
+             $query->where('name','like','%'.$keyword.'%');
+             $query->orWhere('contact_number','like','%'.$keyword.'%');
+             $query->orWhere('email','like','%'.$keyword.'%');
+         }
+         return $query;
+     }
+
+
+     public static function getQueriedResult() {
+
+     	$page_length = getPagelength();
+
+     	list($sortfield,$sorttype) = getSorting();
+
+     	$result = static::with(['userAddress'])->where('user_type_id',2)->filter();
+
+     	$sortfield = ($sortfield == 'name')?'name':$sortfield;
+     	$sortfield = ($sortfield == 'contact_number')?'contact_number':$sortfield;
+     	$sortfield = ($sortfield == 'email')?'email':$sortfield;
+
+     	return $result->orderBy($sortfield,$sorttype)->paginate($page_length);
+     }
+
     public function userAddress(){
         return $this->hasMany('App\Models\UserAddress');
     }
+
+
 }
