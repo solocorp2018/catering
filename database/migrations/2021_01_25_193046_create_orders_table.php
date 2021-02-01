@@ -22,9 +22,9 @@ class CreateOrdersTable extends Migration
             $table->float('total_amount',8,2);
             $table->unsignedTinyInteger('order_status');            
 
-            $table->unsignedBigInteger('confirmed_by');
-            $table->unsignedBigInteger('order_processed_by');
-            $table->unsignedBigInteger('delivered_by');
+            $table->unsignedBigInteger('confirmed_by')->nullable();
+            $table->unsignedBigInteger('order_processed_by')->nullable();
+            $table->unsignedBigInteger('delivered_by')->nullable();
 
             $table->boolean('status')->default(0);
             $table->softDeletes();
