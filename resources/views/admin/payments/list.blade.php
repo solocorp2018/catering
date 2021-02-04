@@ -5,15 +5,14 @@
    <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">Customers</h4>
+            <h4 class="text-themecolor">Payments</h4>
         </div>
         <div class="col-md-7 align-self-center text-right">
             <div class="d-flex justify-content-end align-items-center">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{url('/dashboard')}}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Customers</li>
+                    <li class="breadcrumb-item active">Payments</li>
                 </ol>
-                <a class="btn btn-info d-none d-lg-block m-l-15" href="{{route('customers.create')}}"><i class="fa fa-plus-circle"></i> Create New</a>
             </div>
         </div>
     </div>
@@ -54,11 +53,12 @@
                               <table class="table table-hover">
                                  <thead>
                                     <tr>
-                                       <th><a class="sort" data-column="name"><i class="fa fa-sort" aria-hidden="true"></i>Name</a></th>
 
-                                       <th> <a class="sort" data-column="nameLang"><i class="fa fa-sort" aria-hidden="true"></i>Contact Number</a> </th>
-                                       <th><a class="sort" data-column="amount"><i class="fa fa-sort" aria-hidden="true"></i>Email</th>
-                                       <th>Status</th>
+                                       <th><a class="sort" data-column="name"><i class="fa fa-sort" aria-hidden="true"></i>Order ID</a></th>
+
+                                       <th><a class="sort" data-column="amount"><i class="fa fa-sort" aria-hidden="true"></i>Amount</th>
+                                       <th>Date</th>
+                                       <th>Payment status</th>
                                        <th>Action</th>
                                     </tr>
                                  </thead>
@@ -68,18 +68,18 @@
                                   @foreach($results as $result)
                                     <tr>
 
-                                       <td>{{$result->name ?? ''}}</td>
-                                       <td>{{$result->contact_number ?? ''}}</td>
-                                       <td>{{$result->email}}</td>
+                                       <td>{{$result->order_id ?? ''}}</td>
+                                       <td>{{$result->amount ?? ''}}</td>
+                                       <td>{{dateOf($result->created_at) ?? ''}}</td>
                                        <td>
-                                        @if(isset($result->status) && $result->status == 1)
-                                        <span class="text-success">Active</span>
+                                        @if(isset($result->payment_status) && $result->payment_status == 1)
+                                        <span class="text-success">Paid</span>
                                         @else
-                                          <span class="text-danger">In-Active</span>
+                                          <span class="text-danger">Pending</span>
                                         @endif
                                       </td>
                                       <td>
-                                        <a class="waves-effect waves-dark" href="{{route('customers.edit',$result->id)}}">Edit</a>
+                                        <a class="waves-effect waves-dark" href="{{route('payments.show',$result->id)}}">Show</a>
 
                                         </td>
                                     </tr>
@@ -121,7 +121,7 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function(){
-    setPageUrl('/customers?');
+    setPageUrl('/payments?');
   });
 </script>
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 
 class PaymentController extends Controller
 {
@@ -15,28 +16,8 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+      $results = Payment::getQueriedResult();
+      return view('admin.payments.list',compact('results'));
     }
 
     /**
@@ -45,9 +26,11 @@ class PaymentController extends Controller
      * @param  \App\Models\Payment  $payment
      * @return \Illuminate\Http\Response
      */
-    public function show(Payment $payment)
+    public function show($id)
     {
-        //
+        $result = Payment::with(['recievedBy','paidBy'])->find($id);
+        //dd($result);
+        return view('admin.payments.show',compact('result'));
     }
 
     /**

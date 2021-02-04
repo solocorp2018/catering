@@ -19,13 +19,13 @@ class Item extends Model
             $query->orWhere('lang1_name','like','%'.$keyword.'%');
             $query->orWhere('description','like','%'.$keyword.'%');
             $query->orWhere('lang1_description','like','%'.$keyword.'%');
-        } 
+        }
         return $query;
     }
 
 
-    public static function getQueriedResult() {    	
-    	
+    public static function getQueriedResult() {
+
     	$page_length = getPagelength();
 
     	list($sortfield,$sorttype) = getSorting();
@@ -35,8 +35,12 @@ class Item extends Model
     	$sortfield = ($sortfield == 'name')?'name':$sortfield;
     	$sortfield = ($sortfield == 'nameLang')?'lang1_name':$sortfield;
     	$sortfield = ($sortfield == 'amount')?'price':$sortfield;
-    	
+
     	return $result->orderBy($sortfield,$sorttype)->paginate($page_length);
+    }
+
+		public function getActiveRecord() {
+      return $this->where('status',_active())->get();
     }
 
     public function quantityType() {

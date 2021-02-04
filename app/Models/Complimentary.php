@@ -35,6 +35,10 @@ class Complimentary extends Model
      	return $result->orderBy($sortfield,$sorttype)->paginate($page_length);
      }
 
+     public function getActiveRecord() {
+       return $this->where('status',_active())->get();
+     }
+
      public function quantityType() {
      	return $this->belongsTo('App\Models\QuantityType','quantity_type_id');
      }

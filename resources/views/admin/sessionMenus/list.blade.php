@@ -5,15 +5,15 @@
    <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">Customers</h4>
+            <h4 class="text-themecolor">Session Menu</h4>
         </div>
         <div class="col-md-7 align-self-center text-right">
             <div class="d-flex justify-content-end align-items-center">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{url('/dashboard')}}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Customers</li>
+                    <li class="breadcrumb-item active">Session Menu</li>
                 </ol>
-                <a class="btn btn-info d-none d-lg-block m-l-15" href="{{route('customers.create')}}"><i class="fa fa-plus-circle"></i> Create New</a>
+                <a class="btn btn-info d-none d-lg-block m-l-15" href="{{route('sessionMenus.create')}}"><i class="fa fa-plus-circle"></i> Create New</a>
             </div>
         </div>
     </div>
@@ -54,12 +54,14 @@
                               <table class="table table-hover">
                                  <thead>
                                     <tr>
-                                       <th><a class="sort" data-column="name"><i class="fa fa-sort" aria-hidden="true"></i>Name</a></th>
 
-                                       <th> <a class="sort" data-column="nameLang"><i class="fa fa-sort" aria-hidden="true"></i>Contact Number</a> </th>
-                                       <th><a class="sort" data-column="amount"><i class="fa fa-sort" aria-hidden="true"></i>Email</th>
+                                       <th><a class="sort" data-column="name"><i class="fa fa-sort" aria-hidden="true"></i>Session Type</a></th>
+
+                                       <th><a class="sort" data-column="amount"><i class="fa fa-sort" aria-hidden="true"></i>Session Date</th>
+                                       <th>Opening Time</th>
+                                       <th>Closing Time</th>
                                        <th>Status</th>
-                                       <th>Action</th>
+                                       <th>Actions</th>
                                     </tr>
                                  </thead>
                                  <tbody>
@@ -68,18 +70,21 @@
                                   @foreach($results as $result)
                                     <tr>
 
-                                       <td>{{$result->name ?? ''}}</td>
-                                       <td>{{$result->contact_number ?? ''}}</td>
-                                       <td>{{$result->email}}</td>
+                                       <td>{{$result->sessionType->type_name ?? ''}}</td>
+                                       <td>{{dateOf($result->session_date) ?? ''}}</td>
+                                       <td>{{$result->opening_time ?? ''}}</td>
+                                       <td>{{$result->closing_time ?? ''}}</td>
                                        <td>
                                         @if(isset($result->status) && $result->status == 1)
                                         <span class="text-success">Active</span>
                                         @else
-                                          <span class="text-danger">In-Active</span>
+                                          <span class="text-danger">In Active</span>
                                         @endif
                                       </td>
                                       <td>
-                                        <a class="waves-effect waves-dark" href="{{route('customers.edit',$result->id)}}">Edit</a>
+                                        <a class="waves-effect waves-dark" href="{{route('sessionMenus.show',$result->id)}}">Show</a>
+
+                                        <a class="waves-effect waves-dark" href="{{route('sessionMenus.edit',$result->id)}}">Edit</a>
 
                                         </td>
                                     </tr>
@@ -121,7 +126,7 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function(){
-    setPageUrl('/customers?');
+    setPageUrl('/sessionMenus?');
   });
 </script>
 @endsection

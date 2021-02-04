@@ -196,4 +196,28 @@ class UserController extends Controller
     public function attributes() {
         return [];
     }
+
+    public function updateAddress(Request $request,$id) {
+
+      $input = array();
+      $input = [
+              'user_id' => $request->user_id,
+              'address_line_1' => $request->address_line_1,
+              'address_line_2' => $request->address_line_2,
+              'city' => $request->city,
+              'pincode' => $request->pincode,
+              'status' => $request->status ?? 0,
+              'state_id' => 1,
+              'country_id' => 1,
+              'is_current' => _active(),
+              'created_by'=> Auth::user()->id
+          ];
+      if($id != 0) {
+        $address = UserAddress::find($id);
+        $resultAddress = $address->update($input);
+      } else {
+        UserAddress::create($input);
+      }
+      return back();
+    }
 }
