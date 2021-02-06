@@ -46,7 +46,7 @@ class LoginController extends Controller
 
     public function triggerOtp(Request $request) {
 
-        $this->validate($request,['contactNumber'=>'required']);
+        $this->validate($request,['contactNumber'=>'required|unique:users,contact_number']);
 
         $mobileNumber = $request->contactNumber;
 

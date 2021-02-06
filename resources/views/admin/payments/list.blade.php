@@ -1,9 +1,6 @@
 @extends('admin.layouts.layout')
-<<<<<<< HEAD
 @section('title', 'List Payments')
-=======
-@section('title', 'List Items')
->>>>>>> renuka02
+
 @section('content')
 <div class="page-wrapper">
    <div class="container-fluid">

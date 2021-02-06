@@ -9,7 +9,7 @@ class TextLocalSmsGateway
 
     	$apiUrl = env('TEXT_LOCAL_API_URL');
 		$apiKey = env('TEXT_LOCAL_API_KEY');
-		$sender = 'TXTLCL';
+		$sender = env('TXTLCL');
 
     	$mobileNumbers = is_array($mobileNumbers)?$mobileNumbers:array_wrap($mobileNumbers);
 
