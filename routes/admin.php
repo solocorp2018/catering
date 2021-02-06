@@ -14,6 +14,13 @@ Route::middleware(['admin'])->group(function () {
 	Route::resource('/complimentaries','Admin\ComplimentaryController');
 
 	Route::resource('/customers','Admin\UserController');
+	Route::get('/customers-export','Admin\UserController@export')->name('customers.export');
+
+	Route::resource('/orders','Admin\OrderController');
+	Route::get('/orders-export','Admin\OrderController@export')->name('orders.export');
+	
+	Route::resource('/payments','Admin\PaymentController');
+	Route::get('/payments-export','Admin\PaymentController@export')->name('payments.export');
 
 
 	Route::get('/leads','Admin\LeadController@index')->name('leads.index');

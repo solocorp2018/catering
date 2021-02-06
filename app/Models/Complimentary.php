@@ -19,7 +19,7 @@ class Complimentary extends Model
              $query->orWhere('description','like','%'.$keyword.'%');
          }
          return $query;
-     }
+    }
 
 
      public static function getQueriedResult() {
@@ -35,7 +35,7 @@ class Complimentary extends Model
      	return $result->orderBy($sortfield,$sorttype)->paginate($page_length);
      }
 
-     public function quantityType() {
-     	return $this->belongsTo('App\Models\QuantityType','quantity_type_id');
-     }
+    public function quantityType() {
+    	return $this->belongsTo('App\Models\QuantityType','quantity_type_id');
+    }
 }

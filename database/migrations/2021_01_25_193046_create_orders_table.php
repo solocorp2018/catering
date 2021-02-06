@@ -16,6 +16,7 @@ class CreateOrdersTable extends Migration
         $this->down();
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('order_unique_id');
             $table->unsignedBigInteger('session_menu_id');
             $table->unsignedBigInteger('customer_id');
             $table->dateTime('order_date');

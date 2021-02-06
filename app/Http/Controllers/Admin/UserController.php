@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
+use App\Exports\CustomersExport;
 use Validator;
 use Auth;
 use App\Models\User;
 use App\Models\UserAddress;
+
 
 class UserController extends Controller
 {
@@ -195,5 +198,10 @@ class UserController extends Controller
 
     public function attributes() {
         return [];
+    }
+
+    public function export(){
+    	$filename = 'customers-list-'.date('d-m-Y').'.csv';
+    	return Excel::download(new CustomersExport, $filename);
     }
 }

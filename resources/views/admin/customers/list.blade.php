@@ -24,7 +24,7 @@
                <div class="card-body">
                   <div class="table-responsive m-t-40">
                      <div id="myTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                        <div class="row">
+                        <div class="row m-b-40">
 
                            <div class="col-sm-12 col-md-6">
                               <div class="dataTables_length" id="myTable_length">
@@ -35,8 +35,6 @@
                                        <option value="50" {{SELECT('pageLength',50)}}>50</option>
                                        <option value="100" {{SELECT('pageLength',100)}}>100</option>
                                     </select>
-                                    <label> </label>
-
                               </div>
                            </div>
 
@@ -45,8 +43,6 @@
                            </div>
                            <input type="hidden" name="sortfield" id="sortfield" value="{{request('sortfield')}}"/>
                            <input type="hidden" name="sorttype" id="sorttype" value="{{request('sorttype')}}"/>
-
-
                         </div>
 
                         <div class="row">
@@ -94,7 +90,7 @@
                               </table>
                            </div>
                         </div>
-                        <div class="row">
+                        <div class="row m-b-40">
                            <div class="col-sm-12 col-md-6">
                               <div>
                                    @if(!empty($results) && $results->count())

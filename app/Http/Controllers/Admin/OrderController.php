@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Order;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Exports\OrdersExport;
 
 class OrderController extends Controller
 {
@@ -12,10 +14,13 @@ class OrderController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */
+     */    
+    
     public function index()
     {
-        //
+        $results = Order::getQueriedResult();
+
+        return view('admin.orders.list',compact('results'));
     }
 
     /**
@@ -82,5 +87,10 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         //
+    }
+
+    public function export(){
+    	$filename = 'orders-list-'.date('d-m-Y').'.csv';
+    	return Excel::download(new OrdersExport, $filename);
     }
 }

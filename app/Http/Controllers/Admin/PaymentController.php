@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Payment;
+
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
+use App\Models\Payment;
+use App\Exports\PaymentsExport;
 
 class PaymentController extends Controller
 {
@@ -15,8 +18,11 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        $results = Payment::getQueriedResult();
+
+        return view('admin.payments.list',compact('results'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -82,5 +88,11 @@ class PaymentController extends Controller
     public function destroy(Payment $payment)
     {
         //
+    }
+
+
+    public function export(){
+    	$filename = 'payments-list-'.date('d-m-Y').'.csv';
+    	return Excel::download(new PaymentsExport, $filename);
     }
 }
