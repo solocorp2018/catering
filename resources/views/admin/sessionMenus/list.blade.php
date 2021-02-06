@@ -1,18 +1,19 @@
 @extends('admin.layouts.layout')
-@section('title', 'List Leads')
+@section('title', 'List Items')
 @section('content')
 <div class="page-wrapper">
    <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">Leads</h4>
+            <h4 class="text-themecolor">Session Menu</h4>
         </div>
         <div class="col-md-7 align-self-center text-right">
             <div class="d-flex justify-content-end align-items-center">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Leads</li>
-                </ol>              
+                    <li class="breadcrumb-item"><a href="{{url('/dashboard')}}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Session Menu</li>
+                </ol>
+                <a class="btn btn-info d-none d-lg-block m-l-15" href="{{route('sessionMenus.create')}}"><i class="fa fa-plus-circle"></i> Create New</a>
             </div>
         </div>
     </div>
@@ -35,7 +36,7 @@
                                        <option value="100" {{SELECT('pageLength',100)}}>100</option>
                                     </select>
                                     <label> </label>
-                                 
+
                               </div>
                            </div>
 
@@ -53,39 +54,44 @@
                               <table class="table table-hover">
                                  <thead>
                                     <tr>
-                                       
-                                       <th><a class="sort" data-column="name"><i class="fa fa-sort" aria-hidden="true"></i>Name</a></th>
-                                      
-                                       <th> <a class="sort" data-column="email"><i class="fa fa-sort" aria-hidden="true"></i>Email</a> </th>
-                                       <th><a class="sort" data-column="phone"><i class="fa fa-sort" aria-hidden="true"></i>Contact</a></th>
-                                       <th>Recieved At</th>       
+
+                                       <th><a class="sort" data-column="name"><i class="fa fa-sort" aria-hidden="true"></i>Session Type</a></th>
+
+                                       <th><a class="sort" data-column="amount"><i class="fa fa-sort" aria-hidden="true"></i>Session Date</th>
+                                       <th>Opening Time</th>
+                                       <th>Closing Time</th>
                                        <th>Status</th>
-                                       <th>Action</th>
+                                       <th>Actions</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                 	
+
                                   @if(!empty($results) && $results->count())
                                   @foreach($results as $result)
                                     <tr>
-                                      
-                                       <td>{{$result->name ?? ''}}</td>
-                                       <td>{{$result->email ?? ''}}</td>     
-                                       <td>{{$result->phone ?? ''}}</td>   
-                                       <td>{{dateOf($result->created_at) ?? ''}}</td>   
-                                        <td>
+
+                                       <td>{{$result->sessionType->type_name ?? ''}}</td>
+                                       <td>{{dateOf($result->session_date) ?? ''}}</td>
+                                       <td>{{$result->opening_time ?? ''}}</td>
+                                       <td>{{$result->closing_time ?? ''}}</td>
+                                       <td>
                                         @if(isset($result->status) && $result->status == 1)
-                                        <span class="text-success">Viewed</span>
+                                        <span class="text-success">Active</span>
                                         @else
-                                          <span class="text-danger">Pending</span>
+                                          <span class="text-danger">In Active</span>
                                         @endif
                                       </td>
-                                      <td><a href="{{url('/leads/'.$result->id)}}"><i class="fa fa-eye"></i></a></td>
+                                      <td>
+                                        <a class="waves-effect waves-dark" href="{{route('sessionMenus.show',$result->id)}}"><i class="fa fa-eye"></i></a>
+
+                                        <a class="waves-effect waves-dark" href="{{route('sessionMenus.edit',$result->id)}}"><i class="fa fa-edit"></i></a>
+
+                                        </td>
                                     </tr>
                                   @endforeach
                                   @else
-                                  <tr> 
-                                    <td collspan="4">No Records Found..</td>
+                                  <tr>
+                                    <td collspan="6">No Records Found..</td>
                                   </tr>
                                   @endif
                                  </tbody>
@@ -95,15 +101,15 @@
                         <div class="row">
                            <div class="col-sm-12 col-md-6">
                               <div>
-                                   @if(!empty($results) && $results->count())              
+                                   @if(!empty($results) && $results->count())
                                         Showing {{$results->firstItem()}} to {{$results->lastItem()}} of {{ $results->total() }} entries
-                                        
+
                                     @endif
                               </div>
                            </div>
                            <div class="col-sm-12 col-md-6">
                               <div class="dataTables_paginate paging_simple_numbers" id="myTable_paginate">
-                              	@if(!empty($results))
+                                @if(!empty($results))
                                  {{ $results->appends(request()->except(['page', '_token']))->links() }}
                                  @endif
                               </div>
@@ -119,8 +125,8 @@
    </div>
 </div>
 <script type="text/javascript">
-	$(document).ready(function(){
-		setPageUrl('/leads?');	
-	});	
+  $(document).ready(function(){
+    setPageUrl('/sessionMenus?');
+  });
 </script>
 @endsection

@@ -7,7 +7,7 @@
             <li> <a class="waves-effect waves-dark" href="{{url('/dashboard')}}"><i class="fa fa-home" aria-hidden="true"></i><span class="hide-menu">&nbsp;Dashboard</span></a>
             </li>
 
-            <li> <a class="waves-effect waves-dark" href="{{url('/session-configuration')}}"><i class="fa fa-tv" aria-hidden="true"></i><span class="hide-menu">&nbsp;Menu</span></a>
+            <li> <a class="waves-effect waves-dark" href="{{url('/sessionMenus')}}"><i class="fa fa-tv" aria-hidden="true"></i><span class="hide-menu">&nbsp;Menu</span></a>
             </li>
 
             <li class="nav-small-cap">--- Manage</li>

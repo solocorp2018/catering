@@ -1,5 +1,9 @@
 @extends('admin.layouts.layout')
+<<<<<<< HEAD
 @section('title', 'List Payments')
+=======
+@section('title', 'List Items')
+>>>>>>> renuka02
 @section('content')
 <div class="page-wrapper">
    <div class="container-fluid">
@@ -12,7 +16,9 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{url('/dashboard')}}">Dashboard</a></li>
                     <li class="breadcrumb-item active">Payments</li>
+
                 </ol>            
+
             </div>
         </div>
     </div>
@@ -23,7 +29,9 @@
                <div class="card-body">
                   <div class="table-responsive m-t-40">
                      <div id="myTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
                         <div class="row m-b-40">
+
 
                            <div class="col-sm-12 col-md-6">
                               <div class="dataTables_length" id="myTable_length">
@@ -35,7 +43,6 @@
                                        <option value="100" {{SELECT('pageLength',100)}}>100</option>
                                     </select>
                                     <label> </label>
-                                 
                               </div>
                            </div>
 
@@ -53,6 +60,7 @@
                               <table class="table table-hover">
                                  <thead>
                                     <tr>
+
                                        
                                        <th><a class="sort" data-column="payment_no"><i class="fa fa-sort" aria-hidden="true"></i>Payment No.</a></th>
                                        <th>Order No.</th>
@@ -60,11 +68,12 @@
                                        <th>Payment Status</th>
                                        <th>Processed By</th>              
                                        <th>Delivered By</th>              
+
                                        <th>Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                  
+
                                   @if(!empty($results) && $results->count())
                                   @foreach($results as $result)
                                     <tr>
@@ -73,16 +82,23 @@
                                        <td>{{showDate($result->order->order_unique_id ?? '')}}</td>                         
                                        
                                        <td>{{$result->orderDetailsCount ?? 0}}</td>  
-                                       <td>{{$result->payment_status ?? "--"}}</td>  
+                                       <td>
+                                         @if(isset($result->payment_status) && $result->payment_status == 1)
+                                        <span class="text-success">Paid</span>
+                                        @else
+                                          <span class="text-danger">Pending</span>
+                                        @endif
+                                       </td>  
                                        <td>{{$result->processed_by ?? "--"}}</td>  
                                        <td>{{$result->delivered_by ?? "--"}}</td>
                                       <td>
-                                        <a class="waves-effect waves-dark" href="{{route('payments.show',$result->id)}}">View</a>
+                                        <a class="waves-effect waves-dark" href="{{route('payments.show',$result->id)}}"><i class="fa fa-eye"></i></a>
                                         
                                         </td>
                                     </tr>
                                   @endforeach
                                   @else
+
                                   <tr> 
                                     <td collspan="6">No Records Found..</td>
                                   </tr>
@@ -96,7 +112,7 @@
                               <div>
                                    @if(!empty($results) && $results->count())              
                                         Showing {{$results->firstItem()}} to {{$results->lastItem()}} of {{ $results->total() }} entries
-                                        
+
                                     @endif
                               </div>
                            </div>
@@ -119,7 +135,9 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function(){
+
     setPageUrl('/payments?');  
   }); 
 </script>
 @endsection
+

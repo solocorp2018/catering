@@ -50,7 +50,6 @@
                               <table class="table table-hover">
                                  <thead>
                                     <tr>
-
                                        <th><a class="sort" data-column="name"><i class="fa fa-sort" aria-hidden="true"></i>Name</a></th>
 
                                        <th> <a class="sort" data-column="nameLang"><i class="fa fa-sort" aria-hidden="true"></i>Contact Number</a> </th>
@@ -76,7 +75,7 @@
                                         @endif
                                       </td>
                                       <td>
-                                        <a class="waves-effect waves-dark" href="{{route('customers.edit',$result->id)}}">Edit</a>
+                                        <a class="waves-effect waves-dark" href="{{route('customers.edit',$result->id)}}"><i class="fa fa-edit"></i></a>
 
                                         </td>
                                     </tr>

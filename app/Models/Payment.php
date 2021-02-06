@@ -7,14 +7,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payment extends Model
 {
+
     use SoftDeletes;
 
     protected $fillable = ['id', 'order_id', 'payment_unique_id','amount', 'payment_mode', 'recieved_by', 'payment_date', 'paid_by', 'payment_status'];
 
 
+
     public function scopeFilter($query) {
 
          if($keyword = request('keyword')) {
+
              $query->where('payment_unique_id','like','%'.$keyword.'%');
              $query->orWhere('amount','like','%'.$keyword.'%');
          }
@@ -28,6 +31,7 @@ class Payment extends Model
 
      	list($sortfield,$sorttype) = getSorting();
 
+
      	$result = static::with(['order','paidBy:id,name,contact_number','receivedBy:id,name,contact_number'])->filter();
 
      	$sortfield = ($sortfield == 'payment_no')?'payment_unique_id':$sortfield;
@@ -36,6 +40,7 @@ class Payment extends Model
 
      	return $result->orderBy($sortfield,$sorttype)->paginate($page_length);
      }
+
 
     /*Below Are Relationship*/
 

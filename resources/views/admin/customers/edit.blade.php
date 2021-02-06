@@ -5,7 +5,7 @@
    <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">Create Customer</h4>
+            <h4 class="text-themecolor">Edit Customer</h4>
         </div>
         <div class="col-md-7 align-self-center text-right">
             <div class="d-flex justify-content-end align-items-center">
@@ -51,28 +51,7 @@
                                 <input type="text" name="contact_number" class="form-control" id="contact_number" placeholder="Enter Contact Number" value="{{old('contact_number',$result->contact_number)}}">
                             </div>
                         </div>
-
-                        <div class="row pt-3">
-                          <div class="form-group col-sm-6 col-xs-6">
-                              <label for="address1">Address Line 1 </label>
-                              <textarea class="form-control" name="address_line_1" rows="4">{{old('address_line_1',$result->userAddress[0]->address_line_1)}}</textarea>
-                          </div>
-                          <div class="form-group col-sm-6 col-xs-6">
-                              <label for="address2">Address Line 2 </label>
-                              <textarea class="form-control" name="address_line_2" rows="4">{{old('address_line_2',$result->userAddress[0]->address_line_2)}}</textarea>
-                          </div>
-                      </div>
-
                           <div class="row pt-3">
-                            <div class="form-group col-sm-4 col-xs-4">
-                                <label for="city">City</label>
-                                <input type="text" name="city" class="form-control" id="city" placeholder="Enter City" value="{{old('city',$result->userAddress[0]->city)}}">
-                            </div>
-                            <div class="form-group col-sm-4 col-xs-4">
-                                <label for="pincode">Pincode</label>
-                                <input type="text" name="pincode" class="form-control" id="pincode" placeholder="Enter Pincode" value="{{old('pincode',$result->userAddress[0]->pincode)}}">
-                            </div>
-
                               <div class="form-group col-sm-4 col-xs-4">
                                   <label for="status" class="required">Status </label>
                                   <select name="status" id="status" class="form-control">
@@ -81,20 +60,117 @@
                                       @endforeach
                                   </select>
                               </div>
-
                           </div>
-
-
+                          <div class="row pt-3">
+                            <button type="button" class="btn btn-success waves-effect waves-light m-r-10" style="float:right" id="addAddress">Add Address</button><br />
+                            <br />
+                            <table class="table table-hover">
+                              <thead>
+                                <tr>
+                                  <th>Address Line 1</th>
+                                  <th>Address Line 2</th>
+                                  <th>City</th>
+                                  <th>Pincode</th>
+                                  <th>Status</th>
+                                  <th>Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                @if(!empty($result->userAddress))
+                                @foreach($result->userAddress as $address)
+                                <tr>
+                                  <td>{{$address->address_line_1}} </td>
+                                  <td>{{$address->address_line_2}} </td>
+                                  <td>{{$address->city}} </td>
+                                  <td>{{$address->pincode}} </td>
+                                  <td>
+                                   @if($address->status == 1)
+                                   <span class="text-success">Active</span>
+                                   @else
+                                     <span class="text-danger">In-Active</span>
+                                   @endif
+                                 </td>
+                                  <td><a class="waves-effect waves-dark" data-getaddress="{{ json_encode($address)}}" id="editAddress{{$address->id}}" >Edit</a> </td>
+                                </tr>
+                                @endforeach
+                                @endif
+                              </tbody>
+                            </table>
+                        </div>
                         <hr>
                         <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Submit</button>
                         <button type="reset" class="btn btn-inverse waves-effect waves-light">Cancel</button>
                     </form>
+
                 </div>
             </div>
         </div>
     </div>
-
-                </div>
+  </div>
    </div>
 </div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">User Address<span></span></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            </div>
+            <div class="modal-body">
+                <form class="form-group" method="post" id="addressForm" action="{{ route('users.updateAddress',0) }}">
+                  <div class="form-label-group">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="user_id" value="{{$result->id}}">
+                    <input type="text" name="address_line_1" placeholder="Address Line 1" id="address_line_1" class="form-control">
+                  </div>
+                  <div class="form-label-group">
+                    <input type="text" name="address_line_2" id="address_line_2" placeholder="Address Line 2" class="form-control">
+                  </div>
+                  <div class="form-label-group">
+                    <input type="text" name="city" id="city" placeholder="City" class="form-control">
+                  </div>
+                  <div class="form-label-group">
+                    <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Pincode">
+                  </div>
+                  <div class="form-label-group">
+                      <select name="statusr" id="status_modal" class="form-control">
+                          @foreach($statuses as $key => $value)
+                          <option value="{{$value}}">{{$key}}</option>
+                          @endforeach
+                      </select>
+                  </div>
+                  <button class="btn btn-success waves-effect waves-light m-r-10" type="submit">Submit</button>
+                </form>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+  $('[id^=editAddress]').click(function() {
+    $('#myModal').modal('toggle');
+     var jsonObject = $(this).data('getaddress');
+     $('#address_line_1').val(jsonObject.address_line_1);
+     $('#address_line_2').val(jsonObject.address_line_2);
+     $('#city').val(jsonObject.city);
+     $('#pincode').val(jsonObject.pincode);
+     $('select[name^="statusr"] option[value='+jsonObject.status+']').attr("selected","selected");
+     var url = '{{ route("users.updateAddress", ":id") }}';
+     url = url.replace(':id', jsonObject.id);
+     $("#addressForm").attr('action', url);
+  });
+
+  $('#addAddress').click(function() {
+    $('#myModal').modal('toggle');
+     var url = '{{ route("users.updateAddress", ":id") }}';
+     $('#address_line_1').val();
+     $('#address_line_2').val();
+     $('#city').val();
+     $('#pincode').val();
+     url = url.replace(':id', 0);
+     $("#addressForm").attr('action', url);
+  });
+</script>
 @endsection

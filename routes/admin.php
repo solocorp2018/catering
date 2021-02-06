@@ -22,7 +22,13 @@ Route::middleware(['admin'])->group(function () {
 	Route::resource('/payments','Admin\PaymentController');
 	Route::get('/payments-export','Admin\PaymentController@export')->name('payments.export');
 
+	Route::get('/payments','Admin\PaymentController@index')->name('payments.index');
+	Route::get('/payments/{id}','Admin\PaymentController@show')->name('payments.show');
+
+	Route::post('/updateAddress/{id}','Admin\UserController@updateAddress')->name('users.updateAddress');
 
 	Route::get('/leads','Admin\LeadController@index')->name('leads.index');
 	Route::get('/leads/{id}','Admin\LeadController@show')->name('leads.show');
+
+	Route::resource('/sessionMenus','Admin\MenuController');
 });
