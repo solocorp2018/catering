@@ -98,7 +98,7 @@
                                         @endif
                                       </td>
                                       <td>
-                                        <a class="waves-effect waves-dark" href="{{route('complimentaries.edit',$result->id)}}">Edit</a>
+                                        <a class="waves-effect waves-dark" href="{{route('complimentaries.edit',$result->id)}}"><i class="fa fa-edit"></i></a>
                                         
                                         </td>
                                     </tr>
