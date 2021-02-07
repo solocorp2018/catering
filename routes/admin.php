@@ -24,4 +24,6 @@ Route::middleware(['admin'])->group(function () {
 	Route::get('/leads/{id}','Admin\LeadController@show')->name('leads.show');
 
 	Route::resource('/sessionMenus','Admin\MenuController');
+
+	Route::post('/updateItems/{id}','Admin\MenuController@updateItems')->name('sessionMenus.updateItems');
 });

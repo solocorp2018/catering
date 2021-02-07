@@ -83,7 +83,7 @@
                                       </td>
                                       <td>
                                         <a class="waves-effect waves-dark" href="{{route('sessionMenus.show',$result->id)}}">Show</a>
-
+                                        &nbsp;&nbsp;
                                         <a class="waves-effect waves-dark" href="{{route('sessionMenus.edit',$result->id)}}">Edit</a>
 
                                         </td>

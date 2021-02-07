@@ -136,7 +136,6 @@ class MenuController extends Controller
    public function show($id)
    {
        $result = SessionMenu::with(['menuItem','sessionType'])->find($id);
-       //dd($result);
        return view('admin.sessionMenus.show',compact('result'));
    }
 
@@ -146,16 +145,16 @@ class MenuController extends Controller
    * @param  \App\Models\Item  $item
    * @return \Illuminate\Http\Response
    */
-  public function edit(Item $item)
+  public function edit($id)
   {
-      $result = $item;
+      $result = SessionMenu::with(['menuItem','sessionType'])->find($id);
       $statuses = _getGlobalStatus();
 
       $sessionTypes = $this->sessionTypeModel->getActiveRecord();
       $menuItems = $this->itemsModel->getActiveRecord();
       $complimentaries = $this->complimentaryModel->getActiveRecord();
       $quantityTypes = $this->quantityTypeModel->getActiveRecord();
-      return view('admin.items.edit',compact('result','quantityTypes','statuses'));
+      return view('admin.sessionMenus.edit',compact('result','sessionTypes','menuItems','complimentaries','quantityTypes','statuses'));
   }
 
   /**
@@ -174,32 +173,23 @@ class MenuController extends Controller
                       ->withInput();
       }
 
-      $item = Item::find($id);
+      $sessionMenu = SessionMenu::find($id);
 
       $input = array();
       $input = [
-              'name' => $request->name,
-              'lang1_name' => $request->lang1_name,
-              'description' => $request->description,
-              'lang1_description' => $request->lang1_description,
-              'lang1_name' => $request->lang1_name,
-              'quantity_type_id' => $request->quantity_type,
-              'price' => $request->price,
-              'status' => $request->status,
+              'session_type_id' => $request->session_type,
+              'opening_time' => $request->opening_time,
+              'closing_time' => $request->closing_time,
+              'session_date' => $request->session_date,
+              'delivery_time' => $request->delivery_time,
+              'status' => $request->status
           ];
 
-      if($request->hasFile('image') && $file = $request->file('image')) {
-          if($file->isValid()) {
-              $storedFileArray = FileService::updateAndStoreFile($file,'/',$item->image_path);
-              $input['image_path'] = $storedFileArray['stored_file_path'] ?? '';
-          }
-      }
+      $result = $sessionMenu->update($input);
 
-      $result = $item->update($input);
+      updatedResponse("Session Menus Updated Successfully");
 
-      updatedResponse("Item Updated Successfully");
-
-      return redirect()->route('items.index');
+      return redirect()->route('sessionMenus.index');
   }
 
 
@@ -208,7 +198,7 @@ class MenuController extends Controller
       $rules = array();
 
       $rules['session_type'] = 'required|exists:session_types,id,status,'._active();
-      //$rules['closing_time'] = 'required|min:10|max:200';
+      $rules['closing_time'] = 'required|date_format:hh:mm:ss';
       //$rules['opening_time'] = 'required|min:2|max:200';
       $rules['quantity_type'] = 'required|exists:quantity_types,id,status,'._active();
       $rules['status'] = 'required|boolean';
@@ -222,6 +212,48 @@ class MenuController extends Controller
 
   public function attributes() {
       return [];
+  }
+
+  public function updateItems(Request $request,$id) {
+
+    $input = array();
+    //dd($request);
+    $menuItemsInput = [
+      'session_menu_id' => $request->session_menu_id,
+      'item_id' => $request->modal_menu_item,
+      'quantity_type_id' => $request->modal_quantity_type,
+      'quantity' => $request->modalQuantity,
+      'price' => $request->modalprice,
+      'status' => 1
+    ];
+
+    if($id != 0) {
+      $menuItem = MenuItem::find($id);
+      $menuItem->update($menuItemsInput);
+      $deleteRows = MenuItemComplimentary::where('menu_item_id',$menuItem->id)->delete();
+    } else {
+      $menuItem = MenuItem::create($menuItemsInput);
+    }
+
+    if(isset($request->modalcomplimentaries)) {
+
+      $complimentaris = $request->modalcomplimentaries;
+      //$explodeComplimentary = explode(',',$complimentaris);
+
+      foreach($complimentaris as $j => $complimentary) {
+
+        $menuComplimentary = [
+          'menu_id' => $request->session_menu_id,
+          'menu_item_id' => $menuItem->id,
+          'complimentary_id' => $complimentary,
+          'status' => 1
+        ];
+
+        MenuItemComplimentary::create($menuComplimentary);
+      }
+    }
+
+    return back();
   }
 
 }
