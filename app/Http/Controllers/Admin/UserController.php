@@ -201,9 +201,10 @@ class UserController extends Controller
     }
 
 
-    public function export(){
-    	$filename = 'customers-list-'.date('d-m-Y').'.csv';
+    public function export(Request $request){
+    	$filename = 'customers-list-'.date('d-m-Y').'.xlsx';
     	return Excel::download(new CustomersExport, $filename);
+    	
     }
     
     public function updateAddress(Request $request,$id) {

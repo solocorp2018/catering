@@ -3,15 +3,22 @@
 namespace App\Exports;
 
 use App\Models\User as Customer;
-use Maatwebsite\Excel\Concerns\FromCollection;
 
-class CustomersExport implements FromCollection
-{
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithMapping;
+
+class CustomersExport implements FromQuery, WithMapping
+{    
     /**
-    * @return \Illuminate\Support\Collection
+    * @var Invoice $invoice
     */
-    public function collection()
+    public function map($customer): array
     {
-        return Customer::all();
+        return [
+            $customer->name,
+            $customer->email,
+            $customer->contact_number,
+            Date::dateTimeToExcel($customer->created_at),
+        ];
     }
 }
