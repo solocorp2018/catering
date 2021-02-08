@@ -30,11 +30,11 @@
                  </div>
                  <div class="col-md-3 col-xs-6 b-r"> <strong>Opening Time</strong>
                      <br>
-                     <p class="text-muted">{{$result->opening_time ?? ''}}</p>
+                     <p class="text-muted">{{Time24to12($result->opening_time) ?? ''}}</p>
                  </div>
                  <div class="col-md-3 col-xs-6"> <strong>Closing Time</strong>
                      <br>
-                     <p class="text-muted">{{$result->closing_time ?? ''}}</p>
+                     <p class="text-muted">{{Time24to12($result->closing_time) ?? ''}}</p>
                  </div>
                  <div class="col-md-3 col-xs-6"> <strong>Status</strong>
                      <br>
@@ -83,10 +83,12 @@
 
                  </div>
                  <hr>
+                 @if(!empty($result->menuItem) && $allowToClone)
                    <form action="{{route('sessionMenus.clone',$result->id)}}" method="post">
                      {{csrf_field()}}
-                     <button type="submit" name="use" class="btn btn-success waves-effect waves-light m-r-10" id="cloneSession">Clone</button>
+                     <button type="submit" name="use" class="btn btn-success waves-effect waves-light m-r-10" id="cloneSession">Repeat This Menu For Today</button>
                    </form>
+                  @endif
                </div>
 
              </div>

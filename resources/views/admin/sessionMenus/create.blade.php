@@ -93,9 +93,10 @@
                                   <th>Action</th>
                                 </tr>
                               </thead>
-                              @for($i = 1; $i <= $allowedItemCount; $i++)
                               <tbody>
-
+                              @for($i = 1; $i <= $allowedItemCount; $i++)
+                              
+                                <tr>
                                   <td>{{$i}}</td>
                                   <td>
                                     <select class="form-control select2" Placeholder="Select Item" name="menu_items[{{$i}}][item_id]">
@@ -117,9 +118,9 @@
                                     </select>
                                   </td>
                                   <td>
-                                    <select class="form-control select2" multiple="multiple" Placeholder="Select Complimentaries" name="menu_items[{{$i}}][complimentaries]">
+                                    <select class="form-control select2" multiple="multiple" Placeholder="Select Complimentaries" name="menu_items[{{$i}}][complimentaries][]">
                                       @foreach($complimentaries as $key => $complimentary)
-                                      <option value="{{$complimentary->id}}" {{SELECT($complimentary,old('menu_items[$i][complimentaries]'))}}>{{$complimentary->name}}</option>
+                                      <option value="{{$complimentary->id}}" {{SELECT($complimentary,old('menu_items[$i][complimentaries][]'))}}>{{$complimentary->name}}</option>
                                       @endforeach
                                     </select>
                                   </td>
@@ -132,8 +133,9 @@
                                   <td>
                                       <a><i class="fa fa-trash"></i></a>
                                   </td>
-                              </tbody>
+                                </tr>
                               @endfor
+                              </tbody>
                             </table>
                             <hr>
                             <center>

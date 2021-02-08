@@ -12,17 +12,28 @@ class SessionMenu extends Model
   public function scopeFilter($query) {
 
        if($keyword = request('keyword')) {
-           $query->where('order_id','like','%'.$keyword.'%');
+           $query->whereHas('sessionType',function($querySub) use($keyword){
+                $querySub->where('type_name','like',"%{$keyword}%");
+           });
        }
        return $query;
    }
 
+   public function getTodayMenu(){
+
+      $result = $this->with(['sessionType','menuItem'])
+                    ->whereDate('session_date',today("+05:30"))
+                    ->orderBy('opening_time')
+                    ->get();
+        
+        return $result;
+   }
 
    public static function getQueriedResult() {
 
     $page_length = getPagelength();
 
-    list($sortfield,$sorttype) = getSorting();
+    list($sortfield,$sorttype) = getSorting('opening_time');
 
     $result = static::with(['sessionType'])->filter();
 

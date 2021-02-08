@@ -93,95 +93,68 @@
                                   <th>Action</th>
                                 </tr>
                               </thead>
-                              <?php $total_count = count($result->menuItem)+1; ?>
-                              <tbody>
-                                @if(!empty($result->menuItem))
-                                @foreach($result->menuItem as $i => $menu)
-                                <?php
-                                  $recordString = json_encode($menu);
-                                  $record = json_decode($recordString, true);
-                                  $selectedComp = array_column($record["menu_complimentaries"], 'complimentary_id');
-                                ?>
-                                <tr>
-                                  <td>{{$i+1}}</td>
+
+								@php
+									$rowItems = $result->menuItem ?? [];
+								@endphp
+
+                              <tbody>                                                                  
+                                  @for($i = 1; $i <= $allowedItemCount; $i++)
+
+                                  @php
+
+                                  	$selectedComp = array();
+
+                                  	if(!empty($rowItems)) {
+                                  		
+                                  		$menu = $rowItems[$i-1] ?? [];
+
+                                  		if(!empty($menu)) {
+
+                                  			$selectedComp = !empty($menu->menuComplimentaries)?$menu->menuComplimentaries->pluck('complimentary_id')->toArray():[];
+                                  		}                                  		
+                                  	}                		
+                                  @endphp
+                                  <tr>
+                                  <td>{{$i}}</td>
                                   <td>
-                                    <select class="form-control select2" Placeholder="Select Item" name="menu_items[{{$i+1}}][item_id]">
+                                    <select class="form-control select2" Placeholder="Select Item" name="menu_items[{{$i}}][item_id]">
                                         <option value=""> -- Item -- </option>
                                       @foreach($menuItems as $key => $menuItem)
-                                      <option value="{{$menuItem->id}}" {{SELECT($menuItem,old("menu_items[$i+1][item_id]",$menu->Items))}}>{{$menuItem->name}}</option>
+                                      <option value="{{$menuItem->id}}" {{SELECT($menuItem->id,old("menu_items[$i][item_id]",$menu->item_id ?? ''))}}>{{$menuItem->name}}</option>
                                       @endforeach
                                     </select>
                                   </td>
                                   <td>
-                                    <input type="number" name="menu_items[{{$i+1}}][quantity]" class="form-control" Placeholder="Enter Quantity" value="{{old('menu_items[$i+1][quantity]',$menu->quantity)}}">
+                                    <input type="number" name="menu_items[{{$i}}][quantity]" class="form-control" Placeholder="Enter Quantity" value="{{old('menu_items[$i][quantity]',$menu->quantity ?? 0)}}">
                                   </td>
                                   <td>
-                                      <select id="modal_quantity_type" class="form-control" name="menu_items[{{$i+1}}][quantity_type_id]">
+                                      <select id="modal_quantity_type" class="form-control" name="menu_items[{{$i}}][quantity_type_id]">
                                         <option value=""> -- Quantity -- </option>
                                       @foreach($quantityTypes as $quantity)
-                                      <option value="{{$quantity->id+1}}" {{SELECT($quantity->id,old('menu_items[$i+1][quantity_type_id]',$menu->quantityType->id))}}>{{$quantity->name}}</option>
+                                      <option value="{{$quantity->id}}" {{SELECT($quantity->id,old('menu_items[$i][quantity_type_id]',$menu->quantity_type_id ?? ''))}}>{{$quantity->name}}</option>
                                       @endforeach
                                     </select>
                                   </td>
                                   <td>
-                                    <select class="form-control select2" multiple="multiple" Placeholder="Select Complimentaries" name="menu_items[{{$i+1}}][complimentaries]" id="menu_items[{{$i+1}}][complimentaries]">
+                                    <select class="form-control select2" multiple="multiple" Placeholder="Select Complimentaries" name="menu_items[{{$i}}][complimentaries][]" id="menu_items[{{$i}}][complimentaries]">
                                       @foreach($complimentaries as $key => $complimentary)
-                                      <option value="{{$complimentary->id}}" @if(in_array($complimentary->id, $selectedComp)) selected="selected" @endif  {{SELECT($complimentary,old('menu_items[$i+1][complimentaries]'))}}>{{$complimentary->name}}</option>
+                                      <option value="{{$complimentary->id}}" @if(in_array($complimentary->id, $selectedComp)) selected="selected" @endif  {{SELECT($complimentary,old('menu_items[$i][complimentaries][]'))}}>{{$complimentary->name}}</option>
                                       @endforeach
                                     </select>
                                   </td>
                                   <td>
-                                      <input type="text" name="menu_items[{{$i+1}}][price]" class="form-control" id="modalprice" placeholder="Enter Price" value="{{old('menu_items[$i+1][price]',$menu->price)}}">
+                                      <input type="text" name="menu_items[{{$i}}][price]" class="form-control" id="modalprice" placeholder="Enter Price" value="{{old('menu_items[$i][price]',$menu->price ?? '')}}">
                                   </td>
+                                  
                                   <td>
-                                    <input type="checkbox" name="menu_items[{{$i+1}}][status]" value="1" class="custom-checkbox" {{CHECKBOX(old('menu_items[$i+1][status]',$menu->status))}}>
+                                    <input type="checkbox" name="menu_items[{{$i}}][status]" value="1" class="custom-checkbox" {{CHECKBOX('menu_items[$i][status]',$menu->status ?? 0)}}>
                                   </td>
                                   <td>
                                       <a><i class="fa fa-trash"></i></a>
                                   </td>
                                 </tr>
-                                  @endforeach
-                                  @endif
-                                  @for($i = $total_count; $i <= $allowedItemCount; $i++)
-                                  <tr>
-                                      <td>{{$i}}</td>
-                                      <td>
-                                        <select class="form-control select2" Placeholder="Select Item" name="menu_items[{{$i}}][item_id]">
-                                          <option value=""> -- Item -- </option>
-                                          @foreach($menuItems as $key => $menuItem)
-                                          <option value="{{$menuItem->id}}" {{SELECT($menuItem,old("menu_items[$i][item_id]"))}}>{{$menuItem->name}}</option>
-                                          @endforeach
-                                        </select>
-                                      </td>
-                                      <td>
-                                        <input type="number" name="menu_items[{{$i}}][quantity]" class="form-control" Placeholder="Enter Quantity" value="{{old('menu_items[$i][quantity]')}}">
-                                      </td>
-                                      <td>
-                                          <select id="modal_quantity_type" class="form-control" name="menu_items[{{$i}}][quantity_type_id]">
-                                            <option value=""> -- Quantity -- </option>
-                                          @foreach($quantityTypes as $quantity)
-                                          <option value="{{$quantity->id}}" {{SELECT($quantity->id,old('menu_items[$i][quantity_type_id]'))}}>{{$quantity->name}}</option>
-                                          @endforeach
-                                        </select>
-                                      </td>
-                                      <td>
-                                        <select class="form-control select2" multiple="multiple" Placeholder="Select Complimentaries" name="menu_items[{{$i}}][complimentaries]" id="menu_items[{{$i}}][complimentaries]">
-                                          @foreach($complimentaries as $key => $complimentary)
-                                          <option value="{{$complimentary->id}}" {{SELECT($complimentary,old('menu_items[$i][complimentaries]'))}}>{{$complimentary->name}}</option>
-                                          @endforeach
-                                        </select>
-                                      </td>
-                                      <td>
-                                          <input type="text" name="menu_items[{{$i}}][price]" class="form-control" id="modalprice" placeholder="Enter Price" value="{{old('menu_items[$i][price]')}}">
-                                      </td>
-                                      <td>
-                                        <input type="checkbox" name="menu_items[{{$i}}][status]" value="1" class="custom-checkbox" {{CHECKBOX(old('menu_items[$i][status]'))}}>
-                                      </td>
-                                      <td>
-                                          <a><i class="fa fa-trash"></i></a>
-                                      </td>
-                                  </tr>
-                                  @endfor
+								@endfor
                               </tbody>
                             </table>
                             <hr>
