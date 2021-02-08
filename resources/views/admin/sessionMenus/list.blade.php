@@ -82,11 +82,11 @@
                                         @endif
                                       </td>
                                       <td>
-                                        <a class="waves-effect waves-dark" href="{{route('sessionMenus.show',$result->id)}}">Show</a>
-                                        &nbsp;&nbsp;
-                                        <a class="waves-effect waves-dark" href="{{route('sessionMenus.edit',$result->id)}}">Edit</a>
+                                        <a class="waves-effect waves-dark" href="{{route('sessionMenus.show',$result->id)}}"><i class="fa fa-eye"></i></a>
+                                        
+                                        <a class="waves-effect waves-dark" href="{{route('sessionMenus.edit',$result->id)}}"><i class="fa fa-edit"></i></a>
 
-                                        </td>
+                                      </td>
                                     </tr>
                                   @endforeach
                                   @else

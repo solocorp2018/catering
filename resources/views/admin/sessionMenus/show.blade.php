@@ -47,8 +47,7 @@
 
                </div>
                 <div class="row">
-                 <div class="col-md-12 col-xs-12"> <strong>Items</strong>
-                     <br/>
+                 <div class="col-md-12 col-xs-12"> <h4><strong>Items</strong></h4>
                      @if(isset($result->menuItem) && !empty($result->menuItem)  )
                      <table class="table table-hover">
                        <thead>
@@ -83,6 +82,11 @@
                       @endif
 
                  </div>
+                 <hr>
+                   <form action="{{route('sessionMenus.clone',$result->id)}}" method="post">
+                     {{csrf_field()}}
+                     <button type="submit" name="use" class="btn btn-success waves-effect waves-light m-r-10" id="cloneSession">Clone</button>
+                   </form>
                </div>
 
              </div>

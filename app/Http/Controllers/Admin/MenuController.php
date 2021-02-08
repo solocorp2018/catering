@@ -14,6 +14,8 @@ use App\Models\Item;
 use App\Models\Complimentary;
 use App\Models\QuantityType;
 use Log;
+use Illuminate\Support\Arr;
+use DB;
 
 class MenuController extends Controller
 {
@@ -50,6 +52,7 @@ class MenuController extends Controller
   public function create()
   {
       $statuses = _getGlobalStatus();
+      $allowedItemCount = config('catering.allowed_item_limit_for_menu');
 
       $sessionTypes = $this->sessionTypeModel->getActiveRecord();
       $menuItems = $this->itemsModel->getActiveRecord();
@@ -57,7 +60,7 @@ class MenuController extends Controller
       $quantityTypes = $this->quantityTypeModel->getActiveRecord();
 
       //dd($sessionTypes);
-      return view('admin.sessionMenus.create',compact('statuses','quantityTypes','sessionTypes','menuItems','complimentaries'));
+      return view('admin.sessionMenus.create',compact('statuses','quantityTypes','sessionTypes','menuItems','complimentaries','allowedItemCount'));
   }
 
 
@@ -75,53 +78,59 @@ class MenuController extends Controller
           return redirect()->back()->withErrors($validator)
                       ->withInput();
       }
+
+      $input = array();
       $input = [
               'session_type_id' => $request->session_type,
+              'session_date'=> $request->session_date,
               'opening_time' => $request->opening_time,
               'closing_time' => $request->closing_time,
               'session_date' => $request->session_date,
-              'delivery_time' => $request->delivery_time,
-
+              'expected_delivery_time' => $request->delivery_time,
               'status' => $request->status,
               'created_by'=> Auth::user()->id
           ];
 
       $sessionMenu = SessionMenu::create($input);
 
-      $quantities = $request->quantity;
-      foreach ($quantities as $i => $quantity) {
+      $menuItems = $request->menu_items ?? [];
 
-          $menuItemsInput = [
-            'session_menu_id' => $sessionMenu->id,
-            'item_id' => $request->menu_items[$i],
-            'quantity_type_id' => $request->quantity_type[$i],
-            'quantity' => $request->quantity[$i],
-            'price' => $request->price[$i],
-            'status' => 1
-          ];
-          $menuItem = MenuItem::create($menuItemsInput);
-          $complimentaryname = 'complimentaries_'.$i;
+      foreach ($menuItems as $key => $itemRow) {
 
-          if(isset($request->$complimentaryname)) {
+          $itemRow['status'] = (isset($itemRow['status']) && $itemRow['status']==_active())?$itemRow['status']:_inactive();
 
-            $complimentaris = $request->$complimentaryname;
-            $explodeComplimentary = explode(',',$complimentaris[0]);
+          if($itemRow['item_id'] && $itemRow['quantity'] && $itemRow['quantity_type_id'] && $itemRow['price'] && $itemRow['status']) {
 
-            foreach($explodeComplimentary as $j => $complimentary) {
+              $menuList = array();
+              $menuList['session_menu_id'] = $sessionMenu->id;
+              $menuList['item_id'] = $itemRow['item_id'];
+              $menuList['quantity_type_id'] = $itemRow['quantity_type_id'];
+              $menuList['quantity'] = $itemRow['quantity'];
+              $menuList['price'] = $itemRow['price'];
+              $menuList['status'] = $itemRow['status'];
+              $menuItem = MenuItem::create($menuList);
 
-              $menuComplimentary = [
-                'menu_id' => $sessionMenu->id,
-                'menu_item_id' => $menuItem->id,
-                'complimentary_id' => $complimentary,
-                'status' => 1
-              ];
+              if(!empty($itemRow['complimentaries'])) {
 
-              MenuItemComplimentary::create($menuComplimentary);
-            }
+                $itemRow['complimentaries'] = is_array($itemRow['complimentaries'])?$itemRow['complimentaries']:Arr::wrap($itemRow['complimentaries']);
+
+                foreach ($itemRow['complimentaries'] as $key => $complimentaryId) {
+
+                    $menuComplimentaryArray = array();
+                    $menuComplimentaryArray['session_menu_id'] = $sessionMenu->id;
+                    $menuComplimentaryArray['menu_item_id'] = $menuItem->id;
+                    $menuComplimentaryArray['complimentary_id'] = $complimentaryId;
+                    $menuComplimentaryArray['quantity_type_id'] = 0;
+                    $menuComplimentaryArray['quantity'] = 0;
+                    $menuComplimentaryArray['status'] = _active();
+
+                    MenuItemComplimentary::create($menuComplimentaryArray);
+                }
+              }
           }
-        }
+      }
 
-      createdResponse("Menus Created Successfully");
+      createdResponse("Session Menu Created Successfully");
 
       return redirect()->route('sessionMenus.index');
   }
@@ -142,26 +151,30 @@ class MenuController extends Controller
   /**
    * Show the form for editing the specified resource.
    *
-   * @param  \App\Models\Item  $item
+   * @param  \App\Models\SessionMenu  $sessionMenu
    * @return \Illuminate\Http\Response
    */
   public function edit($id)
   {
       $result = SessionMenu::with(['menuItem','sessionType'])->find($id);
       $statuses = _getGlobalStatus();
+      $allowedItemCount = config('catering.allowed_item_limit_for_menu');
 
       $sessionTypes = $this->sessionTypeModel->getActiveRecord();
       $menuItems = $this->itemsModel->getActiveRecord();
       $complimentaries = $this->complimentaryModel->getActiveRecord();
       $quantityTypes = $this->quantityTypeModel->getActiveRecord();
-      return view('admin.sessionMenus.edit',compact('result','sessionTypes','menuItems','complimentaries','quantityTypes','statuses'));
+
+      //dd($result);
+
+      return view('admin.sessionMenus.edit',compact('result','statuses','quantityTypes','sessionTypes','menuItems','complimentaries','allowedItemCount'));
   }
 
   /**
    * Update the specified resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
-   * @param  \App\Models\Item  $item
+   * @param  \App\Models\SessionMenu  $sessionMenu
    * @return \Illuminate\Http\Response
    */
   public function update(Request $request,$id)
@@ -177,15 +190,64 @@ class MenuController extends Controller
 
       $input = array();
       $input = [
-              'session_type_id' => $request->session_type,
-              'opening_time' => $request->opening_time,
-              'closing_time' => $request->closing_time,
-              'session_date' => $request->session_date,
-              'delivery_time' => $request->delivery_time,
-              'status' => $request->status
+            'session_type_id' => $request->session_type,
+            'session_date'=> $request->session_date,
+            'opening_time' => $request->opening_time,
+            'closing_time' => $request->closing_time,
+            'session_date' => $request->session_date,
+            'expected_delivery_time' => $request->delivery_time,
+            'status' => $request->status,
           ];
 
       $result = $sessionMenu->update($input);
+
+      $menuitems = MenuItem::select(DB::raw("CONCAT(id) AS ids"))->where('session_menu_id','=',$id)->get();
+
+      foreach($menuitems as $val) {
+        MenuItem::find($val->ids)->delete();
+      }
+      $complimentary = MenuItemComplimentary::select(DB::raw("CONCAT(id) AS ids"))->where('session_menu_id','=',$id)->get();
+
+      foreach($complimentary as $val) {
+        MenuItemComplimentary::find($val->ids)->delete();
+      }
+
+      $menuItems = $request->menu_items ?? [];
+
+      foreach ($menuItems as $key => $itemRow) {
+
+          $itemRow['status'] = (isset($itemRow['status']) && $itemRow['status']==_active())?$itemRow['status']:_inactive();
+
+          if($itemRow['item_id'] && $itemRow['quantity'] && $itemRow['quantity_type_id'] && $itemRow['price'] && $itemRow['status']) {
+
+              $menuList = array();
+              $menuList['session_menu_id'] = $id;
+              $menuList['item_id'] = $itemRow['item_id'];
+              $menuList['quantity_type_id'] = $itemRow['quantity_type_id'];
+              $menuList['quantity'] = $itemRow['quantity'];
+              $menuList['price'] = $itemRow['price'];
+              $menuList['status'] = $itemRow['status'];
+              $menuItem = MenuItem::create($menuList);
+
+              if(!empty($itemRow['complimentaries'])) {
+
+                $itemRow['complimentaries'] = is_array($itemRow['complimentaries'])?$itemRow['complimentaries']:Arr::wrap($itemRow['complimentaries']);
+
+                foreach ($itemRow['complimentaries'] as $key => $complimentaryId) {
+
+                    $menuComplimentaryArray = array();
+                    $menuComplimentaryArray['session_menu_id'] = $id;
+                    $menuComplimentaryArray['menu_item_id'] = $menuItem->id;
+                    $menuComplimentaryArray['complimentary_id'] = $complimentaryId;
+                    $menuComplimentaryArray['quantity_type_id'] = 0;
+                    $menuComplimentaryArray['quantity'] = 0;
+                    $menuComplimentaryArray['status'] = _active();
+
+                    MenuItemComplimentary::create($menuComplimentaryArray);
+                }
+              }
+          }
+      }
 
       updatedResponse("Session Menus Updated Successfully");
 
@@ -198,10 +260,26 @@ class MenuController extends Controller
       $rules = array();
 
       $rules['session_type'] = 'required|exists:session_types,id,status,'._active();
-      $rules['closing_time'] = 'required|date_format:hh:mm:ss';
-      //$rules['opening_time'] = 'required|min:2|max:200';
-      $rules['quantity_type'] = 'required|exists:quantity_types,id,status,'._active();
+      if(!$id == '') {
+        $rules['opening_time'] = 'required|date_format:H:i:s';
+        $rules['closing_time'] = 'required|date_format:H:i:s|after:opening_time';
+        $rules['delivery_time'] = 'required|date_format:H:i:s|after:opening_time|after:closing_time';
+      } else {
+        $rules['opening_time'] = 'required|date_format:H:i';
+        $rules['closing_time'] = 'required|date_format:H:i|after:opening_time';
+        $rules['delivery_time'] = 'required|date_format:H:i|after:opening_time|after:closing_time';
+      }
+
+      $rules['session_date'] = 'required|date|after:yesterday';
       $rules['status'] = 'required|boolean';
+
+      $rule['menu_items'] = 'required|array|min:1';
+      $rule['menu_items.*.item_id'] = 'sometimes|exists:items,id,status,'._active();
+      $rule['menu_items.*.quantity'] = 'sometimes|integer';
+      $rule['menu_items.*.quantity_type_id'] = 'sometimes|exists:quantity_types,id,status,'._active();
+      $rule['menu_items.*.complimentaries'] = 'sometimes|array';
+      $rule['menu_items.*.price'] = 'sometimes|integer';
+      $rule['menu_items.*.status'] = 'sometimes|boolean';
 
       return $rules;
   }
@@ -214,46 +292,48 @@ class MenuController extends Controller
       return [];
   }
 
-  public function updateItems(Request $request,$id) {
+  public function cloneSession($id) {
 
-    $input = array();
-    //dd($request);
+    $sessionMenu = SessionMenu::with(['menuItem','sessionType'])->find($id);
+
     $menuItemsInput = [
-      'session_menu_id' => $request->session_menu_id,
-      'item_id' => $request->modal_menu_item,
-      'quantity_type_id' => $request->modal_quantity_type,
-      'quantity' => $request->modalQuantity,
-      'price' => $request->modalprice,
-      'status' => 1
+      'session_type_id' => $sessionMenu->session_type_id,
+      'session_date'=> date("Y-m-d H:i:s"),
+      'opening_time' => $sessionMenu->opening_time,
+      'closing_time' => $sessionMenu->closing_time,
+      'expected_delivery_time' => $sessionMenu->delivery_time,
+      'status' => $sessionMenu->status,
+      'created_by'=> Auth::user()->id
     ];
+    $new_sessionMenu = SessionMenu::create($menuItemsInput);
 
-    if($id != 0) {
-      $menuItem = MenuItem::find($id);
-      $menuItem->update($menuItemsInput);
-      $deleteRows = MenuItemComplimentary::where('menu_item_id',$menuItem->id)->delete();
-    } else {
-      $menuItem = MenuItem::create($menuItemsInput);
-    }
 
-    if(isset($request->modalcomplimentaries)) {
+    foreach($sessionMenu->menuItem as $menuItem) {
 
-      $complimentaris = $request->modalcomplimentaries;
-      //$explodeComplimentary = explode(',',$complimentaris);
+      $menuItemsInput = [
+        'session_menu_id' => $new_sessionMenu->id,
+        'item_id' => $menuItem->item_id,
+        'quantity_type_id' => $menuItem->quantity_type_id,
+        'quantity' => $menuItem->quantity,
+        'price' => $menuItem->price,
+        'status' => 1
+      ];
+      $new_menuItem = MenuItem::create($menuItemsInput);
 
-      foreach($complimentaris as $j => $complimentary) {
+      foreach($menuItem->menuComplimentaries as $menuComplimentary) {
 
-        $menuComplimentary = [
-          'menu_id' => $request->session_menu_id,
-          'menu_item_id' => $menuItem->id,
-          'complimentary_id' => $complimentary,
+        $menuComplimentaryInput = [
+          'session_menu_id' => $new_sessionMenu->id,
+          'menu_item_id' => $new_menuItem->id,
+          'complimentary_id' => $menuComplimentary->complimentaries->id,
           'status' => 1
         ];
+        MenuItemComplimentary::create($menuComplimentaryInput);
 
-        MenuItemComplimentary::create($menuComplimentary);
       }
     }
 
-    return back();
+    return redirect()->route('sessionMenus.index');
   }
 
 }

@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class MenuItemComplimentary extends Model
 {
-    protected $fillable = ['menu_id', 'menu_item_id', 'complimentary_id','quantity_type_id', 'quantity', 'status'];
+    protected $fillable = ['session_menu_id', 'menu_item_id', 'complimentary_id','quantity_type_id', 'quantity', 'status'];
 
     public function sessionMenus() {
-     return $this->belongsTo('App\Models\SessionMenu','menu_id');
+     return $this->belongsTo('App\Models\SessionMenu','session_menu_id');
     }
 
     public function menuItems() {

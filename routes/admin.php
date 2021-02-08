@@ -25,5 +25,5 @@ Route::middleware(['admin'])->group(function () {
 
 	Route::resource('/sessionMenus','Admin\MenuController');
 
-	Route::post('/updateItems/{id}','Admin\MenuController@updateItems')->name('sessionMenus.updateItems');
+	Route::post('/clone/{id}','Admin\MenuController@cloneSession')->name('sessionMenus.clone');
 });

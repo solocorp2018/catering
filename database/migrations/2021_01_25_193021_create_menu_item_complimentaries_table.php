@@ -16,7 +16,7 @@ class CreateMenuItemComplimentariesTable extends Migration
         $this->down();
         Schema::create('menu_item_complimentaries', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('menu_id');
+            $table->unsignedBigInteger('session_menu_id');
             $table->unsignedBigInteger('menu_item_id');
             $table->unsignedBigInteger('complimentary_id');
             $table->unsignedSmallInteger('quantity_type_id');
@@ -26,7 +26,7 @@ class CreateMenuItemComplimentariesTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->index(['menu_id','menu_item_id']);
+            $table->index(['session_menu_id','menu_item_id']);
             $table->index(['quantity_type_id']);
             $table->index(['complimentary_id']);
         });

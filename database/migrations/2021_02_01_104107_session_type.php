@@ -16,6 +16,7 @@ class SessionType extends Migration
       Schema::create('session_types', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->string('type_name');
+          $table->boolean('status');
           $table->timestamps();
       });
     }

@@ -20,6 +20,7 @@ class CreateMenuItemsTable extends Migration
             $table->unsignedBigInteger('item_id');            
             $table->unsignedSmallInteger('quantity_type_id');            
             $table->string('quantity')->nullable();            
+            $table->float('price',8,2);            
 
             $table->boolean('status')->default(0);
             $table->softDeletes();

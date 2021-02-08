@@ -145,16 +145,6 @@
             $(".vertical-spin").TouchSpin({
                 verticalbuttons: true
             });
-
-            $('.datepicker').datepicker({
-              autoClose: false,
-              format:'yyyy-mm-dd'
-            });
-
-            $('#timepicker1').timepicker({showSeconds: true,showMeridian: false});
-            $('#timepicker2').timepicker({showSeconds: true,showMeridian: false});
-            $('#timepicker3').timepicker({showSeconds: true,showMeridian: false});
-            $('#timepicker4').timepicker({showSeconds: true,showMeridian: false});
         });
 
     </script>
