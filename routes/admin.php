@@ -31,4 +31,6 @@ Route::middleware(['admin'])->group(function () {
 	Route::get('/leads/{id}','Admin\LeadController@show')->name('leads.show');
 
 	Route::resource('/sessionMenus','Admin\MenuController');
+
+	Route::post('/clone/{id}','Admin\MenuController@cloneSession')->name('sessionMenus.clone');
 });

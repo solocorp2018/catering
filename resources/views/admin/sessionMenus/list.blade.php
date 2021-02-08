@@ -72,8 +72,8 @@
 
                                        <td>{{$result->sessionType->type_name ?? ''}}</td>
                                        <td>{{dateOf($result->session_date) ?? ''}}</td>
-                                       <td>{{$result->opening_time ?? ''}}</td>
-                                       <td>{{$result->closing_time ?? ''}}</td>
+                                       <td>{{Time24to12($result->opening_time) ?? ''}}</td>
+                                       <td>{{Time24to12($result->closing_time) ?? ''}}</td>
                                        <td>
                                         @if(isset($result->status) && $result->status == 1)
                                         <span class="text-success">Active</span>
@@ -83,10 +83,10 @@
                                       </td>
                                       <td>
                                         <a class="waves-effect waves-dark" href="{{route('sessionMenus.show',$result->id)}}"><i class="fa fa-eye"></i></a>
-
+                                        
                                         <a class="waves-effect waves-dark" href="{{route('sessionMenus.edit',$result->id)}}"><i class="fa fa-edit"></i></a>
 
-                                        </td>
+                                      </td>
                                     </tr>
                                   @endforeach
                                   @else

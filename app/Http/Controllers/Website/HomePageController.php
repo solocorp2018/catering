@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Website;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\SessionMenu;
 use Auth;   
 
 class HomePageController extends Controller
@@ -17,8 +18,9 @@ class HomePageController extends Controller
     }
 
     public function homepage(Request $request) {
-
-    	return view('website.homepage');   
+    	$sessionMenu = new SessionMenu();
+    	$todaysMenu = $sessionMenu->getTodayMenu();
+    	return view('website.homepage',compact('todaysMenu'));   
     }
 
     public function userDashboard(Request $request) {

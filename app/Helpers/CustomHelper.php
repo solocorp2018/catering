@@ -72,7 +72,10 @@ use Carbon\Carbon;
 		return ($status == 1 || $status == true)?'Active':'False';
 	}
 
-
+	function Time24to12($time){
+		$time = Carbon::parse($time);
+		return $time->format('g:i A');
+	}
 
 
 
