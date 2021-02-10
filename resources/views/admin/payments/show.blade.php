@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-@extends('layouts.layout')
-@section('title', 'View Category')
-=======
 @extends('admin.layouts.layout')
 @section('title', 'View Payment')
->>>>>>> renuka02
 @section('content')
 <div class="page-wrapper">
    <div class="container-fluid">
@@ -72,4 +67,3 @@
    </div>
 </div>
 @endsection
-

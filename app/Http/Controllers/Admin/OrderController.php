@@ -7,6 +7,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Exports\OrdersExport;
+use App\Models\Payment;
+use Auth;
 
 class OrderController extends Controller
 {
@@ -14,8 +16,8 @@ class OrderController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */    
-    
+     */
+
     public function index()
     {
         $results = Order::getQueriedResult();
@@ -92,5 +94,34 @@ class OrderController extends Controller
     public function export(){
     	$filename = 'orders-list-'.date('d-m-Y').'.csv';
     	return Excel::download(new OrdersExport, $filename);
+    }
+
+    public function updateStatus(Request $request, $id) {
+      $order_id = $id;
+      $orders = Order::find($id);
+      $input = [
+              'order_id' => $order_id,
+              'payment_date' => $request->payment_date,
+              'amount' => $orders->total_amount,
+              'payment_mode' => $request->payment_mode,
+              'transaction_id' => $request->transaction_id,
+              'comments' => $request->comments,
+              'recieved_by'=> Auth::user()->id,
+              'paid_by'=> $orders->customer_id,
+              'payment_status'=> $request->payment_status
+          ];
+      $payments = Payment::where('order_id','=',$id)->first();
+      if(!empty($payments)) {
+        $updatePayment = $payments->update($input);
+      } else {
+        $createPayment = Payment::create($input);
+      }
+
+      $orderUpdate = [
+        'payment_status' => $request->payment_status
+      ];
+      $update = $orders->update($orderUpdate);
+
+      return redirect()->route('orders.index');
     }
 }

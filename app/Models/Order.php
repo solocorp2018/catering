@@ -9,7 +9,7 @@ class Order extends Model
 {
 	use SoftDeletes;
 
-    protected $fillable = ['id', 'session_menu_id','order_unique_id', 'customer_id', 'order_date', 'total_amount', 'order_status', 'confirmed_by', 'order_processed_by', 'delivered_by', 'status'];
+    protected $fillable = ['id', 'session_menu_id','order_unique_id', 'customer_id', 'order_date', 'total_amount', 'order_status', 'confirmed_by', 'order_processed_by', 'delivered_by', 'payment_status'];
 
 
     public function scopeFilter($query) {
