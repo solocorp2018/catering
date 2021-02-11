@@ -28,7 +28,7 @@
 
                   </li>
 
-                  <li class="nav-item dropdown dropdown-cart">
+                  <li class="nav-item dropdown dropdown-cart">                     
                      @include('website.layout.navbar-cart')
                   </li>
 

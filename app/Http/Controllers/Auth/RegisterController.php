@@ -119,4 +119,5 @@ class RegisterController extends Controller
 
         return response(['message' => 'User Registered Successfully !']);
     }
+
 }

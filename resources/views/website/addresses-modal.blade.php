@@ -8,49 +8,41 @@
                   </button>
                </div>
                <div class="modal-body">
-                  <form>
+                  <form action="{{route('add.address')}}" method="post" id="add-address-form">
+                     @csrf
                      <div class="form-row">
                         <div class="form-group col-md-12">
-                           <label for="inputPassword4">Delivery Area</label>
+                           <label for="inputPassword4">Address Line 1</label>
                            <div class="input-group">
-                              <input type="text" class="form-control" placeholder="Delivery Area">
+                              <input type="text" name="address_line_1" id="address_line_1" class="form-control" placeholder="Address Line 1">
                               <div class="input-group-append">
                                  <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="icofont-ui-pointer"></i></button>
                               </div>
                            </div>
                         </div>
                         <div class="form-group col-md-12">
-                           <label for="inputPassword4">Complete Address
+                           <label for="inputPassword4">Address Line 2
                            </label>
-                           <input type="text" class="form-control" placeholder="Complete Address e.g. house number, street name, landmark">
+                           <input type="text" name="address_line_2" id="address_line_2" class="form-control" placeholder="Address Line 2">
                         </div>
                         <div class="form-group col-md-12">
-                           <label for="inputPassword4">Delivery Instructions
+                           <label for="inputPassword4">City
                            </label>
-                           <input type="text" class="form-control" placeholder="Delivery Instructions e.g. Opposite Gold Souk Mall">
+                           <input type="text" name="city" id="city" class="form-control" placeholder="City">
                         </div>
-                        <div class="form-group mb-0 col-md-12">
-                           <label for="inputPassword4">Nickname
+                        <div class="form-group col-md-12">
+                           <label for="inputPassword4">Pincode
                            </label>
-                           <div class="btn-group btn-group-toggle d-flex justify-content-center" data-toggle="buttons">
-                              <label class="btn btn-info active">
-                              <input type="radio" name="options" id="option1" autocomplete="off" checked> Home
-                              </label>
-                              <label class="btn btn-info">
-                              <input type="radio" name="options" id="option2" autocomplete="off"> Work
-                              </label>
-                              <label class="btn btn-info">
-                              <input type="radio" name="options" id="option3" autocomplete="off"> Other
-                              </label>
-                           </div>
+                           <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Pincode">
                         </div>
+                     </div>
+                     <div class="modal-footer">
+                        <button type="reset" class="btn d-flex w-50 text-center justify-content-center btn-outline-primary" data-dismiss="modal">CANCEL
+                        </button><button type="submit" class="btn d-flex w-50 text-center justify-content-center btn-primary">SUBMIT</button>
                      </div>
                   </form>
                </div>
-               <div class="modal-footer">
-                  <button type="button" class="btn d-flex w-50 text-center justify-content-center btn-outline-primary" data-dismiss="modal">CANCEL
-                  </button><button type="button" class="btn d-flex w-50 text-center justify-content-center btn-primary">SUBMIT</button>
-               </div>
+               
             </div>
          </div>
       </div>

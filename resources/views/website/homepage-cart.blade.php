@@ -8,9 +8,9 @@
                         <div class="gold-members p-2 border-bottom">
                            <p class="text-gray mb-0 float-right ml-2">{{$cartItem->quantity_price}} INR</p>
                            <span class="count-number float-right">
-                           <button class="btn btn-outline-secondary  btn-sm left dec"> <i class="icofont-minus"></i> </button>
-                           <input class="count-number-input" type="text" value="1" readonly="">
-                           <button class="btn btn-outline-secondary btn-sm right inc"> <i class="icofont-plus"></i> </button>
+                           <button class="btn btn-outline-secondary  btn-sm left dec" onclick="updateItemToCart({{$cartItem->item_id}},{{$cartItem->session_id}},0)"> <i class="icofont-minus"></i> </button>
+                           <input class="count-number-input" type="text" value="{{$cartItem->quantity}}" readonly="">
+                           <button class="btn btn-outline-secondary btn-sm right inc" onclick="updateItemToCart({{$cartItem->item_id}},{{$cartItem->session_id}},1)"> <i class="icofont-plus"></i> </button>
                            </span>
                            <div class="media">
                               <div class="mr-2"><i class="icofont-ui-press text-success food-item"></i></div>
@@ -28,5 +28,20 @@
                         <p class="seven-color mb-1 text-right">Free Delivery</p>
                         <!-- <p class="text-black mb-0 text-right">You have saved $955 on the bill</p> -->
                      </div>
+
+                     @if(!empty($cart) && $cart->count() > 0)
+                     @if(!empty($showCheckout) && $showCheckout == 1)
+
+                     @php
+                     $currentAddressId = $userData->userAddress->where('is_current',1)->first()->id;
+                     @endphp
+                     <form action="{{route('place.order')}}" method="post">
+                        @csrf                        
+                        <input type="hidden" name="delivery_address_id" id="delivery_address_id" value="{{$currentAddressId}}"/>
+                        <button type="Submit" class="btn btn-success btn-block btn-lg">Place Order <i class="icofont-long-arrow-right"></i></a>
+                     </form>
+                     @else
                      <a href="{{url('checkout')}}" class="btn btn-success btn-block btn-lg">Checkout <i class="icofont-long-arrow-right"></i></a>
+                     @endif
+                     @endif
                   </div>

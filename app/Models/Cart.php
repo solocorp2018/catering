@@ -16,20 +16,19 @@ class Cart extends Model
 		$userId = Auth::user()->id;    	
 		$cartItems = static::with(['item'])
 							->where('user_id',$userId)
-	    				     ->where('session_id',$currentSessionId)
+	    				     // ->where('session_id',$currentSessionId)
 	    				     ->get();
 
 	   	return $cartItems;
     }
 
-    public static function updateCartItem($itemId,$currentSessionId,$processType){
+    public function updateCartItem($itemId,$currentSessionId,$processType){
 
     		$userId = Auth::user()->id;
 
     		$item = Item::find($itemId);
 
-
-	    	$cartItem = static::where('item_id',$itemId)
+	    	$cartItem = $this->where('item_id',$itemId)
 	    				     ->where('user_id',$userId)
 	    				     ->where('session_id',$currentSessionId)
 	    				     ->first();
@@ -45,23 +44,46 @@ class Cart extends Model
 		    	} 
 
 		    	if($processType == 1) {
-		    		$whereArray = $cartItem = array();
+		    		$whereArray = $cart = array();
 		    		$where['user_id'] = Auth::user()->id;
 		    		$where['item_id'] = $itemId;
 		    		$where['session_id'] = $currentSessionId;
 
-		    		$cartItem['user_id'] = Auth::user()->id;
-		    		$cartItem['item_id'] = $itemId;
-		    		$cartItem['session_id'] = $currentSessionId;
-		    		$cartItem['quantity'] = $count;
-		    		$cartItem['unit_price'] = $item->price ?? 0;
-		    		$cartItem['quantity_price'] = $cartItem['unit_price'] * $count;
-		    		$cartItem['cart_date'] = today();
+		    		$cart['user_id'] = Auth::user()->id;
+		    		$cart['item_id'] = $itemId;
+		    		$cart['session_id'] = $currentSessionId;
+		    		$cart['quantity'] = $count;
+		    		$cart['unit_price'] = $item->price ?? 0;
+		    		$cart['quantity_price'] = $cart['unit_price'] * $count;
+		    		$cart['cart_date'] = today();
 
-		    		static::updateOrCreate($whereArray,$cartItem);	
+		    		$this->updateOrCreate($whereArray,$cart);	
+
+		    		return 1;
 		    	}
 
-	    		return 1;
+
+		    	if(!empty($cartItem) && $processType == 0) {
+		    		$whereArray = $cart = array();
+		    		$where['user_id'] = Auth::user()->id;
+		    		$where['item_id'] = $itemId;
+		    		$where['session_id'] = $currentSessionId;
+
+		    		$cart['user_id'] = Auth::user()->id;
+		    		$cart['item_id'] = $itemId;
+		    		$cart['session_id'] = $currentSessionId;
+		    		$cart['quantity'] = $count;
+		    		$cart['unit_price'] = $item->price ?? 0;
+		    		$cart['quantity_price'] = $cart['unit_price'] * $count;
+		    		$cart['cart_date'] = today();
+
+		    		$this->updateOrCreate($whereArray,$cart);	
+
+		    		return 1;
+		    	}
+
+		    	return 0;
+	    		
 
     	
     }

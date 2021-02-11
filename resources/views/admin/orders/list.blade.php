@@ -67,15 +67,15 @@
                                  </thead>
                                  <tbody>
                                   
-                                  @if(!empty($results) && $results->count())
+                                  @if(!empty($results->toArray()) && $results->count())
                                   @foreach($results as $result)
                                     <tr>
                                       
-                                       <td>{{showDate($result->order_unique_id ?? '--')}}</td>
-                                       <td>{{showDate($result->order_date ?? '')}}</td>
+                                       <td>{{$result->order_unique_id ?? '--'}}</td>
+                                       <td>{{$result->order_date ?? ''}}</td>
                                        <td>{{$result->total_amount ?? 0}}</td>     
                                        
-                                       <td>{{$result->orderDetails->count() ?? 0}}</td>  
+                                       <td>{{($result->orderDetails)?$result->orderDetails->count(): 0}}</td>  
                                        <td>{{$result->payment_status ?? "--"}}</td>  
                                        <td>{{$result->processed_by ?? "--"}}</td>  
                                        <td>{{$result->delivered_by ?? "--"}}</td>

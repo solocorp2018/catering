@@ -19,6 +19,7 @@ class CreateOrdersTable extends Migration
             $table->string('order_unique_id');
             $table->unsignedBigInteger('session_menu_id');
             $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('address_id');
             $table->dateTime('order_date');
             $table->float('total_amount',8,2);
             $table->unsignedTinyInteger('order_status');            

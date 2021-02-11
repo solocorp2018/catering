@@ -15,7 +15,7 @@ class MenuItem extends Model
     }
 
     public function menuComplimentaries() {
-     return $this->hasMany('App\Models\menuItemComplimentary','menu_item_id')->with('complimentaries');
+     return $this->hasMany('App\Models\MenuItemComplimentary','menu_item_id')->with('complimentaries');
     }
 
     public function quantityType() {

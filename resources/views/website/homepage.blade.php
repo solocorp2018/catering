@@ -131,6 +131,9 @@
 
                @if(Auth::user())
                <div class="col-md-4" id="home-cart">
+                     @php
+                        $showCheckout = 1;
+                     @endphp
                		@include('website.homepage-cart')
                </div>
                @endif

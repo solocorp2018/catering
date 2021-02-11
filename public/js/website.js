@@ -38,12 +38,12 @@ $("#register-form").validate({
 			address_line_1:{
 				required:true,
 				minlength:1,
-				maxlength:100
+				maxlength:50
 			},
 			address_line_2:{
 				required:false,
 				minlength:1,
-				maxlength:100
+				maxlength:50
 			},
 			city:{
 				required:true,
@@ -213,6 +213,61 @@ $("#login-form").validate({
 		}
 });
 
+$("#add-address").validate({
+		rules: {
+			address_line_1:{
+				required:true,
+				minlength:1,
+				maxlength:50
+			},
+			address_line_2:{
+				required:false,
+				minlength:1,
+				maxlength:50
+			},
+			city:{
+				required:true,
+				minlength:1,
+				maxlength:50
+			},
+			pincode:{
+				required:true,
+				digits:true,
+				minlength:6,
+				maxlength:7
+			},
+			otpVerified:{
+				required:true
+			}
+		},
+		messages: {			
+			address_line_1: "Please enter a valid address line 1",
+			address_line_2: "Please enter a valid address line 2",
+			city: "Please enter a valid city name",
+			pincode: "Please enter a valid pincode",			
+		},
+		errorPlacement: function (error, element) {
+		    error.insertAfter(element.parent('div'));
+		},
+		submitHandler: function(form) {
+		    $("#add-address-form").submit();
+		}
+});
+
+$(document).on('click','.addresses-item',function() {
+
+	$('.addresses-item').removeClass('border-success');
+	$('.deliver-here').removeClass('btn-success');
+
+	$(this).addClass('border-success');
+	$(this).find('.deliver-here').addClass('btn-success');
+
+	var deliverTo = $(this).find('.deliver_to').val();
+	$('#delivery_address_id').val(deliverTo);
+	
+});
+
+
 function updateItemToCart(itemId,sessionId,processType=1){
 	
 	var formData = {
@@ -227,7 +282,7 @@ function updateItemToCart(itemId,sessionId,processType=1){
         url: feedUrl('/update-cart'),
         data: formData,
         success: function( data ) {            
-			// refreshCart();
+			refreshCart();
         }
     });
 
@@ -243,10 +298,9 @@ function refreshCart() {
         type: "POST",
         url: feedUrl('/refresh-cart'),
         data: formData,
-        success: function( data ) {            
-			console.log(data);
+        success: function( data ) {            			
 			$(".dropdown-cart").empty().append(data.layoutCartview);
-			$(".dropdown-cart").empty().append(data.layoutCartview);
+			$("#home-cart").empty().append(data.homeCartview);
         }
     });	
 }
@@ -270,20 +324,3 @@ $(document).on('click','.inc',function(){
 	}
 });
 
-
-// function loginForm() {
-//
-// 		var formData = {
-// 			_token:token(),
-// 			contact_number : $("#inputEmail").val(),
-// 		};
-// 		$.ajax({
-// 	        type: "POST",
-// 	        url: feedUrl('/login'),
-// 	        data: formData,
-// 	        success: function( data ) {
-// 	            alert( data.message );
-// 							$('#login-modal').modal('toggle');
-// 	        }
-// 	    });
-// 	}
