@@ -46,7 +46,11 @@ class LoginController extends Controller
 
     public function triggerOtp(Request $request) {
 
-        $this->validate($request,['contactNumber'=>'required|unique:users,contact_number']);
+        $validator = Validator::make($request->all(),['contactNumber'=>'required|unique:users,contact_number']);
+        
+        if($validator->fails()) {
+          return response()->json(['status'=>0,'message'=>'Mobile Number has been already registered with us. Please do Login !']);
+        }
 
         $mobileNumber = $request->contactNumber;
 
@@ -57,7 +61,7 @@ class LoginController extends Controller
         $message = $otp." is the OTP for your ".env('APP_NAME')." registration.";
         TextLocalSmsGateway::sendSms($mobileNumber,$message);
 
-        return response(['message'=>'OTP sent successfully !']);
+        return response(['status'=>1,'message'=>'OTP sent successfully !']);
     }
 
     public function validateOtp(Request $request) {

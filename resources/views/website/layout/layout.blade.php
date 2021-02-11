@@ -28,9 +28,7 @@
    <body>
       @include('website.layout.top-navbar')
 
-      @yield('content')
-
-      @include('website.layout.quick-links')
+      @yield('content')      
 
       @include('website.layout.footer')
 

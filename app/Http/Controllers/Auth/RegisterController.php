@@ -80,11 +80,11 @@ class RegisterController extends Controller
             'name' => 'required|min:2|max:100',
             'contact_number' => 'required|exists:verify_otps,mobile',
             'otp' => 'required',
-            'email' => 'sometimes|email|unique:users,email',
+            'email' => 'sometimes|nullable|email|unique:users,email',
             'address_line_1' => 'required|min:2|max:100',
             'address_line_2' => 'sometimes|min:2|max:100',
             'city' => 'required|min:2|max:50',
-            'pincode' => 'required|min:5|max:6'
+            'pincode' => 'required|min:5|max:8'
         ];
         $this->validate($request,$rules);
 
@@ -117,6 +117,6 @@ class RegisterController extends Controller
 
         Auth::loginUsingId($user->id);
 
-        return response(['message' => 'User Logged In Successfully !']);
+        return response(['message' => 'User Registered Successfully !']);
     }
 }

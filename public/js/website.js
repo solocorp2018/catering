@@ -123,10 +123,16 @@ function triggerOtp() {
 	$.ajax({
         method:"POST",
         url: feedUrl('/trigger-otp'),
-        data: formData,
+        data: formData,        
         success: function( data ) {
-            alert( data.message );
-            alert("Integerate SMS Gatewat here");
+        	if(data.status == 1) {
+        		alert( data.message );            
+        	}
+
+			if(data.status == 0) {
+        		alert( data.message );            
+        	}        	
+            
         }
     });
 }
@@ -177,9 +183,11 @@ function registerForm() {
         type: "POST",
         url: feedUrl('/register-user'),
         data: formData,
-        success: function( data ) {
-            alert( data.message );
-						$('#register-modal').modal('toggle');
+        success: function( data ) {            
+			$('#register-modal').modal('toggle');
+			alert( data.message );
+			location.reload();
+			// $("#register-form")[0].reset();
         }
     });
 }
@@ -204,6 +212,64 @@ $("#login-form").validate({
 				$( "#login-form" ).submit();
 		}
 });
+
+function updateItemToCart(itemId,sessionId,processType=1){
+	
+	var formData = {
+		_token:token(),
+		itemId : itemId,
+		sessionId : sessionId,
+		processType:processType
+	};	
+
+	$.ajax({
+        type: "POST",
+        url: feedUrl('/update-cart'),
+        data: formData,
+        success: function( data ) {            
+			// refreshCart();
+        }
+    });
+
+}
+
+function refreshCart() {
+	
+	var formData = {
+		_token:token(),		
+	};	
+
+	$.ajax({
+        type: "POST",
+        url: feedUrl('/refresh-cart'),
+        data: formData,
+        success: function( data ) {            
+			console.log(data);
+			$(".dropdown-cart").empty().append(data.layoutCartview);
+			$(".dropdown-cart").empty().append(data.layoutCartview);
+        }
+    });	
+}
+
+$(document).on('click','.dec',function(){
+	var currentValue =  $(this).closest('span').find('.count-number-input').val();
+	$(this).closest('span').find('.count-number-input').val(parseInt(currentValue)-1);
+	$(this).closest('span').find('.inc').attr("disabled",false);
+
+	if(currentValue <= 1 ) {
+		$(this).attr("disabled",true);
+	}
+});
+
+$(document).on('click','.inc',function(){
+	var currentValue =  $(this).closest('span').find('.count-number-input').val();
+	$(this).closest('span').find('.count-number-input').val(parseInt(currentValue)+1);
+	$(this).closest('span').find('.dec').attr("disabled",false);
+	if(currentValue >= 100 ) {
+	$(this).attr("disabled",true);
+	}
+});
+
 
 // function loginForm() {
 //

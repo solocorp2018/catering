@@ -6,7 +6,7 @@
       <section class="restaurant-detailed-banner">
          <div class="text-center">
             <!-- <img class="img-fluid cover" src="{{asset('website/img/mall-dedicated-banner.png')}}"> -->
-            <img class="img-fluid cover" style="max-width:100% !important;" src="{{asset('website/img/banner-1.png')}}">
+            <img class="img-fluid cover" style="background-size: cover !important;" src="{{asset('website/img/banner-1.png')}}">
          </div>
 
          <div class="restaurant-detailed-header">
@@ -69,7 +69,7 @@
          <div class="container">
             <div class="row">
                <div class="{{ (Auth::user())?'col-md-8':'col-md-12'}}">
-                  <div class="offer-dedicated-body-left">
+                  <div class="offer-dedicated-body-left" >
                      <div class="tab-content" id="pills-tabContent">
 
                      	@foreach($todaysMenu as $key1 => $todayMenu)
@@ -85,7 +85,13 @@
                                  <div class="bg-white rounded border shadow-sm mb-4">
                                  	@foreach($todayMenu->menuItem as $menuItem)
                                     <div class="gold-members p-3 border-bottom">
-                                       <a class="btn btn-outline-secondary btn-sm  float-right" href="#">ADD</a>
+                                       @if(Auth::user())
+                                       <span class="count-number float-right">
+                                          <button class="btn btn-outline-secondary  btn-sm left dec" onclick="updateItemToCart({{$menuItem->item_id}},{{$todayMenu->id}},0)"> <i class="icofont-minus"></i> </button>
+                                          <input class="count-number-input" type="text" value="1" readonly="">
+                                          <button class="btn btn-outline-secondary btn-sm right inc" onclick="updateItemToCart({{$menuItem->item_id}},{{$todayMenu->id}},1)"> <i class="icofont-plus"></i> </button>
+                                          </span>
+                                          @endif
                                        <div class="media">
                                           <div class="mr-3"><i class="icofont-ui-press text-success food-item"></i></div>
                                           <div class="media-body">
@@ -124,54 +130,13 @@
                </div>
 
                @if(Auth::user())
-               <div class="col-md-4">
-
-                  <div class="generator-bg rounded shadow-sm mb-4 p-4 osahan-cart-item">
-                     <h5 class="mb-1 text-white">Your Cart</h5>
-                     <p class="mb-4 text-white">2 ITEMS</p>
-                     <div class="bg-white rounded shadow-sm mb-2">
-                        <div class="gold-members p-2 border-bottom">
-                           <p class="text-gray mb-0 float-right ml-2">50 INR</p>
-                           <span class="count-number float-right">
-                           <button class="btn btn-outline-secondary  btn-sm left dec"> <i class="icofont-minus"></i> </button>
-                           <input class="count-number-input" type="text" value="1" readonly="">
-                           <button class="btn btn-outline-secondary btn-sm right inc"> <i class="icofont-plus"></i> </button>
-                           </span>
-                           <div class="media">
-                              <div class="mr-2"><i class="icofont-ui-press text-success food-item"></i></div>
-                              <div class="media-body">
-                                 <p class="mt-1 mb-0 text-black">5 * Idly</p>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="gold-members p-2">
-                           <p class="text-gray mb-0 float-right ml-2">100 INR</p>
-                           <span class="count-number float-right">
-                           <button class="btn btn-outline-secondary  btn-sm left dec"> <i class="icofont-minus"></i> </button>
-                           <input class="count-number-input" type="text" value="1" readonly="">
-                           <button class="btn btn-outline-secondary btn-sm right inc"> <i class="icofont-plus"></i> </button>
-                           </span>
-                           <div class="media">
-                              <div class="mr-2"><i class="icofont-ui-press text-success food-item"></i></div>
-                              <div class="media-body">
-                                 <p class="mt-1 mb-0 text-black">2 * Ghee Roast</p>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="mb-2 bg-white rounded p-2 clearfix">
-                        <img class="img-fluid float-left" src="{{asset('website/img/wallet-icon.png')}}">
-                        <h6 class="font-weight-bold text-right mb-2">Subtotal : <span class="text-success">150 INR</span></h6>
-                        <p class="seven-color mb-1 text-right">Free Delivery</p>
-                        <!-- <p class="text-black mb-0 text-right">You have saved $955 on the bill</p> -->
-                     </div>
-                     <a href="{{url('checkout')}}" class="btn btn-success btn-block btn-lg">Checkout <i class="icofont-long-arrow-right"></i></a>
-                  </div>
-
+               <div class="col-md-4" id="home-cart">
+               		@include('website.homepage-cart')
                </div>
                @endif
             </div>
          </div>
       </section>
+@include('website.layout.quick-links')
 
 @endsection
