@@ -57,7 +57,7 @@ class PaymentController extends Controller
      */
     public function show($id)
     {
-        $result = Payment::with(['recievedBy','paidBy'])->find($id);
+        $result = Payment::with(['paidBy','recievedBy'])->find($id);
         //dd($result);
         return view('admin.payments.show',compact('result'));
     }
@@ -101,4 +101,6 @@ class PaymentController extends Controller
     	$filename = 'payments-list-'.date('d-m-Y').'.csv';
     	return Excel::download(new PaymentsExport, $filename);
     }
+
+
 }

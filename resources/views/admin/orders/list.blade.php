@@ -76,13 +76,15 @@
                                        <td>{{$result->total_amount ?? 0}}</td>
 
                                        <td>{{$result->orderItems->count() ?? 0}}</td>
-                                       <td>{{$result->payment_status ?? "--"}}</td>
+                                       <td>@if($result->payment_status == 1) Paid @else Pending @endif</td>
                                        <td>{{$result->processed_by ?? "--"}}</td>
                                        <td>{{$result->delivered_by ?? "--"}}</td>
                                       <td>
-                                        <a class="waves-effect waves-dark" href="{{route('orders.show',$result->id)}}">View</a>
+                                        <a class="waves-effect waves-dark" href="{{route('orders.show',$result->id)}}"><i class="fa fa-eye"></i></a>
                                         &nbsp;&nbsp;&nbsp;
-                                        <a class="waves-effect waves-dark" data-id="{{$result->id}}" id="updatePayment{{$result->id}}" >Update Payment</a>
+                                        <a class="waves-effect waves-dark" data-id="{{$result->id}}" id="updatePayment{{$result->id}}"><i class="fa fa-edit"></i></a>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <a class="" href="{{route('order.invoice',$result->id)}}"><i class="fa fa-download"></i></a>
                                         </td>
                                     </tr>
                                   @endforeach
@@ -148,8 +150,8 @@
                   <div class="form-label-group">
                     <label for="name" class="required">Payment Status</label>
                     <select name="payment_status" id="payment_status" class="form-control">
-                        <option value="1">Pending</option>
-                        <option value="2">Paid</option>
+                        <option value="1">Paid</option>
+                        <option value="2">Pending</option>
                     </select>
                   </div>
                   <div class="form-label-group">

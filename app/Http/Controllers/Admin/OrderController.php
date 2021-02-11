@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Exports\OrdersExport;
 use App\Models\Payment;
 use Auth;
+use PDF;
 
 class OrderController extends Controller
 {
@@ -123,5 +124,17 @@ class OrderController extends Controller
       $update = $orders->update($orderUpdate);
 
       return redirect()->route('orders.index');
+    }
+
+
+    public function invoiceDownload($id) {
+      $result = Order::with(['processedBy','deliveredBy','orderItems','deliveredAddress'])->find($id);
+      $data = [
+        'result' => $result
+      ];
+      //dd($result);
+      $pdf = PDF::loadView('admin.pdf.invoice', $data);
+      return $pdf->download('invoice.pdf');
+      //return view('admin.pdf.invoice',compact('result'));
     }
 }

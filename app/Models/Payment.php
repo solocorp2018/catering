@@ -32,7 +32,7 @@ class Payment extends Model
      	list($sortfield,$sorttype) = getSorting();
 
 
-     	$result = static::with(['order','paidBy:id,name,contact_number','receivedBy:id,name,contact_number'])->filter();
+     	$result = static::with(['order','paidBy:id,name,contact_number','recievedBy:id,name,contact_number'])->filter();
 
      	$sortfield = ($sortfield == 'payment_no')?'payment_unique_id':$sortfield;
      	$sortfield = ($sortfield == 'date')?'order_date':$sortfield;
@@ -45,15 +45,14 @@ class Payment extends Model
     /*Below Are Relationship*/
 
     public function order() {
-    	return $this->belongsTo('App\Models\Order','order_id');
+    	return $this->belongsTo('App\Models\Order','order_id')->with(['deliveredAddress','orderItems']);
     }
 
     public function paidBy() {
     	return $this->belongsTo('App\Models\User','paid_by');
     }
 
-
-    public function receivedBy() {
+    public function recievedBy() {
     	return $this->belongsTo('App\Models\User','recieved_by');
     }
 

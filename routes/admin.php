@@ -23,6 +23,9 @@ Route::middleware(['admin'])->group(function () {
 	Route::get('/payments/{id}','Admin\PaymentController@show')->name('payments.show');
 	Route::get('/payments-export','Admin\PaymentController@export')->name('payments.export');
 
+	Route::get('/orderInvoice/{id}','Admin\OrderController@invoiceDownload')->name('order.invoice');
+	
+
 	Route::post('/paymentUpdateStatus/{id}','Admin\OrderController@updateStatus')->name('payment.updateStatus');
 
 	Route::post('/updateAddress/{id}','Admin\UserController@updateAddress')->name('users.updateAddress');

@@ -18,10 +18,13 @@
             </div>
         </div>
     </div>
+
       <div class="row">
 
          <div class="col-lg-12 card">
+
            <div class="card-body">
+             
              <div class="row">
                  <div class="col-md-3 col-xs-6 b-r"> <strong>Order ID</strong>
                      <br>
@@ -52,7 +55,7 @@
                     @if(isset($result->payment_status) && $result->payment_status == 1)
                       <p class="text-muted">Paid</p>
                     @else
-                      <p class="text-muted">Pendig</p>
+                      <p class="text-muted">Pending</p>
                     @endif
                  </div>
                  <div class="col-md-3 col-xs-6"> <strong>Payment date</strong>

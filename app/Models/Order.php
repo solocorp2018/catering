@@ -9,7 +9,7 @@ class Order extends Model
 {
 	use SoftDeletes;
 
-    protected $fillable = ['id', 'session_menu_id','order_unique_id', 'customer_id', 'order_date', 'total_amount', 'order_status', 'confirmed_by', 'order_processed_by', 'delivered_by', 'payment_status'];
+    protected $fillable = ['id', 'session_menu_id','order_unique_id', 'customer_id', 'order_date', 'total_amount', 'order_status', 'confirmed_by', 'order_processed_by', 'delivered_by', 'payment_status','delivered_address'];
 
 
     public function scopeFilter($query) {
@@ -39,15 +39,19 @@ class Order extends Model
 
     /* Below Are Relationships*/
     public function orderItems() {
-    	return $this->hasMany('App\Models\OrderDetail','order_id');
+    	return $this->hasMany('App\Models\OrderDetail','order_id')->with('menuItems');
     }
 
     public function processedBy() {
-        return $this->belongsTo('App\Models\User','paid_by');
+        return $this->belongsTo('App\Models\User','order_processed_by');
     }
 
 
     public function deliveredBy() {
-        return $this->belongsTo('App\Models\User','recieved_by');
+        return $this->belongsTo('App\Models\User','delivered_by');
     }
+
+		public function deliveredAddress() {
+			return $this->belongsTo('App\Models\UserAddress','delivered_address');
+		}
 }
