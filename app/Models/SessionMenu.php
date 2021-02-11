@@ -52,7 +52,7 @@ class SessionMenu extends Model
    }
 
    public function menuItemComplimentary() {
-    return $this->hasMany('App\Models\menuItemComplimentary','menu_id')->with('complimentaries');
+    return $this->hasMany('App\Models\MenuItemComplimentary','menu_id')->with('complimentaries');
    }
 
 }

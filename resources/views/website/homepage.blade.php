@@ -6,7 +6,7 @@
       <section class="restaurant-detailed-banner">
          <div class="text-center">
             <!-- <img class="img-fluid cover" src="{{asset('website/img/mall-dedicated-banner.png')}}"> -->
-            <img class="img-fluid cover" style="width:auto !important;" src="{{asset('website/img/banner-1.png')}}">
+            <img class="img-fluid cover" style="max-width:100% !important;" src="{{asset('website/img/banner-1.png')}}">
          </div>
 
          <div class="restaurant-detailed-header">
