@@ -90,7 +90,7 @@
                                   <th>Complimentaries</th>
                                   <th class="required">Price</th>
                                   <th>Status</th>
-                                  <th>Action</th>
+                                  
                                 </tr>
                               </thead>
                               <tbody>
@@ -130,9 +130,7 @@
                                   <td>
                                     <input type="checkbox" name="menu_items[{{$i}}][status]" value="1" class="custom-checkbox" {{CHECKBOX(old('menu_items[$i][status]'))}}>
                                   </td>
-                                  <td>
-                                      <a><i class="fa fa-trash"></i></a>
-                                  </td>
+
                                 </tr>
                               @endfor
                               </tbody>

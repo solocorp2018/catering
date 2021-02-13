@@ -55,9 +55,11 @@
                                  <thead>
                                     <tr>
 
-                                       <th><a class="sort" data-column="name"><i class="fa fa-sort" aria-hidden="true"></i>Session Type</a></th>
+                                       <th>Session Type</th>
 
-                                       <th><a class="sort" data-column="amount"><i class="fa fa-sort" aria-hidden="true"></i>Session Date</th>
+                                       <th><a class="sort" data-column="date"><i class="fa fa-sort" aria-hidden="true"></i>&nbsp;Session Date</a></th>
+                                       <th><a class="sort" data-column="code"><i class="fa fa-sort" aria-hidden="true"></i>&nbsp;Session Code</th>
+                                        <th>Item(s)</th>
                                        <th>Opening Time</th>
                                        <th>Closing Time</th>
                                        <th>Status</th>
@@ -68,10 +70,12 @@
 
                                   @if(!empty($results) && $results->count())
                                   @foreach($results as $result)
-                                    <tr>
+                                    <tr>                                     
 
                                        <td>{{$result->sessionType->type_name ?? ''}}</td>
-                                       <td>{{dateOf($result->session_date) ?? ''}}</td>
+                                       <td>{{showDate($result->session_date,'d/M/Y') ?? ''}}</td>
+                                       <td>{{$result->session_code ?? ''}}</td>
+                                       <td>{{$result->sessionItem->count() ?? 0}}</td>
                                        <td>{{Time24to12($result->opening_time) ?? ''}}</td>
                                        <td>{{Time24to12($result->closing_time) ?? ''}}</td>
                                        <td>

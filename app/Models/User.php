@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Auth;
 
 class User extends Authenticatable
 {
@@ -67,7 +68,16 @@ class User extends Authenticatable
      	$sortfield = ($sortfield == 'email')?'email':$sortfield;
 
      	return $result->orderBy($sortfield,$sorttype)->paginate($page_length);
-     }
+    }
+
+    public static function currentUserOrder() {
+        $user_id = Auth::user()->id;
+        return static::with(['orders.deliveredAddress','orders.orderItems.item'])->find($user_id);        
+    }
+
+    public function orders() {
+        return $this->hasMany('App\Models\Order','customer_id');
+    }
 
     public function userAddress(){
         return $this->hasMany('App\Models\UserAddress');

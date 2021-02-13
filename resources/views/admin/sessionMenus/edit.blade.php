@@ -50,13 +50,13 @@
                                 <div class="form-group col-sm-4 col-xs-4 bootstrap-timepicker timepicker">
                                     <label for="opening_time" class="required">Session Opening Time</label>
                                     <input type="time" class="form-control input-small" name="opening_time" value="{{old('opening_time',$result->opening_time)}}">
-                                    <small class="form-text text-muted">Opening Time For the date : {{date('d/m/Y')}}</small>
+                                    <!-- <small class="form-text text-muted">Opening Time For the date : {{date('d/m/Y')}}</small> -->
                                 </div>
 
                                 <div class="form-group col-sm-4 col-xs-4 bootstrap-timepicker timepicker">
                                     <label for="closing_time">Session Closing Time </label>
                                     <input type="time" class="form-control input-small" name="closing_time" value="{{old('closing_time',$result->closing_time)}}">
-                                    <small class="form-text text-muted">Closing Time For the date : {{date('d/m/Y')}}</small>
+                                    <!-- <small class="form-text text-muted">Closing Time For the date : {{date('d/m/Y')}}</small> -->
                                 </div>
                             </div>
                             <div class="row pt-3">
@@ -90,7 +90,7 @@
                                   <th>Complimentaries</th>
                                   <th class="required">Price</th>
                                   <th>Status</th>
-                                  <th>Action</th>
+                                
                                 </tr>
                               </thead>
 
@@ -150,9 +150,7 @@
                                   <td>
                                     <input type="checkbox" name="menu_items[{{$i}}][status]" value="1" class="custom-checkbox" {{CHECKBOX('menu_items[$i][status]',$menu->status ?? 0)}}>
                                   </td>
-                                  <td>
-                                      <a><i class="fa fa-trash"></i></a>
-                                  </td>
+                                  
                                 </tr>
 								@endfor
                               </tbody>

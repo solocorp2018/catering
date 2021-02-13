@@ -24,9 +24,13 @@
                      <br>
                      <p class="text-muted">{{$result->sessionType->type_name ?? ''}}</p>
                  </div>
+                 <div class="col-md-3 col-xs-6 b-r"> <strong>Session Code</strong>
+                     <br>
+                     <p class="text-muted">{{$result->session_code ?? ''}}</p>
+                 </div>
                  <div class="col-md-3 col-xs-6 b-r"> <strong>Session Date</strong>
                      <br>
-                     <p class="text-muted">{{dateOf($result->session_date) ?? ''}}</p>
+                     <p class="text-muted">{{showDate($result->session_date,'d/M/y') ?? ''}}</p>
                  </div>
                  <div class="col-md-3 col-xs-6 b-r"> <strong>Opening Time</strong>
                      <br>

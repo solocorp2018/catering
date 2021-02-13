@@ -24,9 +24,11 @@ class HomePageController extends Controller
 
     	$sessionMenu = new SessionMenu();
     	$todaysMenu = $sessionMenu->getTodayMenu();
-        $userData = $this->userModel->getUserData(Auth::user()->id);                
-        $cart = collect();
+        
+        
+        $cart = $userData = collect();
         if(Auth::user()){
+            $userData = $this->userModel->getUserData(Auth::user()->id);                
             $cart = Cart::getCurrentUserCart();
         }        
     	
@@ -38,11 +40,13 @@ class HomePageController extends Controller
 
         $userData = $this->userModel->getUserData(Auth::user()->id);
         $cart = collect();
+        $userOrders = collect();
 
         if(Auth::user()){
             $cart = Cart::getCurrentUserCart();
+            $userOrders = User::currentUserOrder();
         }
-    	return view('website.user-dashboard',compact('userData','cart'));
+    	return view('website.user-dashboard',compact('userData','cart','userOrders'));
     }
 
     public function checkout(Request $request) {
@@ -82,7 +86,6 @@ class HomePageController extends Controller
         UserAddress::create($userAddressData);
 
         return redirect()->back();
-
     }
 
     public function placeOrder(Request $request) {

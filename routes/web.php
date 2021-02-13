@@ -20,6 +20,7 @@ Route::post('/update-cart','Website\CartController@updateToCart');
 Route::post('/update-cart','Website\CartController@updateToCart');
 Route::post('/refresh-cart','Website\CartController@refreshCart');
 Route::post('/add-address','Website\HomePageController@addAddress')->name('add.address');
+Route::get('/delete-address/{id}','Website\HomePageController@deleteAddress')->name('delete.address');
 Route::post('/place/order','Website\HomePageController@placeOrder')->name('place.order');
 
 Route::post('customer/login','Auth\LoginController@customerLogin');

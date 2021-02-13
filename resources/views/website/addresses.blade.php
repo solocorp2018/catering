@@ -20,8 +20,7 @@
                                              </p>
                                              @endif
                                              <p class="text-black">{{$userAddresses->city ?? ''}} - {{ $userAddresses->pincode ?? ''}} 
-                                             </p>
-                                             <p class="mb-0 text-black font-weight-bold"><a class="text-primary mr-3" data-toggle="modal" data-target="#add-address-modal" href="#"><i class="icofont-ui-edit"></i> EDIT</a> <a class="text-danger" data-toggle="modal" data-target="#delete-address-modal" href="#"><i class="icofont-ui-delete"></i> DELETE</a></p>
+                                             </p>                                             
                                           </div>
                                        </div>
                                     </div>

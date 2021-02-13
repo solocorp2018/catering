@@ -19,6 +19,8 @@ class CreatePaymentsTable extends Migration
             $table->string('payment_unique_id');
             $table->unsignedBigInteger('order_id');
             $table->float('amount',8,2);
+            $table->string('transaction_id')->nullable();
+            $table->text('comments')->nullable();
             $table->unsignedSmallInteger('payment_mode');
             $table->unsignedBigInteger('recieved_by')->default(0);
             $table->dateTime('payment_date');

@@ -14,7 +14,7 @@
                     <li class="breadcrumb-item"><a href="{{url('/dashboard')}}">Dashboard</a></li>
                     <li class="breadcrumb-item active">Payments</li>
 
-                </ol>            
+                </ol>
 
             </div>
         </div>
@@ -58,14 +58,15 @@
                                  <thead>
                                     <tr>
 
-                                       
+
                                        <th><a class="sort" data-column="payment_no"><i class="fa fa-sort" aria-hidden="true"></i>Payment No.</a></th>
                                        <th>Order No.</th>
                                        <th>Total Items</th>
                                        <th>Payment Status</th>
-                                       <th>Processed By</th>              
-                                       <th>Delivered By</th>              
-
+<!--                                        <th>Processed By</th>
+                                       <th>Delivered By</th>
+ -->
+                                       <th>Invoice</th>
                                        <th>Action</th>
                                     </tr>
                                  </thead>
@@ -74,29 +75,31 @@
                                   @if(!empty($results) && $results->count())
                                   @foreach($results as $result)
                                     <tr>
-                                      
-                                       <td>{{showDate($result->payment_unique_id ?? '--')}}</td>
-                                       <td>{{showDate($result->order->order_unique_id ?? '')}}</td>                         
+
+                                       <td>#{{$result->payment_unique_id ?? '--'}}</td>
+                                       <td>{{$result->order->order_unique_id ?? ''}}</td>
+
+                                       <td>{{$result->order->total_amount ?? 0}} INR</td>
                                        
-                                       <td>{{$result->orderDetailsCount ?? 0}}</td>  
-                                       <td>
-                                         @if(isset($result->payment_status) && $result->payment_status == 1)
-                                        <span class="text-success">Paid</span>
+                                       <td>                                        
+                                        @if(isset($result->payment_status))
+                                        <span class="text-success">{{findPaymentStatus($result->payment_status)}}</span>
                                         @else
                                           <span class="text-danger">Pending</span>
                                         @endif
-                                       </td>  
-                                       <td>{{$result->processed_by ?? "--"}}</td>  
-                                       <td>{{$result->delivered_by ?? "--"}}</td>
+                                       </td>
+                                       <td><a class="" href="{{route('order.invoice',$result->id)}}"><i class="fa fa-download"></i> Invoice</a></td>
+                                       <!-- <td>{{$result->processedBy->name ?? "--"}}</td>
+                                       <td>{{$result->deliveredBy->name ?? "--"}}</td> -->
                                       <td>
-                                        <a class="waves-effect waves-dark" href="{{route('payments.show',$result->id)}}"><i class="fa fa-eye"></i></a>
+                                        <a class="waves-effect waves-dark" href="{{route('payments.show',$result->id)}}"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;
                                         
-                                        </td>
+                                      </td>
                                     </tr>
                                   @endforeach
                                   @else
 
-                                  <tr> 
+                                  <tr>
                                     <td collspan="6">No Records Found..</td>
                                   </tr>
                                   @endif
@@ -107,7 +110,7 @@
                         <div class="row m-b-40">
                            <div class="col-sm-12 col-md-6">
                               <div>
-                                   @if(!empty($results) && $results->count())              
+                                   @if(!empty($results) && $results->count())
                                         Showing {{$results->firstItem()}} to {{$results->lastItem()}} of {{ $results->total() }} entries
 
                                     @endif
@@ -133,8 +136,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
-    setPageUrl('/payments?');  
-  }); 
+    setPageUrl('/payments?');
+  });
 </script>
 @endsection
-

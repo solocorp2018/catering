@@ -52,7 +52,18 @@
                      @if($menuCount > 0)
                      <li class="nav-item">
                         <a class="nav-link tabNav {{($key == 0)?'active':'' }}" id="pill{{$todayMenu->id}}000-tab" data-toggle="pill" href="#pill{{$todayMenu->id}}000" role="tab" aria-controls="pill{{$todayMenu->id}}000" aria-selected="true">{{$todayMenu->sessionType->type_name ?? '--'}}
+                           @php
+                              $sessionStatus = isOpenForOrder($todayMenu->opening_time,$todayMenu->closing_time);
+                              
+                           @endphp
+                           @if($sessionStatus == 1) 
                            <span class="badge badge-success">open</span>
+                           @elseif($sessionStatus == 2)
+                           <span class="badge badge-warning">upcoming</span>
+                           @else
+                           <span class="badge badge-danger">closed</span>
+                           @endif
+
                         </a>
                      </li>
                      @endif
@@ -85,13 +96,16 @@
                                  <div class="bg-white rounded border shadow-sm mb-4">
                                  	@foreach($todayMenu->menuItem as $menuItem)
                                     <div class="gold-members p-3 border-bottom">
-                                       @if(Auth::user())
-                                       <span class="count-number float-right">
-                                          <button class="btn btn-outline-secondary  btn-sm left dec" onclick="updateItemToCart({{$menuItem->item_id}},{{$todayMenu->id}},0)"> <i class="icofont-minus"></i> </button>
-                                          <input class="count-number-input" type="text" value="1" readonly="">
-                                          <button class="btn btn-outline-secondary btn-sm right inc" onclick="updateItemToCart({{$menuItem->item_id}},{{$todayMenu->id}},1)"> <i class="icofont-plus"></i> </button>
-                                          </span>
-                                          @endif
+                                       @php
+                                          $sessionStatus = isOpenForOrder($todayMenu->opening_time,$todayMenu->closing_time);
+                                          
+                                       @endphp
+                                       @if(Auth::user() && $sessionStatus == 1)
+                                       
+                                       
+                                       <a class="btn btn-outline-secondary btn-sm  float-right" onclick="updateItemToCart({{$menuItem->item_id}},{{$todayMenu->id}},1)">ADD</a>
+                                       @endif
+                                       
                                        <div class="media">
                                           <div class="mr-3"><i class="icofont-ui-press text-success food-item"></i></div>
                                           <div class="media-body">
@@ -99,9 +113,15 @@
                                              	
                                              	@if($menuItem->menuComplimentaries->count() > 0)
                                              	<small style="font-size: 70%;font-weight: 500;">(
-                                             	@foreach($menuItem->menuComplimentaries as $complimentary)
+                                             	@foreach($menuItem->menuComplimentaries as $key => $complimentary)
+                                             	@if($key > 0)
+                                                ,
+                                                @endif
+
+                                                @if(!empty($complimentary->complimentaries))
+                                                   {{$complimentary->complimentaries->name ?? ''}}
+                                                @endif
                                              	
-                                             	{{$complimentary->complimentaries->value('name').','}}
                                              	@endforeach
 
                                              	)</small>

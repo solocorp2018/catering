@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-@extends('layouts.layout')
-@section('title', 'View Category')
-=======
 @extends('admin.layouts.layout')
 @section('title', 'View Payment')
->>>>>>> renuka02
 @section('content')
 <div class="page-wrapper">
    <div class="container-fluid">
@@ -23,10 +18,13 @@
             </div>
         </div>
     </div>
+
       <div class="row">
 
          <div class="col-lg-12 card">
+
            <div class="card-body">
+             
              <div class="row">
                  <div class="col-md-3 col-xs-6 b-r"> <strong>Order ID</strong>
                      <br>
@@ -38,27 +36,23 @@
                  </div>
                  <div class="col-md-3 col-xs-6"> <strong>Payment mode</strong>
                      <br>
-                     @if(isset($result->payment_mode) && $result->payment_mode == 1)
-                       <p class="text-muted">Cash</p>
-                     @else
-                       <p class="text-muted">ATM Card</p>
-                     @endif
+                     
+                       <p class="text-muted">{{findPaymentMode($result->payment_mode)}}</p>
+                     
                  </div>
-                 <div class="col-md-3 col-xs-6"> <strong>Recieved By</strong>
+                 <!-- <div class="col-md-3 col-xs-6"> <strong>Recieved By</strong>
                      <br>
-                     <p class="text-muted">{{$result->recievedBy[0]->name ?? ''}}</p>
+                     <p class="text-muted">{{$result->recievedBy[0]->name ?? '--'}}</p>
                  </div>
                  <div class="col-md-3 col-xs-6"> <strong>Paid By</strong>
                      <br>
-                     <p class="text-muted">{{$result->paidBy[0]->name ?? ''}}</p>
-                 </div>
+                     <p class="text-muted">{{$result->paidBy[0]->name ?? '--'}}</p>
+                 </div> -->
                  <div class="col-md-3 col-xs-6"> <strong>Payment Status</strong>
                      <br>
-                    @if(isset($result->payment_status) && $result->payment_status == 1)
-                      <p class="text-muted">Paid</p>
-                    @else
-                      <p class="text-muted">Pendig</p>
-                    @endif
+                    
+                      <p class="text-muted">{{findPaymentStatus($result->payment_status)}}</p>
+                    
                  </div>
                  <div class="col-md-3 col-xs-6"> <strong>Payment date</strong>
                      <br>
@@ -72,4 +66,3 @@
    </div>
 </div>
 @endsection
-

@@ -5,14 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Cart;
+use App\Models\SessionMenu;
 use App\Models\OrderDetail;
 use Auth;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
 	use SoftDeletes;
 
+
     protected $fillable = ['id', 'session_menu_id','address_id','order_unique_id', 'customer_id', 'order_date', 'total_amount', 'order_status', 'confirmed_by', 'order_processed_by', 'delivered_by', 'status'];
+
 
 
     public function scopeFilter($query) {
@@ -31,7 +35,7 @@ class Order extends Model
 
      	list($sortfield,$sorttype) = getSorting();
 
-     	$result = static::with(['orderItems','processedBy:id,name','deliveredBy:id,name'])->filter();
+     	$result = static::with(['orderItems','sessionMenu','processedBy:id,name','deliveredBy:id,name'])->filter();
 
      	$sortfield = ($sortfield == 'order_no')?'order_unique_id':$sortfield;
      	$sortfield = ($sortfield == 'date')?'order_date':$sortfield;
@@ -43,11 +47,14 @@ class Order extends Model
     public function placeOrder($deliveryId) {
 
         $cartData = Cart::getCurrentUserCart();
+        $sessionMenu = new SessionMenu();
+
+        $lastRowofCartSession = $cartData->last()->session_id ?? 0;
 
         $order = array();        
 
         $order['order_unique_id'] = $this->orderUniqueid();
-        $order['session_menu_id'] = '1';
+        $order['session_menu_id'] = $lastRowofCartSession;
         $order['customer_id'] = Auth::user()->id;
         $order['address_id'] = $deliveryId;
         $order['order_date'] = today();
@@ -81,9 +88,18 @@ class Order extends Model
 
     public function orderUniqueid() {
 
-        $unique_id = "ORD".mt_rand() . Auth::user()->id;
+        $prefix="ORD";
 
-        return $unique_id;
+        $uniqueCode = $this->select('id')->orderBy('id','desc')->first();        
+
+        $startId = 1;
+        if(!empty($uniqueCode)){
+          $startId = $uniqueCode->id+1;
+        }
+
+        $menuUniqueCode = sprintf("%06d", $startId);
+
+        return $prefix.$menuUniqueCode;
     }
 
     /* Below Are Relationships*/
@@ -91,16 +107,30 @@ class Order extends Model
     	return $this->hasMany('App\Models\OrderDetail','order_id');
     }
 
+    public function recievedBy() {
+        return $this->belongsTo('App\Models\User','order_processed_by');
+    }
     public function processedBy() {
-        return $this->belongsTo('App\Models\User','paid_by');
+        return $this->belongsTo('App\Models\User','order_processed_by');
     }
 
     public function address() {
         return $this->belongsTo('App\Models\UserAddress','address_id');
     }
 
+    public function sessionMenu() {
+        return $this->belongsTo('App\Models\SessionMenu','session_menu_id');
+    }
 
     public function deliveredBy() {
-        return $this->belongsTo('App\Models\User','recieved_by');
+        return $this->belongsTo('App\Models\User','delivered_by');
+    }
+
+	public function deliveredAddress() {
+		return $this->belongsTo('App\Models\UserAddress','address_id');
+	}
+
+    public function payment() {
+        return $this->hasOne('App\Models\Payment','order_id');
     }
 }

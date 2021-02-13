@@ -87,6 +87,7 @@ class MenuController extends Controller
               'session_date'=> $request->session_date,
               'opening_time' => $request->opening_time,
               'closing_time' => $request->closing_time,
+              'session_code' => SessionMenu::sessionUniqueId(),
               'expected_delivery_time' => $request->delivery_time,
               'status' => $request->status,
               'created_by'=> Auth::user()->id
@@ -185,6 +186,7 @@ class MenuController extends Controller
    */
   public function update(Request $request,$id)
   {
+
       $validator = Validator::make($request->all(),$this->rules($id),$this->messages(),$this->attributes());
 
       if($validator->fails()) {
@@ -193,6 +195,7 @@ class MenuController extends Controller
       }
 
       $sessionMenu = SessionMenu::find($id);
+
 
       $input = array();
       $input = [
@@ -205,19 +208,7 @@ class MenuController extends Controller
             'status' => $request->status,
           ];
 
-      $result = $sessionMenu->update($input);
-
-      /*
-      $menuitems = MenuItem::select(DB::raw("CONCAT(id) AS ids"))->where('session_menu_id','=',$id)->get();
-
-      foreach($menuitems as $val) {
-        MenuItem::find($val->ids)->delete();
-      }
-      $complimentary = MenuItemComplimentary::select(DB::raw("CONCAT(id) AS ids"))->where('session_menu_id','=',$id)->get();
-
-      foreach($complimentary as $val) {
-        MenuItemComplimentary::find($val->ids)->delete();
-      }*/
+      $result = $sessionMenu->update($input);      
 
       $menuItems = $request->menu_items ?? [];
 
@@ -281,10 +272,10 @@ class MenuController extends Controller
       $rules = array();
 
       $rules['session_type'] = 'required|exists:session_types,id,status,'._active();
-      if(!$id == '') {
-        $rules['opening_time'] = 'required|date_format:H:i:s';
-        $rules['closing_time'] = 'required|date_format:H:i:s|after:opening_time';
-        $rules['delivery_time'] = 'required|date_format:H:i:s|after:opening_time|after:closing_time';
+      if($id) {
+        $rules['opening_time'] = 'required';
+        $rules['closing_time'] = 'required|date_format:H:i|after:opening_time';
+        $rules['delivery_time'] = 'required|date_format:H:i|after:opening_time|after:closing_time';
       } else {
         $rules['opening_time'] = 'required|date_format:H:i';
         $rules['closing_time'] = 'required|date_format:H:i|after:opening_time';

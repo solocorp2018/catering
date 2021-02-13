@@ -18,6 +18,7 @@ class CreateSessionMenusTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedSmallInteger('session_type_id');            
             $table->dateTime('session_date');            
+            $table->string('session_code');            
             $table->time('opening_time');            
             $table->time('closing_time');            
             $table->time('expected_delivery_time')->nullable();            

@@ -13,11 +13,11 @@
                </div> -->
                <div class="col-md-12">
                   <div class="bg-white p-4 shadow-lg mb-2">
-                     <div class="mb-2"><small>Order #{{$orderUniqueId}}<a class="float-right font-weight-bold" href="#"><i class="icofont-headphone-alt"></i> HELP</a></small></div>
+                     <div class="mb-2"><small>Order #{{$orderUniqueId}}<a class="float-right font-weight-bold" href="tel:{{supportnumber()}}"><i class="icofont-headphone-alt"></i> HELP</a></small></div>
                      <h6 class="mb-1 mt-1"><a href="{{url('/')}}" class="text-black">M R Grandson Caters
                         </a>
                      </h6>
-                     <p class="text-gray mb-0">{{$orderData->orderItems->count()}} | {{$orderData->total_amount}} INR</p>
+                     <p class="text-gray mb-0">{{$orderData->orderItems->count()}} Items | {{$orderData->total_amount}} INR</p>
                   </div>
                   <div class="bg-white p-4 shadow-lg">
                      <div class="osahan-track-order-detail po">
@@ -53,7 +53,7 @@
 
                               @if(!empty($orderData->orderItems))
                               @foreach($orderData->orderItems as $orderItems)
-                                 <p class="mb-2"><i class="icofont-ui-press text-success food-item"></i> {{$orderItems->quantity}} * {{$orderItems->item->name}} <span class="float-right text-secondary">{{$orderItems->quantity_price}} INR</span></p>
+                                 <p class="mb-2"><i class="icofont-ui-press text-success food-item"></i> {{$orderItems->quantity}} * {{$orderItems->item->name}} <span class="float-right text-secondary">{{$orderItems->total_amount}} INR</span></p>
                                  @endforeach
                               @endif
                               
