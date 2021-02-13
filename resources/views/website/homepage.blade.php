@@ -86,11 +86,7 @@
                                  	@foreach($todayMenu->menuItem as $menuItem)
                                     <div class="gold-members p-3 border-bottom">
                                        @if(Auth::user())
-                                       <span class="count-number float-right">
-                                          <button class="btn btn-outline-secondary  btn-sm left dec" onclick="updateItemToCart({{$menuItem->item_id}},{{$todayMenu->id}},0)"> <i class="icofont-minus"></i> </button>
-                                          <input class="count-number-input" type="text" value="1" readonly="">
-                                          <button class="btn btn-outline-secondary btn-sm right inc" onclick="updateItemToCart({{$menuItem->item_id}},{{$todayMenu->id}},1)"> <i class="icofont-plus"></i> </button>
-                                          </span>
+                                       <a class="btn btn-outline-secondary btn-sm  float-right" onclick="updateItemToCart({{$menuItem->item_id}},{{$todayMenu->id}},0)">ADD</a>
                                           @endif
                                        <div class="media">
                                           <div class="mr-3"><i class="icofont-ui-press text-success food-item"></i></div>

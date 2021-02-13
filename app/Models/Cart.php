@@ -33,7 +33,7 @@ class Cart extends Model
 	    				     ->where('session_id',$currentSessionId)
 	    				     ->first();
 
-	    	$count = (!empty($cartItem) && isset($cartItem->quantity))?$cartItem->quantity: 0;
+	    	 $count = (!empty($cartItem) && isset($cartItem->quantity))?$cartItem->quantity: 0;
 
 	    	
 

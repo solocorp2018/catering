@@ -54,7 +54,7 @@
                         <h5 class="card-title">Total Orders</h5>
                         <div class="d-flex m-t-30 m-b-20 no-block align-items-center">
                            <span class="display-5 text-info"><i class="icon-speedometer"></i></span>
-                           <a href="javscript:void(0)" class="link display-5 ml-auto">100</a>
+                           <a href="javscript:void(0)" class="link display-5 ml-auto">{{$totalOrderCount}}</a>
                         </div>
                      </div>
                   </div>
@@ -66,7 +66,7 @@
                         <h5 class="card-title">Today Orders</h5>
                         <div class="d-flex m-t-30 m-b-20 no-block align-items-center">
                            <span class="display-5 text-purple"><i class="icon-basket"></i></span>
-                           <a href="javscript:void(0)" class="link display-5 ml-auto">20</a>
+                           <a href="javscript:void(0)" class="link display-5 ml-auto">{{$todayOrderCount}}</a>
                         </div>
                      </div>
                   </div>
@@ -78,7 +78,7 @@
                         <h5 class="card-title">Today Amount</h5>
                         <div class="d-flex m-t-30 m-b-20 no-block align-items-center">
                            <span class="display-5 text-primary"><i class="icon-credit-card"></i></span>
-                           <a href="javscript:void(0)" class="link display-5 ml-auto">30</a>
+                           <a href="javscript:void(0)" class="link display-5 ml-auto">{{$todayOrderAmount}}</a>
                         </div>
                      </div>
                   </div>
@@ -87,10 +87,10 @@
                <div class="col-md-3">
                   <div class="card">
                      <div class="card-body">
-                        <h5 class="card-title">Total Customers</h5>
+                        <h5 class="card-title">Active Customers</h5>
                         <div class="d-flex m-t-30 m-b-20 no-block align-items-center">
                            <span class="display-5 text-success"><i class="icon-people"></i></span>
-                           <a href="javscript:void(0)" class="link display-5 ml-auto">100</a>
+                           <a href="javscript:void(0)" class="link display-5 ml-auto">{{$activeCustomerCount}}</a>
                         </div>
                      </div>
                   </div>

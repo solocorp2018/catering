@@ -19,3 +19,7 @@ function userimage() {
 	return asset('packa/theme/images/users/noimage.jpg');
 	
 }
+
+function gpayNumber() {
+	return "xxxxxxxxxxxx";
+}

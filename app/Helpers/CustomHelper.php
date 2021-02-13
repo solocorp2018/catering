@@ -15,9 +15,10 @@ use Carbon\Carbon;
 
 		$timezone = ($timezone)?$timezone:config('constant.custom_timezone');
 
-		if ((is_string($time))) {
-			$time = \Carbon\Carbon::createFromFormat('Y-m-d', $time);
-		}
+		$time = Carbon::parse($time);
+		// if ((is_string($time))) {
+		// 	$time = \Carbon\Carbon::createFromFormat('Y-m-d', $time);
+		// }
 		
 		$time = $time->setTimezone($timezone);
 

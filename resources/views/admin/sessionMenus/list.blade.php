@@ -71,7 +71,7 @@
                                     <tr>
 
                                        <td>{{$result->sessionType->type_name ?? ''}}</td>
-                                       <td>{{dateOf($result->session_date) ?? ''}}</td>
+                                       <td>{{showDate($result->session_date,'d/M/Y') ?? ''}}</td>
                                        <td>{{Time24to12($result->opening_time) ?? ''}}</td>
                                        <td>{{Time24to12($result->closing_time) ?? ''}}</td>
                                        <td>

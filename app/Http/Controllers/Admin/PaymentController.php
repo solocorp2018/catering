@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Payment;
 use App\Exports\PaymentsExport;
+use App\Models\Order;
 
 class PaymentController extends Controller
 {
@@ -57,7 +58,7 @@ class PaymentController extends Controller
      */
     public function show($id)
     {
-        $result = Payment::with(['recievedBy','paidBy'])->find($id);
+        $result = Payment::with(['paidBy','recievedBy'])->find($id);
         //dd($result);
         return view('admin.payments.show',compact('result'));
     }
@@ -101,4 +102,12 @@ class PaymentController extends Controller
     	$filename = 'payments-list-'.date('d-m-Y').'.csv';
     	return Excel::download(new PaymentsExport, $filename);
     }
+
+    public function paymentInvoice($id) {
+      $result = Order::with(['processedBy','deliveredBy','orderItems','deliveredAddress'])->find($id);
+
+      return view('admin.payments.invoice',compact('result'));
+    }
+
+
 }

@@ -17,12 +17,12 @@ function paymentStatuses() {
 
 
 function findPaymentStatus($id) {
-	$statusArr = paymentStatuses();
-	return collect($statusArr)->where('id',$id)->name ?? '';
+
+	$statusArr = paymentStatuses();		
+	return collect($statusArr)->where('id',$id)->first()['name'] ?? '';
 }
 
 function orderStatuses() {
-
 	return [
 		['id' => 1, 'name'=>'Placed'],
 		['id' => 2, 'name'=>'Confirmed'],	
@@ -34,5 +34,22 @@ function orderStatuses() {
 
 function findOrderStatus($id) {
 	$statusArr = orderStatuses();
-	return collect($statusArr)->where('id',$id)->name ?? '';
+	return collect($statusArr)->where('id',$id)->first()['name'] ?? '';
+}
+
+
+function paymentModes() {
+
+	return [
+		['id' => 1, 'name'=>'Gpay'],
+		['id' => 2, 'name'=>'Phonepay'],	
+		['id' => 3, 'name'=>'Account Transfer'],	
+		['id' => 4, 'name'=>'Cash'],	
+	];
+}
+
+
+function findPaymentMode($id) {
+	$paymentModeArr = paymentModes();
+	return collect($paymentModeArr)->where('id',$id)->first()['name'] ?? '';
 }

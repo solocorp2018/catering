@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Cart;
 use App\Models\OrderDetail;
 use Auth;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
 	use SoftDeletes;
 
+
     protected $fillable = ['id', 'session_menu_id','address_id','order_unique_id', 'customer_id', 'order_date', 'total_amount', 'order_status', 'confirmed_by', 'order_processed_by', 'delivered_by', 'status'];
+
 
 
     public function scopeFilter($query) {
@@ -81,18 +84,29 @@ class Order extends Model
 
     public function orderUniqueid() {
 
-        $unique_id = "ORD".mt_rand() . Auth::user()->id;
+        $prefix="ORD";
 
-        return $unique_id;
+        $uniqueCode = Str::random(6);
+
+        $is_exist = $this->select('order_unique_id')->where('order_unique_id',$prefix.$uniqueCode)->count();
+
+        while ($is_exist > 0) {
+          $this->orderUniqueid();
+        }
+        return $prefix.$uniqueCode;
     }
+
 
     /* Below Are Relationships*/
     public function orderItems() {
     	return $this->hasMany('App\Models\OrderDetail','order_id');
     }
 
+    public function recievedBy() {
+        return $this->belongsTo('App\Models\User','order_processed_by');
+    }
     public function processedBy() {
-        return $this->belongsTo('App\Models\User','paid_by');
+        return $this->belongsTo('App\Models\User','order_processed_by');
     }
 
     public function address() {
@@ -101,6 +115,14 @@ class Order extends Model
 
 
     public function deliveredBy() {
-        return $this->belongsTo('App\Models\User','recieved_by');
+        return $this->belongsTo('App\Models\User','delivered_by');
+    }
+
+	public function deliveredAddress() {
+		return $this->belongsTo('App\Models\UserAddress','address_id');
+	}
+
+    public function payment() {
+        return $this->hasOne('App\Models\Payment','order_id');
     }
 }
