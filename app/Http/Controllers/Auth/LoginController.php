@@ -58,7 +58,7 @@ class LoginController extends Controller
 
         VerifyOtp::updateOrCreate(['mobile'=>$mobileNumber],['mobile'=>$mobileNumber,'otp'=>$otp]);
 
-        $message = $otp." is the OTP for your ".env('APP_NAME')." registration.";
+        $message = $otp." is OTP for ".config('catering.weblink').". This is one time valid OTP.";
         TextLocalSmsGateway::sendSms($mobileNumber,$message);
 
         return response(['status'=>1,'message'=>'OTP sent successfully !']);

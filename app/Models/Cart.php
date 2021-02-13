@@ -33,21 +33,15 @@ class Cart extends Model
 	    				     ->where('session_id',$currentSessionId)
 	    				     ->first();
 
-	    	$count = (!empty($cartItem) && isset($cartItem->quantity))?$cartItem->quantity: 0;
-
-	    	
+	  		  	$count = (!empty($cartItem) && isset($cartItem->quantity))?$cartItem->quantity: 0;	    	
 
 	    		$count = ($processType == 1)?$count+1:$count-1;
 
-	    		if(!empty($cartItem) && $count <= 1 && $processType == 0) {
-		    		$cartItem->delete();
-		    	} 
-
 		    	if($processType == 1) {
 		    		$whereArray = $cart = array();
-		    		$where['user_id'] = Auth::user()->id;
-		    		$where['item_id'] = $itemId;
-		    		$where['session_id'] = $currentSessionId;
+		    		$whereArray['user_id'] = Auth::user()->id;
+		    		$whereArray['item_id'] = $itemId;
+		    		$whereArray['session_id'] = $currentSessionId;
 
 		    		$cart['user_id'] = Auth::user()->id;
 		    		$cart['item_id'] = $itemId;
@@ -64,23 +58,32 @@ class Cart extends Model
 
 
 		    	if(!empty($cartItem) && $processType == 0) {
-		    		$whereArray = $cart = array();
-		    		$where['user_id'] = Auth::user()->id;
-		    		$where['item_id'] = $itemId;
-		    		$where['session_id'] = $currentSessionId;
 
-		    		$cart['user_id'] = Auth::user()->id;
-		    		$cart['item_id'] = $itemId;
-		    		$cart['session_id'] = $currentSessionId;
-		    		$cart['quantity'] = $count;
-		    		$cart['unit_price'] = $item->price ?? 0;
-		    		$cart['quantity_price'] = $cart['unit_price'] * $count;
-		    		$cart['cart_date'] = today();
+		    		if($cartItem->quantity <= 1) {
+		    			$cartItem->delete();
+		    		} else {
 
-		    		$this->updateOrCreate($whereArray,$cart);	
+		    			$whereArray = $cart = array();
+			    		$whereArray['user_id'] = Auth::user()->id;
+			    		$whereArray['item_id'] = $itemId;
+			    		$whereArray['session_id'] = $currentSessionId;
+
+			    		$cart['user_id'] = Auth::user()->id;
+			    		$cart['item_id'] = $itemId;
+			    		$cart['session_id'] = $currentSessionId;
+			    		$cart['quantity'] = $count;
+			    		$cart['unit_price'] = $item->price ?? 0;
+			    		$cart['quantity_price'] = $cart['unit_price'] * $count;
+			    		$cart['cart_date'] = today();
+
+			    		$this->updateOrCreate($whereArray,$cart);		
+		    		}
+		    		
 
 		    		return 1;
 		    	}
+
+		    	
 
 		    	return 0;
 	    		

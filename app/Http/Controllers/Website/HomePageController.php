@@ -24,13 +24,13 @@ class HomePageController extends Controller
 
     	$sessionMenu = new SessionMenu();
     	$todaysMenu = $sessionMenu->getTodayMenu();
-
+        $userData = $this->userModel->getUserData(Auth::user()->id);                
         $cart = collect();
         if(Auth::user()){
             $cart = Cart::getCurrentUserCart();
         }        
     	
-    	return view('website.homepage',compact('todaysMenu','cart'));   
+    	return view('website.homepage',compact('todaysMenu','cart','userData'));   
     }
 
 

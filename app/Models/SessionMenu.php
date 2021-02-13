@@ -23,7 +23,7 @@ class SessionMenu extends Model
 
       $result = $this->with(['sessionType','menuItem'])
                     ->whereDate('session_date',today("+05:30"))
-                    ->orderBy('opening_time')
+                    ->orderBy('opening_time','asc')
                     ->get();
         
         return $result;
