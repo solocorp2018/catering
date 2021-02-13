@@ -76,7 +76,7 @@
                                     <tr>
 
                                        <td>{{$result->payment_unique_id ?? '--'}}</td>
-                                       <td>{{$result->order->order_unique_id ?? ''}}</td>                         
+                                       <td>{{$result->order->order_unique_id ?? ''}}</td>
 
                                        <td>{{$result->orderDetailsCount ?? 0}}</td>
                                        <td>
@@ -89,9 +89,9 @@
                                        <td>{{$result->processed_by ?? "--"}}</td>
                                        <td>{{$result->delivered_by ?? "--"}}</td>
                                       <td>
-                                        <a class="waves-effect waves-dark" href="{{route('payments.show',$result->id)}}"><i class="fa fa-eye"></i></a>
-
-                                        </td>
+                                        <a class="waves-effect waves-dark" href="{{route('payments.show',$result->id)}}"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;
+                                        <a class="waves-effect waves-dark" href="{{route('payments.invoice',$result->order_id)}}"><i class="fa fa-file"></i></a>
+                                      </td>
                                     </tr>
                                   @endforeach
                                   @else

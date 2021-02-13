@@ -84,4 +84,7 @@
     'normal' => $fontDir . '/font_awesome_5_free_normal_7ce4feffeb5804611f5113cf48e6c256',
     '900' => $fontDir . '/font_awesome_5_free_900_51585fed5a71e7cc6a375c569bdd8815',
   ),
+  'fontawesome' => array(
+    'normal' => $fontDir . '/fontawesome_normal_0d054c01a20249458ebc59d71623830f',
+  ),
 ) ?>

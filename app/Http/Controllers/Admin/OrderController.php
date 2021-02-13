@@ -23,7 +23,10 @@ class OrderController extends Controller
     {
         $results = Order::getQueriedResult();
 
-        return view('admin.orders.list',compact('results'));
+        $paymentStatus = getPaymentStatusArray();
+        $paymentMode = getPaymentModeArray();
+        //dd($results);
+        return view('admin.orders.list',compact('results','paymentStatus','paymentMode'));
     }
 
     /**
@@ -53,9 +56,11 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
+    public function show($id)
     {
-        //
+        $result = Order::with(['processedBy','deliveredBy','orderItems','deliveredAddress'])->find($id);
+
+        return view('admin.orders.show',compact('result'));
     }
 
     /**

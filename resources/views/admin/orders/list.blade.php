@@ -77,8 +77,8 @@
 
                                        <td>{{$result->orderItems->count() ?? 0}}</td>
                                        <td>@if($result->payment_status == 1) Paid @else Pending @endif</td>
-                                       <td>{{$result->processed_by ?? "--"}}</td>
-                                       <td>{{$result->delivered_by ?? "--"}}</td>
+                                       <td>{{$result->processedBy->name ?? "--"}}</td>
+                                       <td>{{$result->deliveredBy->name ?? "--"}}</td>
                                       <td>
                                         <a class="waves-effect waves-dark" href="{{route('orders.show',$result->id)}}"><i class="fa fa-eye"></i></a>
                                         &nbsp;&nbsp;&nbsp;
@@ -140,18 +140,19 @@
                     <input type="date" name="payment_date" id="payment_date" class="form-control" format="d/m/Y">
                   </div>
                   <div class="form-label-group">
-                    <label for="name" class="required">Payment Mode</label>
+                    <label for="name">Payment Mode</label>
                     <select name="payment_mode" id="payment_mode" class="form-control">
-                        <option value="1">Cash</option>
-                        <option value="2">Credit Card</option>
-                        <option value="3">Debit Card</option>
+                      @foreach($paymentMode as $key => $value)
+                        <option value="{{$value}}" {{SELECT($value,old('payment_mode'))}}>{{$key}}</option>
+                      @endforeach
                     </select>
                   </div>
                   <div class="form-label-group">
                     <label for="name" class="required">Payment Status</label>
                     <select name="payment_status" id="payment_status" class="form-control">
-                        <option value="1">Paid</option>
-                        <option value="2">Pending</option>
+                      @foreach($paymentStatus as $key => $value)
+                        <option value="{{$value}}" {{SELECT($value,old('payment_status'))}}>{{$key}}</option>
+                      @endforeach
                     </select>
                   </div>
                   <div class="form-label-group">

@@ -22,9 +22,10 @@ Route::middleware(['admin'])->group(function () {
 	Route::get('/payments','Admin\PaymentController@index')->name('payments.index');
 	Route::get('/payments/{id}','Admin\PaymentController@show')->name('payments.show');
 	Route::get('/payments-export','Admin\PaymentController@export')->name('payments.export');
+	Route::get('/paymentInvoice/{id}','Admin\PaymentController@paymentInvoice')->name('payments.invoice');
 
 	Route::get('/orderInvoice/{id}','Admin\OrderController@invoiceDownload')->name('order.invoice');
-	
+
 
 	Route::post('/paymentUpdateStatus/{id}','Admin\OrderController@updateStatus')->name('payment.updateStatus');
 

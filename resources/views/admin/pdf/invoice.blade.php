@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,22 @@
 <link href="{{public_path('website/vendor/fontawesome/css/all.min.css')}}" rel="stylesheet" type="text/css">
 <link href="{{public_path('website/vendor/icofont/icofont.min.css')}}" rel="stylesheet" type="text/css">
 <link href="{{public_path('website/css/osahan.css')}}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <style type="text/css">
+  .fa {
+    display: inline;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 1;
+    font-family: FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  </style>
 </head>
 <body>
 <section class="section pt-5 pb-5">
@@ -19,13 +36,14 @@
                            <p class="mb-1 text-black">Order No: <strong>{{$result->order_unique_id ?? ''}}</strong></p>
                            <p class="mb-1">Order placed at: <strong>{{date('d/m/Y, H:i A', strtotime($result->order_date)) ?? '' }}</strong></p>
                            <p class="mb-4 mt-2">
-                              <a class="text-primary font-weight-bold" onClick="window.print()" href="#"><i class="icofont-print"></i> PRINT</a>
+                              <a class="text-primary font-weight-bold" onClick="window.print()" href="#"><i class="fa fa-download"></i> PRINT</a>
                            </p>
                         </div>
-                     	<div class="col-md-4" style="float:right">
+                     	<div class="col-md-4" style="text-align:right">
                            <p class="mb-1">Ordered From :</p>
                            <h6 class="mb-1 text-black">{{$result->processedBy->name ?? ''}}</h6>
-                           <p class="mb-1">{{$result->deliveredAddress->address_line_1 ?? ''}},  {{$result->deliveredAddress->address_line_2 ?? ''}}, {{$result->deliveredAddress->city ?? ''}}, {{$result->deliveredAddress->pincode ?? ''}}</p>
+                           <p class="mb-1">{{$result->deliveredAddress->address_line_1 ?? ''}},  {{$result->deliveredAddress->address_line_2 ?? ''}},</p>
+                           <p class="mb-1">{{$result->deliveredAddress->city ?? ''}}, {{$result->deliveredAddress->pincode ?? ''}}</p>
                         </div>
                      </div>
                      <div class="row mt-2">

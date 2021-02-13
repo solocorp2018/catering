@@ -1,6 +1,6 @@
 <?php
 
-	// function to change data-order to 'asc' / 'desc' 
+	// function to change data-order to 'asc' / 'desc'
 	function sortType() {
 
 	   $sortType = request('sorttype');
@@ -37,7 +37,7 @@
 		return config('constant.page_length_dropdown');
 	}
 
-	// 
+	//
 	function SELECT($left,$right) {
 
 		if($left && $right && $left == $right) {
@@ -49,12 +49,12 @@
 
 	// change checkbox on/off by boolean value from db
 	function CHECKBOX($field,$status='') {
-		
 
-		$status = old($field,$status); 
-		
+
+		$status = old($field,$status);
+
 		return ($status || $status == 1)?'checked':'';
-		
+
 	}
 
 	// load text for Status as 'Active/InActive' based on boolean value from db
@@ -101,7 +101,7 @@
 
 
 	function iteration($result) {
-		define('_CURRENT',($result->perPage()*($result->currentPage()-1)));	
+		define('_CURRENT',($result->perPage()*($result->currentPage()-1)));
 	}
 
 	function getConnection1()
@@ -127,4 +127,12 @@
 
 	function OrganizationId() {
 		return 1;
+	}
+
+	function getPaymentStatusArray() {
+		return array_flip(config('constant.payment_status'));
+	}
+
+	function getPaymentModeArray() {
+		return array_flip(config('constant.payment_mode'));
 	}
