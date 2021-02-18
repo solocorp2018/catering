@@ -10,6 +10,7 @@ use App\Exports\OrdersExport;
 use App\Models\Payment;
 use Auth;
 use PDF;
+use Validator;
 
 class OrderController extends Controller
 {
@@ -22,7 +23,7 @@ class OrderController extends Controller
     public function index()
     {
         $results = Order::getQueriedResult();
-
+        
         $paymentStatus = paymentStatuses();
         $paymentMode = paymentModes();
         //dd($results);
@@ -102,11 +103,49 @@ class OrderController extends Controller
     	return Excel::download(new OrdersExport, $filename);
     }
 
+    public function updatePaymentStatuses(Request $request) {
+
+    	$rules = [
+    		'captureArray' => 'required|array'
+    	];
+    	$validator = Validator::make($request->all(),$rules);
+
+		if($validator->fails()) {
+			return response()->json(['message'=>'Validation Error !','errors'=>$validator->errors()]);
+		}
+
+	  	$orderIds = $request->get('captureArray');
+
+	   $orders = Order::find($orderIds);    
+
+		  $paymentModel = new Payment();     
+
+		foreach ($orders as $key => $order) {
+			
+			$input = [
+			  'order_id' => $order->id,
+			  'payment_unique_id'=> $paymentModel->paymentUniqueid(),
+			  'payment_date' => today(),
+			  'amount' => $order->total_amount,
+			  'payment_mode' => 5,
+			  'transaction_id' => $request->transaction_id ?? '',
+			  'comments' => $request->comments ?? '',
+			  'recieved_by'=> Auth::user()->id,
+			  'paid_by'=> $order->customer_id,
+			  'payment_status'=> 2,
+			];      
+
+			$createPayment = Payment::create($input); 
+		}
+		
+		return sendResponse([],'Payment Status Captured Successfully !');		
+    }
+
     public function updateStatus(Request $request, $id) {
 
       $order_id = $id;
       $orders = Order::find($id);    
-      $paymentModel = new Payment();
+      $paymentModel = new Payment();     
 
       $input = [
               'order_id' => $order_id,
@@ -125,6 +164,8 @@ class OrderController extends Controller
 
       return redirect()->route('orders.index');
     }
+
+    
 
 
     public function invoiceDownload($id) {      

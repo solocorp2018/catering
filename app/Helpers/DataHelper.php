@@ -45,6 +45,7 @@ function paymentModes() {
 		['id' => 2, 'name'=>'Phonepay'],	
 		['id' => 3, 'name'=>'Account Transfer'],	
 		['id' => 4, 'name'=>'Cash'],	
+		['id' => 5, 'name'=>'Other'],	
 	];
 }
 

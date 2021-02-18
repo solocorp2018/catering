@@ -35,7 +35,7 @@ class Order extends Model
 
      	list($sortfield,$sorttype) = getSorting();
 
-     	$result = static::with(['orderItems','sessionMenu','processedBy:id,name','deliveredBy:id,name'])->filter();
+     	$result = static::with(['orderItems','sessionMenu','processedBy:id,name','deliveredBy:id,name','payment'])->filter();
 
      	$sortfield = ($sortfield == 'order_no')?'order_unique_id':$sortfield;
      	$sortfield = ($sortfield == 'date')?'order_date':$sortfield;

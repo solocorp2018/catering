@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class SessionMenu extends Model
 {
 
-  protected $fillable = ['session_type_id', 'session_date','session_code', 'opening_time', 'closing_time', 'expected_delivery_time', 'created_by','status'];
+  protected $fillable = ['session_type_id','session_code', 'opening_time', 'closing_time', 'expected_delivery_time', 'created_by','status'];
+
+	
 
   public function scopeFilter($query) {
 
@@ -21,8 +23,7 @@ class SessionMenu extends Model
 
    public function getTodayMenu(){
 
-      $result = $this->with(['sessionType','menuItem'])
-                    ->whereDate('session_date',today())
+      $result = $this->with(['sessionType','menuItem'])                    
                     ->orderBy('session_type_id','asc')
                     ->get();
         
@@ -68,12 +69,14 @@ class SessionMenu extends Model
 
     $page_length = getPagelength();
 
-    list($sortfield,$sorttype) = getSorting('opening_time');
+    list($sortfield,$sorttype) = getSorting('created_at');
 
     $result = static::with(['sessionType','sessionItem'])->filter();
 
-    $sortfield = ($sortfield == 'date')?'session_date':$sortfield;
+    $sortfield = ($sortfield == 'date')?'created_at':$sortfield;
     $sortfield = ($sortfield == 'code')?'session_code':$sortfield;
+    $sortfield = ($sortfield == 'open')?'opening_time':$sortfield;
+    $sortfield = ($sortfield == 'close')?'closing_time':$sortfield;
 
     return $result->orderBy($sortfield,$sorttype)->paginate($page_length);
 

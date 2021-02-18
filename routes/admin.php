@@ -27,6 +27,7 @@ Route::middleware(['admin'])->group(function () {
 	Route::get('/paymentInvoice/{id}','Admin\PaymentController@paymentInvoice')->name('payments.invoice');
 
 	Route::post('/paymentUpdateStatus/{id}','Admin\OrderController@updateStatus')->name('payment.updateStatus');
+	Route::post('/update-payment-status','Admin\OrderController@updatePaymentStatuses')->name('place.order');
 
 	Route::post('/updateAddress/{id}','Admin\UserController@updateAddress')->name('users.updateAddress');
 

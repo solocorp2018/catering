@@ -9,7 +9,8 @@ use Carbon\Carbon;
      return $carbonDate->toDayDateTimeString();
 	}
 	function showDate($time, $date_time_format='', $timezone='') {
-		if(!$time) {
+
+		if($time != "") {
 			return '--';
 		}
 

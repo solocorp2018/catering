@@ -174,7 +174,7 @@ class UserController extends Controller
         $rules = array();
 
         if($id) {
-            $rules['name'] = "required|unique:users,name,{$id},id|min:2|max:99";
+            $rules['name'] = "required|unique:users,name,NULL,id|min:2|max:99";
             $rules['email'] = "sometimes|unique:users,email,{$id},id|min:25|max:99";
             $rules['contact_number'] = "required|unique:users,contact_number,{$id},id|min:10|max:10";
 
@@ -184,10 +184,10 @@ class UserController extends Controller
             $rules['contact_number'] = "required|unique:users,contact_number|min:2|max:99";
         }
 
-        $rules['address_line_1'] = 'sometimes|min:15|max:1000';
-        $rules['address_line_2'] = 'sometimes|min:15|max:1000';
-        $rules['city'] = 'sometimes|min:3|max:1000';
-        $rules['pincode'] = 'sometimes|min:5|max:1000';
+        $rules['address_line_1'] = 'required|min:15|max:200';
+        $rules['address_line_2'] = 'sometimes|min:15|max:200';
+        $rules['city'] = 'required|min:3|max:100';
+        $rules['pincode'] = 'required|min:5|max:10';
 
         return $rules;
     }

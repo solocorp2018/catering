@@ -186,9 +186,9 @@ class ComplimentaryController extends Controller
             $rules['lang1_name'] = "required|unique:complimentaries,lang1_name|min:2|max:99";
         }
 
-        $rules['description'] = 'sometimes|min:2|max:200';
-        $rules['lang1_description'] = 'sometimes|min:2|max:200';
-        $rules['image'] = 'sometimes|file|mimes:png,jpeg,jpg|max:5026';
+        $rules['description'] = 'sometimes|nullable|min:2|max:200';
+        $rules['lang1_description'] = 'sometimes|nullable|min:2|max:200';
+        $rules['image'] = 'sometimes|nullable|file|mimes:png,jpeg,jpg|max:5026';
         $rules['quantity_type'] = 'required|exists:quantity_types,id,status,'._active();
         $rules['is_visible'] = 'required|boolean';
         $rules['status'] = 'required|boolean';

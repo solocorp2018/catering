@@ -58,7 +58,7 @@ class LoginController extends Controller
 
         VerifyOtp::updateOrCreate(['mobile'=>$mobileNumber],['mobile'=>$mobileNumber,'otp'=>$otp]);
 
-        $message = $otp." is OTP for ".config('catering.weblink').". This is one time valid OTP.";
+        $message = $otp.", is Otp for MRGrandson Caters . This is one time valid OTP.";
         TextLocalSmsGateway::sendSms($mobileNumber,$message);
 
         return response(['status'=>1,'message'=>'OTP sent successfully !']);
@@ -122,7 +122,7 @@ class LoginController extends Controller
 
 
       } else {
-        return redirect()->intended('/');
+        return redirect()->intended('/login');
       }
 
     }

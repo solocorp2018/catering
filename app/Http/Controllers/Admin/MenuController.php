@@ -83,8 +83,7 @@ class MenuController extends Controller
 
       $input = array();
       $input = [
-              'session_type_id' => $request->session_type,
-              'session_date'=> $request->session_date,
+              'session_type_id' => $request->session_type,              
               'opening_time' => $request->opening_time,
               'closing_time' => $request->closing_time,
               'session_code' => SessionMenu::sessionUniqueId(),
@@ -92,7 +91,7 @@ class MenuController extends Controller
               'status' => $request->status,
               'created_by'=> Auth::user()->id
           ];
-
+          
       $sessionMenu = SessionMenu::create($input);
 
       $menuItems = $request->menu_items ?? [];
@@ -199,15 +198,14 @@ class MenuController extends Controller
 
       $input = array();
       $input = [
-            'session_type_id' => $request->session_type,
-            'session_date'=> $request->session_date,
+            'session_type_id' => $request->session_type,           
             'opening_time' => $request->opening_time,
             'closing_time' => $request->closing_time,
             'session_date' => $request->session_date,
             'expected_delivery_time' => $request->delivery_time,
             'status' => $request->status,
           ];
-
+          dd($input);
       $result = $sessionMenu->update($input);      
 
       $menuItems = $request->menu_items ?? [];
@@ -273,16 +271,16 @@ class MenuController extends Controller
 
       $rules['session_type'] = 'required|exists:session_types,id,status,'._active();
       if($id) {
-        $rules['opening_time'] = 'required';
-        $rules['closing_time'] = 'required|date_format:H:i|after:opening_time';
-        $rules['delivery_time'] = 'required|date_format:H:i|after:opening_time|after:closing_time';
+        $rules['opening_time'] = 'required|date:d/m/Y H:i A';
+        $rules['closing_time'] = 'required|date:d/m/Y H:i A';
+        $rules['delivery_time'] = 'required|date:d/m/Y H:i A';
       } else {
-        $rules['opening_time'] = 'required|date_format:H:i';
-        $rules['closing_time'] = 'required|date_format:H:i|after:opening_time';
-        $rules['delivery_time'] = 'required|date_format:H:i|after:opening_time|after:closing_time';
+        $rules['opening_time'] = 'required|date:d/m/Y H:i A';
+        $rules['closing_time'] = 'required|date:d/m/Y H:i A';
+        $rules['delivery_time'] = 'required|date:d/m/Y H:i A';
       }
 
-      $rules['session_date'] = 'required|date|after:yesterday';
+      //$rules['session_date'] = 'required|date|after:yesterday';
       $rules['status'] = 'required|boolean';
 
       $rule['menu_items'] = 'required|array|min:1';
@@ -310,7 +308,7 @@ class MenuController extends Controller
 
     $menuItemsInput = [
       'session_type_id' => $sessionMenu->session_type_id,
-      'session_date'=> now("+05:30"),
+      //'session_date'=> now("+05:30"),
       'opening_time' => $sessionMenu->opening_time,
       'closing_time' => $sessionMenu->closing_time,
       'expected_delivery_time' => $sessionMenu->expected_delivery_time,

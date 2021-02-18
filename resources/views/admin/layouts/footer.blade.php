@@ -1,3 +1,7 @@
 <footer class="footer">
-          © 2021 mrgrandson.in
+         © Copyright 2021 Aegis. All Rights Reserved
+Developed by Aegiiz Technologies
 </footer>
+
+
+

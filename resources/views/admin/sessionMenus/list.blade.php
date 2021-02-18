@@ -56,12 +56,10 @@
                                     <tr>
 
                                        <th>Session Type</th>
-
-                                       <th><a class="sort" data-column="date"><i class="fa fa-sort" aria-hidden="true"></i>&nbsp;Session Date</a></th>
                                        <th><a class="sort" data-column="code"><i class="fa fa-sort" aria-hidden="true"></i>&nbsp;Session Code</th>
                                         <th>Item(s)</th>
-                                       <th>Opening Time</th>
-                                       <th>Closing Time</th>
+                                         <th><a class="sort" data-column="open"><i class="fa fa-sort" aria-hidden="true"></i>&nbsp;Opening Time</th>
+                                         <th><a class="sort" data-column="close"><i class="fa fa-sort" aria-hidden="true"></i>&nbsp;Closing Time</th>
                                        <th>Status</th>
                                        <th>Actions</th>
                                     </tr>
@@ -73,11 +71,11 @@
                                     <tr>                                     
 
                                        <td>{{$result->sessionType->type_name ?? ''}}</td>
-                                       <td>{{showDate($result->session_date,'d/M/Y') ?? ''}}</td>
                                        <td>{{$result->session_code ?? ''}}</td>
+
                                        <td>{{$result->sessionItem->count() ?? 0}}</td>
-                                       <td>{{Time24to12($result->opening_time) ?? ''}}</td>
-                                       <td>{{Time24to12($result->closing_time) ?? ''}}</td>
+                                       <td>{{showDate($result->opening_time,'d/M/Y g:i A') ?? ''}}</td>
+                                       <td>{{showDate($result->closing_time,'d/M/Y g:i A') ?? ''}}</td>
                                        <td>
                                         @if(isset($result->status) && $result->status == 1)
                                         <span class="text-success">Active</span>
@@ -102,23 +100,7 @@
                               </table>
                            </div>
                         </div>
-                        <div class="row">
-                           <div class="col-sm-12 col-md-6">
-                              <div>
-                                   @if(!empty($results) && $results->count())
-                                        Showing {{$results->firstItem()}} to {{$results->lastItem()}} of {{ $results->total() }} entries
-
-                                    @endif
-                              </div>
-                           </div>
-                           <div class="col-sm-12 col-md-6">
-                              <div class="dataTables_paginate paging_simple_numbers" id="myTable_paginate">
-                                @if(!empty($results))
-                                 {{ $results->appends(request()->except(['page', '_token']))->links() }}
-                                 @endif
-                              </div>
-                           </div>
-                        </div>
+                        @include('admin.common.table-footer')
                      </div>
                   </div>
                </div>

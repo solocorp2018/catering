@@ -110,24 +110,7 @@
                               </table>
                            </div>
                         </div>
-                        <div class="row m-b-40">
-                           <div class="col-sm-12 col-md-6">
-                              <div>
-                                   @if(!empty($results) && $results->count())              
-                                        Showing {{$results->firstItem()}} to {{$results->lastItem()}} of {{ $results->total() }} entries
-                                        
-                                    @endif
-                              </div>
-                           </div>
-                           <div class="col-sm-12 col-md-6">
-                              <div class="dataTables_paginate paging_simple_numbers" id="myTable_paginate">
-                                @if(!empty($results))
-                                 {{ $results->appends(request()->except(['page', '_token']))->links() }}
-                                 @endif
-                              </div>
-                           </div>
-
-                        </div>
+                      @include('admin.common.table-footer')
                      </div>
                   </div>
                </div>

@@ -41,7 +41,7 @@
                                     <label for="name" class="required">Session Type</label>
                                     <select name="session_type" class="form-control">
                                         @foreach($sessionTypes as $session)
-                                        <option value="{{$session->id}}" {{SELECT($session,old('session_type'))}}>{{$session->type_name}}</option>
+                                        <option value="{{$session->id}}" {{SELECT($session->id,old('session_type'))}}>{{$session->type_name}}</option>
                                         @endforeach
                                     </select>
                                     <small class="form-text text-muted">Pick Session Type for Menu</small>
@@ -49,24 +49,25 @@
 
                                 <div class="form-group col-sm-4 col-xs-4 bootstrap-timepicker timepicker">
                                     <label for="opening_time" class="required">Session Opening Time</label>
-                                    <input type="time" class="form-control input-small" name="opening_time" value="{{old('opening_time')}}">
-                                    <small class="form-text text-muted">Opening Time For the date : {{date('d/m/Y')}}</small>
+                                    <input type="datetime-local" class="form-control input-small" name="opening_time" value="{{old('opening_time')}}">
+                                     <small class="form-text text-muted">Please Pick a Valid Date</small>
+
                                 </div>
+                                   
+                              
 
                                 <div class="form-group col-sm-4 col-xs-4 bootstrap-timepicker timepicker">
                                     <label for="closing_time">Session Closing Time </label>
-                                    <input type="time" class="form-control input-small" name="closing_time" value="{{old('closing_time')}}">
-                                    <small class="form-text text-muted">Closing Time For the date : {{date('d/m/Y')}}</small>
+                                    <input type="datetime-local" class="form-control input-small" name="closing_time" value="{{old('closing_time')}}">
+                                    <small class="form-text text-muted">Closing Date Time should be after Opening Time</small>
                                 </div>
                             </div>
                             <div class="row pt-3">
-                              <div class="form-group col-sm-4 col-xs-4">
-                                  <label for="session_date">Menu Applicable Date</label>
-                                  <input type="date" class="form-control" name="session_date" format="d/m/Y" value="{{old('session_date')}}">
-                              </div>
+                             
                               <div class="form-group col-sm-4 col-xs-4 bootstrap-timepicker timepicker">
                                   <label for="closing_time">Expected Delivery Time </label>
-                                  <input type="time" class="form-control input-small" name="delivery_time" value="{{old('delivery_time')}}">
+                                  <input type="datetime-local" class="form-control input-small" name="delivery_time" value="{{old('delivery_time')}}">
+                                  <small class="form-text text-muted">Delivery Date Time should be after Opening Time</small>
                               </div>
                               <div class="form-group col-sm-4 col-xs-4">
                                     <label for="status" class="required">Status </label>

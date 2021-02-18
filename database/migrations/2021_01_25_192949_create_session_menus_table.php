@@ -16,18 +16,17 @@ class CreateSessionMenusTable extends Migration
         $this->down();
         Schema::create('session_menus', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedSmallInteger('session_type_id');            
-            $table->dateTime('session_date');            
+            $table->unsignedSmallInteger('session_type_id');
             $table->string('session_code');            
-            $table->time('opening_time');            
-            $table->time('closing_time');            
-            $table->time('expected_delivery_time')->nullable();            
+            $table->dateTime('opening_time');            
+            $table->dateTime('closing_time');            
+            $table->dateTime('expected_delivery_time')->nullable();            
 
             $table->unsignedBigInteger('created_by');            
             $table->boolean('status')->default(0);
             $table->softDeletes();
             $table->timestamps();
-            $table->index(['session_type_id','session_date']);
+            $table->index(['session_type_id']);
             $table->index(['opening_time','closing_time','created_by']);
         });
     }
