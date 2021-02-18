@@ -174,18 +174,18 @@ class UserController extends Controller
         $rules = array();
 
         if($id) {
-            $rules['name'] = "required|unique:users,name,NULL,id|min:2|max:99";
-            $rules['email'] = "sometimes|unique:users,email,{$id},id|min:25|max:99";
+            $rules['name'] = "required|min:2|max:99";
+            $rules['email'] = "sometimes|unique:users,email,{$id},id|max:99";
             $rules['contact_number'] = "required|unique:users,contact_number,{$id},id|min:10|max:10";
 
         } else {
             $rules['name'] = "required|unique:users,name|min:2|max:99";
-            $rules['email'] = "sometimes|unique:users,email|min:25|max:99";
+            $rules['email'] = "sometimes|unique:users,email|max:99";
             $rules['contact_number'] = "required|unique:users,contact_number|min:2|max:99";
         }
 
         $rules['address_line_1'] = 'required|min:15|max:200';
-        $rules['address_line_2'] = 'sometimes|min:15|max:200';
+        $rules['address_line_2'] = 'sometimes|nullable|min:15|max:200';
         $rules['city'] = 'required|min:3|max:100';
         $rules['pincode'] = 'required|min:5|max:10';
 

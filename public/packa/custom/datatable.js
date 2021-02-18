@@ -23,6 +23,12 @@ $(document).on('change','#pageLength',function(){
   searchFun();
 });
 
+function resetSearch() {
+  $("#keyword").val('');
+  $('.searchable').val('');
+  searchFun();
+}
+
 function searchFun() {
   
   var url = pageBaseUrl;
@@ -32,6 +38,10 @@ function searchFun() {
   queryParams['keyword'] = $("#keyword").val();
   queryParams['sortfield'] = $("#sortfield").val();
   queryParams['sorttype'] = $("#sorttype").val();
+
+  $('.searchable').each(function(){
+      queryParams[$(this).attr('name')] = $(this).val();
+  });
 
   if(queryParams) {
       $.each(queryParams,function(key,value){

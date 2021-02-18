@@ -24,6 +24,7 @@ class CreateSessionMenusTable extends Migration
 
             $table->unsignedBigInteger('created_by');            
             $table->boolean('status')->default(0);
+            $table->boolean('notify')->default(0);
             $table->softDeletes();
             $table->timestamps();
             $table->index(['session_type_id']);

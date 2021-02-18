@@ -33,18 +33,21 @@
                            <div class="col-sm-12 col-md-6">
                               <div class="dataTables_length" id="myTable_length">
                                  <label>Show </label>
-                                    <select name="pageLength" id="pageLength" aria-controls="myTable" class="form-control form-control-sm" on-change="searchFun()">
-                                       <option value="10" {{SELECT('pageLength',10)}}>10</option>
-                                       <option value="25" {{SELECT('pageLength',25)}}>25</option>
-                                       <option value="50" {{SELECT('pageLength',50)}}>50</option>
-                                       <option value="100" {{SELECT('pageLength',100)}}>100</option>
+                                     <select name="pageLength" id="pageLength" aria-controls="myTable" on-change="searchFun()">
+                                       <option value="10" {{SELECT('10',request('pageLength',10))}}>10</option>
+                                       <option value="25" {{SELECT('25',request('pageLength',25))}}>25</option>
+                                       <option value="50" {{SELECT('50',request('pageLength',50))}}>50</option>
+                                       <option value="100" {{SELECT('100',request('pageLength',100))}}>100</option>
                                     </select>
-                                    <label> </label>
+                                    
                               </div>
                            </div>
 
                            <div class="col-sm-12 col-md-6">
                               <div  class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="myTable" id="keyword" value="{{request('keyword')}}"></label></div>
+                           </div>
+                           <div class="col-sm-12 col-md-6">
+                              <div  class="dataTables_filter"><a href="#" class="downloadAll">Download Invoices</a></div>
                            </div>
                            <input type="hidden" name="sortfield" id="sortfield" value="{{request('sortfield')}}"/>
                            <input type="hidden" name="sorttype" id="sorttype" value="{{request('sorttype')}}"/>
@@ -58,7 +61,7 @@
                                  <thead>
                                     <tr>
 
-
+                                       <th><input type="checkbox" id="pickAll"/><th>
                                        <th><a class="sort" data-column="payment_no"><i class="fa fa-sort" aria-hidden="true"></i>Payment No.</a></th>
                                        <th>Order No.</th>
                                        <th>Total Items</th>
@@ -75,7 +78,7 @@
                                   @if(!empty($results) && $results->count())
                                   @foreach($results as $result)
                                     <tr>
-
+                                      <td><input type="checkbox" class="capture_payment" name="capture_payment" value="{{$result->order_id}}"/><td>
                                        <td>#{{$result->payment_unique_id ?? '--'}}</td>
                                        <td>{{$result->order->order_unique_id ?? ''}}</td>
 
@@ -118,9 +121,45 @@
    </div>
 </div>
 <script type="text/javascript">
+  var captureArray = [];
   $(document).ready(function(){
 
     setPageUrl('/payments?');
   });
+
+  $(document).on('click','#pickAll',function(){
+        
+    if($(this).is(':checked')) {
+        $('.capture_payment').attr('checked',true);
+    } else {
+        $('.capture_payment').attr('checked',false);
+    }       
+    });
+
+  $(document).on('click','.downloadAll',function(){
+   
+            var captureArray = [];
+    $("input:checkbox[name=capture_payment]:checked").each(function(){
+            captureArray.push($(this).val());
+    });
+   
+            if(captureArray.length > 1) {
+        var formData = {
+            _token:feedToken(), 
+            captureArray:captureArray,  
+        };  
+        $.ajax({
+            type: "POST",
+            url: feedBaseUrl('/bulk-invoice-download'),
+            data: formData,
+            success: function( data ) {                     
+                searchFun();
+                alert(data.message);                    
+            }
+        }); 
+    }   else {
+        alert('Please Select Atleast Two Payments to Download Bulk Invoice.');
+    }
+    });
 </script>
 @endsection

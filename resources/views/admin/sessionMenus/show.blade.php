@@ -48,6 +48,14 @@
                       <p class="text-muted">InActive</p>
                     @endif
                  </div>
+                 <div class="col-md-3 col-xs-6"> <strong>Notify People</strong>
+                  <br>
+                    @if(isset($result->notify) && $result->notify == 1)
+                      <p class="text-muted">Notified</p>
+                    @else
+                      <a href="{{url('send-notification',$result->session_code)}}" class="btn btn-info d-none d-lg-block m-l-15">Send Notification</a>
+                    @endif
+                 </div>
 
                </div>
                 <div class="row">

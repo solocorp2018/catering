@@ -26,24 +26,41 @@
                <a class="" href="{{route('order.invoice',$result->id)}}">#{{$result->order_unique_id ?? ''}}</a>
             </div>
             <div class="col-md-3 col-xs-6 b-r">
+               <strong>Order Date</strong>
+               <br>
+              {{dateOf($result->order_date) ?? ''}}
+            </div>
+            <div class="col-md-3 col-xs-6 b-r">
+               <strong>Ordered By</strong>
+               <br>
+              {{$result->customer->name ?? ''}}
+            </div>
+            <div class="col-md-3 col-xs-6 b-r">
+               <strong>Customer Contact Number</strong>
+               <br>
+              {{$result->customer->contact_number ?? ''}}
+            </div>
+         </div>
+         <hr>
+         <div class="row">
+            <div class="col-md-3 col-xs-6 b-r">
                <strong>Amount</strong>
                <br>
-               <p class="text-muted">{{$result->total_amount ?? ''}}</p>
+               <p class="text-muted">{{$result->total_amount ?? ''}} INR</p>
             </div>
             @if(!empty($result->payment))                        
             <div class="col-md-3 col-xs-6">
                <strong>Payment mode</strong>
                <br>
-               @if($result->payment->payment_mode && $result->payment->payment_mode == 1)
-               <p class="text-muted">Gpay</p>
-               @else
-               <p class="text-muted">Cash</p>
+               @if(!empty($result->payment))
+               <p class="text-muted">{{findPaymentMode($result->payment->payment_mode)}}</p>
+               
                @endif
             </div>                        
             <div class="col-md-3 col-xs-6">
                <strong>Payment Status</strong>
                <br>
-               @if($result->payment->payment_status == 1)
+               @if(!empty($result->payment))
                <p class="text-muted">Paid</p>
                @else
                <p class="text-muted">Pending</p>
@@ -52,7 +69,7 @@
             <div class="col-md-3 col-xs-6">
                <strong>Payment date</strong>
                <br>
-               <p class="text-muted">{{showDate($result->payment->payment_date,'d/M/Y') ?? ''}}</p>
+               <p class="text-muted">{{dateOf($result->payment->payment_date) ?? ''}}</p>
             </div>
             @else
             <div class="col-md-3 col-xs-6">

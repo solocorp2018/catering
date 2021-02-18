@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
 use Auth;
+use App\Models\User;
 use App\Models\SessionMenu;
 use App\Models\SessionType;
 use App\Models\MenuItem;
@@ -17,6 +18,7 @@ use Log;
 use Illuminate\Support\Arr;
 use DB;
 use Carbon\Carbon;
+use App\Services\TextLocalSmsGateway;
 
 
 class MenuController extends Controller
@@ -205,7 +207,7 @@ class MenuController extends Controller
             'expected_delivery_time' => $request->delivery_time,
             'status' => $request->status,
           ];
-          dd($input);
+          
       $result = $sessionMenu->update($input);      
 
       $menuItems = $request->menu_items ?? [];
@@ -346,6 +348,32 @@ class MenuController extends Controller
     }
 
     return redirect()->route('sessionMenus.index');
+  }
+
+  public function sendNotification($sessionCode) {
+
+        $session = SessionMenu::where('session_code',$sessionCode)
+                                ->where('notify',0)
+                                ->get();
+
+
+
+        if(!empty($session) && $session->count() > 0) {
+
+            $customerMobileNumbers = User::where('user_type_id',2)
+                                          ->where('status',1)
+                                          ->whereNotNull('contact_number')
+                                          ->pluck('contact_number')->toArray();
+
+            $message = "Hello from MR Grandson Caters :) Your homemade SPECIAL recipe is ready for orders. Place it now and enjoy it to the core. Ordering is simple, login ( http://mrgrandsoncaters.in), select the menu, place the order, and we will deliver at your doorstep!";
+
+            TextLocalSmsGateway::sendSms($customerMobileNumbers,$message);
+
+            SessionMenu::where('session_code',$sessionCode)
+                                ->where('notify',0)->update(['notify'=>1]);
+        }
+
+        return redirect()->back();
   }
 
 }

@@ -29,14 +29,12 @@
                            <div class="col-sm-12 col-md-6">
                               <div class="dataTables_length" id="myTable_length">
                                  <label>Show </label>
-                                    <select name="pageLength" id="pageLength" aria-controls="myTable" class="form-control form-control-sm" on-change="searchFun()">
-                                       <option value="10" {{SELECT('pageLength',10)}}>10</option>
-                                       <option value="25" {{SELECT('pageLength',25)}}>25</option>
-                                       <option value="50" {{SELECT('pageLength',50)}}>50</option>
-                                       <option value="100" {{SELECT('pageLength',100)}}>100</option>
+                                    <select name="pageLength" id="pageLength" aria-controls="myTable" on-change="searchFun()">
+                                       <option value="10" {{SELECT('10',request('pageLength',10))}}>10</option>
+                                       <option value="25" {{SELECT('25',request('pageLength',25))}}>25</option>
+                                       <option value="50" {{SELECT('50',request('pageLength',50))}}>50</option>
+                                       <option value="100" {{SELECT('100',request('pageLength',100))}}>100</option>
                                     </select>
-                                    <label> </label>
-                                 
                               </div>
                            </div>
 

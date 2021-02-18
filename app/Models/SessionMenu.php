@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SessionMenu extends Model
 {
 
-  protected $fillable = ['session_type_id','session_code', 'opening_time', 'closing_time', 'expected_delivery_time', 'created_by','status'];
+  protected $fillable = ['session_type_id','session_code', 'opening_time', 'closing_time', 'expected_delivery_time', 'created_by','status','notify'];
 
 	
 
@@ -25,6 +25,10 @@ class SessionMenu extends Model
 
       $result = $this->with(['sessionType','menuItem'])                    
                     ->orderBy('session_type_id','asc')
+                    ->where(function($whereQuery){
+                      $whereQuery->where('opening_time','>=',today());
+                      $whereQuery->orWhere('closing_time','<=',today());
+                    })
                     ->get();
         
       return $result;
@@ -90,7 +94,7 @@ class SessionMenu extends Model
       return $this->hasMany('App\Models\MenuItem','session_menu_id');
    }
    public function menuItem() {
-    return $this->hasMany('App\Models\MenuItem')->with(['Items','quantityType','menuComplimentaries']);
+    return $this->hasMany('App\Models\MenuItem')->with(['Items','quantityType','menuComplimentaries'])->where('status',1);
    }
 
    public function menuItemComplimentary() {

@@ -25,6 +25,24 @@ class Order extends Model
              $query->where('order_unique_id','like','%'.$keyword.'%');
              $query->orWhere('total_amount','like','%'.$keyword.'%');
          }
+
+         if($fromDate = request('from')) {
+             $query->whereDate('order_date','>=',$fromDate);             
+         }
+         if($toDate = request('to')) {             
+              $query->whereDate('order_date','<=',$toDate);
+         }
+
+         if($status = request('status')) {             
+              if($status == 'Pending') {
+                $query->doesntHave('payment');
+              }
+
+              if($status == 'Paid') {
+                $query->has('payment');
+              }
+         }
+
          return $query;
     }
 
@@ -35,13 +53,26 @@ class Order extends Model
 
      	list($sortfield,$sorttype) = getSorting();
 
-     	$result = static::with(['orderItems','sessionMenu','processedBy:id,name','deliveredBy:id,name','payment'])->filter();
+     	$result = static::with(['orderItems','sessionMenu','processedBy:id,name','deliveredBy:id,name','payment','customer'])->filter();
 
      	$sortfield = ($sortfield == 'order_no')?'order_unique_id':$sortfield;
      	$sortfield = ($sortfield == 'date')?'order_date':$sortfield;
      	$sortfield = ($sortfield == 'amount')?'total_amount':$sortfield;
 
      	return $result->orderBy($sortfield,$sorttype)->paginate($page_length);
+    }
+
+    public static function getExportQueriedResult() {        
+
+        list($sortfield,$sorttype) = getSorting();
+
+        $result = static::with(['orderItems.item','sessionMenu','processedBy:id,name','deliveredBy:id,name','payment','customer'])->filter();
+
+        $sortfield = ($sortfield == 'order_no')?'order_unique_id':$sortfield;
+        $sortfield = ($sortfield == 'date')?'order_date':$sortfield;
+        $sortfield = ($sortfield == 'amount')?'total_amount':$sortfield;
+
+        return $result->orderBy($sortfield,$sorttype)->get();
     }
 
     public function placeOrder($deliveryId) {
@@ -125,6 +156,11 @@ class Order extends Model
     public function deliveredBy() {
         return $this->belongsTo('App\Models\User','delivered_by');
     }
+
+    public function customer() {
+        return $this->belongsTo('App\Models\User','customer_id');
+    }
+
 
 	public function deliveredAddress() {
 		return $this->belongsTo('App\Models\UserAddress','address_id');

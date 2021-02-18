@@ -10,6 +10,8 @@ Route::middleware(['admin'])->group(function () {
 	Route::get('/change-password','Admin\PasswordController@managePassword')->name('password.manage');
 	Route::post('/update-password','Admin\PasswordController@updatePassword')->name('password.update');
 
+	Route::post('/bulk-invoice-download','Admin\OrderController@bulkInvoiceDownload')->name('order.bulk-invoice');
+
 
 	Route::resource('/items','Admin\ItemController');
 
@@ -31,10 +33,8 @@ Route::middleware(['admin'])->group(function () {
 
 	Route::post('/updateAddress/{id}','Admin\UserController@updateAddress')->name('users.updateAddress');
 
-	Route::get('/leads','Admin\LeadController@index')->name('leads.index');
-	Route::get('/leads/{id}','Admin\LeadController@show')->name('leads.show');
-
 	Route::resource('/sessionMenus','Admin\MenuController');
+	Route::get('/send-notification/{id}','Admin\MenuController@sendNotification');
 
 	Route::post('/clone/{id}','Admin\MenuController@cloneSession')->name('sessionMenus.clone');
 });

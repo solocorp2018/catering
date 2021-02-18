@@ -103,20 +103,20 @@ use Carbon\Carbon;
 	}
 
 	function isOpenForOrder($opening,$closing) {
+		
+		$opening = Carbon::createFromFormat('Y-m-d H:i:s', $opening);
+        $closing = Carbon::createFromFormat('Y-m-d H:i:s', $closing);
+        $now = Carbon::createFromFormat('Y-m-d H:i:s', now());
 
-		$currentTime = Time12to24(now());
-		$opening = Time12to24($opening);
-		$closing = Time12to24($closing);
-
-		if($opening <= $currentTime && $closing >= $currentTime) {
+		if($opening->lte($now) && $closing->gte($now)) {
 			return 1; //open
 		}
 
-		if($opening > $currentTime) {
+		if($opening->gte($now)) {
 			return 2; //next
 		}
 
-		if($closing < $currentTime) {
+		if($closing->lte($now)) {
 			return 0; //closed
 		}
 

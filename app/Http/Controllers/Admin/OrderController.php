@@ -99,8 +99,12 @@ class OrderController extends Controller
     }
 
     public function export(){
+
+      $orders = Order::getExportQueriedResult();
+      // dd($orders->toArray());
     	$filename = 'orders-list-'.date('d-m-Y').'.csv';
-    	return Excel::download(new OrdersExport, $filename);
+
+    	return Excel::download(new OrdersExport($orders), $filename);
     }
 
     public function updatePaymentStatuses(Request $request) {
@@ -181,4 +185,32 @@ class OrderController extends Controller
       return $pdf->download($result->order_unique_id.'.pdf');
       //return view('admin.pdf.invoice',compact('result'));
     }
+
+     public function bulkInvoiceDownload(Request $request) {
+
+      $rules = [
+        'captureArray' => 'required|array'
+      ];
+      $validator = Validator::make($request->all(),$rules);
+
+        if($validator->fails()) {
+          return response()->json(['message'=>'Validation Error !','errors'=>$validator->errors()]);
+        }
+
+      $orderIds = $request->get('captureArray');
+
+      $orders = Order::with(['processedBy','deliveredBy','orderItems.item','deliveredAddress'])->find($orderIds);    
+
+      $data = [
+        'results' => $orders
+      ];
+
+      $pdf = PDF::loadView('admin.pdf.invoice1bulk', $data);
+      return $pdf->stream();
+      // return $pdf->download('Bulk-Invoice-'.date('d-m-Y').'.pdf');      
+    }
+    
+
+
+
 }

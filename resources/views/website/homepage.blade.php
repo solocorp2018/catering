@@ -53,8 +53,7 @@
                      <li class="nav-item">
                         <a class="nav-link tabNav {{($key == 0)?'active':'' }}" id="pill{{$todayMenu->id}}000-tab" data-toggle="pill" href="#pill{{$todayMenu->id}}000" role="tab" aria-controls="pill{{$todayMenu->id}}000" aria-selected="true">{{$todayMenu->sessionType->type_name ?? '--'}}
                            @php
-                              $sessionStatus = isOpenForOrder($todayMenu->opening_time,$todayMenu->closing_time);
-                              
+                              $sessionStatus = isOpenForOrder($todayMenu->opening_time,$todayMenu->closing_time);                              
                            @endphp
                            @if($sessionStatus == 1) 
                            <span class="badge badge-success">open</span>
@@ -109,7 +108,7 @@
                                        <div class="media">
                                           <div class="mr-3"><i class="icofont-ui-press text-success food-item"></i></div>
                                           <div class="media-body">
-                                             <h6 class="mb-1">{{$menuItem->Items->name}} | {{$menuItem->Items->lang1_name}} 
+                                             <h6 class="mb-1">{{$menuItem->Items->name}}
                                              	
                                              	@if($menuItem->menuComplimentaries->count() > 0)
                                              	<small style="font-size: 70%;font-weight: 500;">(
@@ -129,7 +128,27 @@
                                              	
 
                                              	</h6>
+                                                 <h6 class="mb-1">{{$menuItem->Items->lang1_name}}
+                                                
+                                                @if($menuItem->menuComplimentaries->count() > 0)
+                                                <small style="font-size: 70%;font-weight: 500;">(
+                                                @foreach($menuItem->menuComplimentaries as $key => $complimentary)
+                                                @if($key > 0)
+                                                ,
+                                                @endif
 
+                                                @if(!empty($complimentary->complimentaries))
+                                                   {{$complimentary->complimentaries->lang1_name ?? ''}}
+                                                @endif
+                                                
+                                                @endforeach
+
+                                                )</small>
+                                                @endif
+                                                
+
+                                                </h6>
+                                                
                                              <p class="text-gray mb-0">{{$menuItem->Items->price ?? 0}} INR</p>
                                           </div>
                                        </div>
@@ -160,6 +179,6 @@
             </div>
          </div>
       </section>
-@include('website.layout.quick-links')
+<!-- @include('website.layout.quick-links') -->
 
 @endsection
