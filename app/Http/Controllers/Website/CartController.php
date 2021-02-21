@@ -8,7 +8,7 @@ use App\Models\Cart;
 use Validator;
 
 class CartController extends Controller
-{	
+{
 	public function updateToCart(Request $request) {
 
 		try {
@@ -32,25 +32,24 @@ class CartController extends Controller
 			$response = $cartModel->updateCartItem($itemId,$sessionId,$processType);
 
 			if($response == 1) {
-				return response()->json(['message'=> 'Item Added to Cart !']);	
+				return response()->json(['message'=> 'Item Added to Cart !']);
 			}
 
-			return response()->json(['message'=> 'Item Adding to Cart Failured !']);	
+			return response()->json(['message'=> 'Item Adding to Cart Failured !']);
 
 		} catch(\exception $ex) {
-			return response()->json(['exception' => $ex->getMessage(), 'message'=> 'Item Adding to Cart is failured !']);	
+			return response()->json(['exception' => $ex->getMessage(), 'message'=> 'Item Adding to Cart is failured !']);
 		}
 		
-		
-	}    
+	}
 
     public function refreshCart(Request $request) {
 
     	$cart = Cart::getCurrentUserCart();
-    	
-		$layoutCartview = view('website.layout.navbar-cart',compact('cart'))->render();
-		$homeCartview = view('website.homepage-cart',compact('cart'))->render();
 
-		return response()->json(['layoutCartview'=>$layoutCartview,'homeCartview'=>$homeCartview]);    	
+			$layoutCartview = view('website.layout.navbar-cart',compact('cart'))->render();
+			$homeCartview = view('website.homepage-cart',compact('cart'))->render();
+
+			return response()->json(['layoutCartview'=>$layoutCartview,'homeCartview'=>$homeCartview]);
     }
 }
