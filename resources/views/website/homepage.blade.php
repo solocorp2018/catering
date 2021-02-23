@@ -2,12 +2,18 @@
 @section('content')
 @section('title','Home')
 
+<style>
+.banner {
+  display: block;  
+  background: url("{{asset('website/img/banner-1.png')}}") no-repeat !important;
+  background-size: cover !important;  
+  height:424px;
+}   
+</style>
 
       <section class="restaurant-detailed-banner">
-         <div class="text-center">
-            <!-- <img class="img-fluid cover" src="{{asset('website/img/mall-dedicated-banner.png')}}"> -->
-            <img class="img-fluid cover" style="background-size: cover !important;" src="{{asset('website/img/banner-1.png')}}">
-         </div>
+         <div class="text-center banner"></div>
+         
 
          <div class="restaurant-detailed-header">
             <div class="container">

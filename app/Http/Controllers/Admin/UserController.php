@@ -144,14 +144,19 @@ class UserController extends Controller
         $userAddress = UserAddress::where('user_id',$id)->first();
 
         $addressInput = array();
-        $addressInput = [
-          'address_line_1' =>$request->address_line_1,
-          'address_line_2' => $request->address_line_2,
-          'city'=> $request->city,
-          'pincode' => $request->pincode,
-        ];
 
-        $resultAddress = $userAddress->update($addressInput);
+        if($request->address_line_1) {
+
+             $addressInput = [
+              'address_line_1' =>$request->address_line_1,
+              'address_line_2' => $request->address_line_2,
+              'city'=> $request->city,
+              'pincode' => $request->pincode,
+            ];
+
+            $resultAddress = $userAddress->update($addressInput);
+        }
+       
 
         updatedResponse("User Updated Successfully");
 
@@ -182,13 +187,14 @@ class UserController extends Controller
             $rules['name'] = "required|unique:users,name|min:2|max:99";
             $rules['email'] = "sometimes|unique:users,email|max:99";
             $rules['contact_number'] = "required|unique:users,contact_number|min:2|max:99";
-        }
-
-        $rules['address_line_1'] = 'required|min:15|max:200';
+             $rules['address_line_1'] = 'required|min:15|max:200';
         $rules['address_line_2'] = 'sometimes|nullable|min:15|max:200';
         $rules['city'] = 'required|min:3|max:100';
         $rules['pincode'] = 'required|min:5|max:10';
 
+        }
+
+       
         return $rules;
     }
 
