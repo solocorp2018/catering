@@ -47,9 +47,9 @@ class LoginController extends Controller
     public function triggerOtp(Request $request) {
 
         $validator = Validator::make($request->all(),['contactNumber'=>'required|unique:users,contact_number']);
-        
+
         if($validator->fails()) {
-          return response()->json(['status'=>0,'message'=>'Mobile Number has been already registered with us. Please do Login !']);
+            return response()->json(['status'=>0,'message'=>'Mobile Number has been already registered with us. Please do Login !']);
         }
 
         $mobileNumber = $request->contactNumber;
@@ -65,6 +65,7 @@ class LoginController extends Controller
     }
 
     public function validateOtp(Request $request) {
+
         $this->validate($request,[
             'contactNumber'=>'required|exists:verify_otps,mobile',
             'otp' => 'required|min:4|exists:verify_otps,otp,mobile,'.$request->contactNumber
@@ -89,7 +90,7 @@ class LoginController extends Controller
     }
 
     public function customerLogin(Request $request) {
-      
+
       $contact_number = $request->contact_number;
 
       $user = User::where('contact_number', $contact_number)->first();
@@ -98,11 +99,14 @@ class LoginController extends Controller
 
         Auth::loginUsingId($user->id);
 
-        return redirect()->intended('/');
+        return response(['message'=>'Login successfull !']);
+
       } else {
 
-        session()->flash('Invalid credentials for login');
-        return redirect()->intended('/');
+        $errors = ['errors'=> 'Invalid credentials for login'];
+
+        return view('website.common.validator-error',compact('errors'));
+
       }
 
     }
@@ -119,7 +123,6 @@ class LoginController extends Controller
         $request->session()->regenerate();
 
         return redirect()->intended('/dashboard');
-
 
       } else {
         return redirect()->intended('/login');

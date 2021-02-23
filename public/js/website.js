@@ -123,16 +123,16 @@ function triggerOtp() {
 	$.ajax({
         method:"POST",
         url: feedUrl('/trigger-otp'),
-        data: formData,        
+        data: formData,
         success: function( data ) {
         	if(data.status == 1) {
-        		alert( data.message );            
+        		alert( data.message );
         	}
 
 			if(data.status == 0) {
-        		alert( data.message );            
-        	}        	
-            
+        		alert( data.message );
+        	}
+
         }
     });
 }
@@ -183,11 +183,13 @@ function registerForm() {
         type: "POST",
         url: feedUrl('/register-user'),
         data: formData,
-        success: function( data ) {            
-			$('#register-modal').modal('toggle');
-			alert( data.message );
-			location.reload();
-			// $("#register-form")[0].reset();
+        success: function( data ) {
+					// $('#register-modal').modal('toggle');
+					if( data.message ) {
+						location.reload();
+					} else {
+							$('#errors').empty().append( data );
+					}
         }
     });
 }
@@ -208,10 +210,32 @@ $("#login-form").validate({
 		    error.insertAfter(element.parent('div'));
 		},
 		submitHandler: function(form) {
-		    //loginForm();
-				$( "#login-form" ).submit();
+		    loginForm();
+				//$( "#login-form" ).submit();
 		}
 });
+
+function loginForm() {
+	var formData = {
+		_token:$("#_token").val(),
+		contact_number : $("#inputEmail").val(),
+	};
+	$.ajax({
+				type: "POST",
+				url: feedUrl('/customer/login'),
+				data: formData,
+				success: function( data ) {
+					if( data.message ) {
+						location.reload();
+					} else {
+							$('#errors').empty().append( data );
+					}
+				},
+				error: function( err ) {
+
+				}
+		});
+}
 
 $("#add-address").validate({
 		rules: {
@@ -240,11 +264,11 @@ $("#add-address").validate({
 				required:true
 			}
 		},
-		messages: {			
+		messages: {
 			address_line_1: "Please enter a valid address line 1",
 			address_line_2: "Please enter a valid address line 2",
 			city: "Please enter a valid city name",
-			pincode: "Please enter a valid pincode",			
+			pincode: "Please enter a valid pincode",
 		},
 		errorPlacement: function (error, element) {
 		    error.insertAfter(element.parent('div'));
@@ -264,45 +288,45 @@ $(document).on('click','.addresses-item',function() {
 
 	var deliverTo = $(this).find('.deliver_to').val();
 	$('#delivery_address_id').val(deliverTo);
-	
+
 });
 
 
 function updateItemToCart(itemId,sessionId,processType=1){
-	
+
 	var formData = {
 		_token:token(),
 		itemId : itemId,
 		sessionId : sessionId,
 		processType:processType
-	};	
+	};
 
 	$.ajax({
         type: "POST",
         url: feedUrl('/update-cart'),
         data: formData,
-        success: function( data ) {            
-			refreshCart();
+        success: function( data ) {
+					refreshCart();
         }
     });
 
 }
 
 function refreshCart() {
-	
+
 	var formData = {
-		_token:token(),		
-	};	
+		_token:token(),
+	};
 
 	$.ajax({
         type: "POST",
         url: feedUrl('/refresh-cart'),
         data: formData,
-        success: function( data ) {            			
+        success: function( data ) {
 			$(".dropdown-cart").empty().append(data.layoutCartview);
 			$("#home-cart").empty().append(data.homeCartview);
         }
-    });	
+    });
 }
 
 $(document).on('click','.dec',function(){
@@ -323,4 +347,3 @@ $(document).on('click','.inc',function(){
 	$(this).attr("disabled",true);
 	}
 });
-
