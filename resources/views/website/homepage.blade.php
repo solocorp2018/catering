@@ -8,6 +8,7 @@
   background: url("{{asset('website/img/banner-1.png')}}") no-repeat !important;
   background-size: cover !important;  
   height:424px;
+  width: 100%;
 }   
 </style>
 
