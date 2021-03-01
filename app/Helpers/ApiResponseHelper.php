@@ -12,10 +12,10 @@ function sendResponse($data = [],$message='OK',$code = 200) {
 	]);
 }
 
-function sendError($errors = [],$message='Error',$code = 200) {
+function sendError($errors = [],$message='Error',$code = 400) {
 
 	return response()->json([
-		'status' => true,
+		'status' => false,
 		'message' => $message,
 		'data' => [],
 		'errors' => $errors,

@@ -12,6 +12,7 @@ use Auth;
 use PDF;
 use Validator;
 
+
 class OrderController extends Controller
 {
     /**
@@ -98,15 +99,13 @@ class OrderController extends Controller
         //
     }
 
-    public function export(){
-
-      $orders = Order::getExportQueriedResult();
-      // dd($orders->toArray());
-    	$filename = 'orders-list-'.date('d-m-Y').'.csv';
-
-    	return Excel::download(new OrdersExport($orders), $filename);
+    public function export() 
+    {   
+        
+        $fileName = 'orders-list-'.date('d-m-Y').'.csv';
+        return Excel::download(new OrdersExport,$fileName);
     }
-
+    
     public function updatePaymentStatuses(Request $request) {
 
     	$rules = [
@@ -139,6 +138,7 @@ class OrderController extends Controller
 			  'payment_status'=> 2,
 			];      
 
+      updatedResponse("Payment Status Updated Successfully !");
 			$createPayment = Payment::create($input); 
 		}
 		
@@ -165,7 +165,7 @@ class OrderController extends Controller
       ];      
 
       $createPayment = Payment::create($input);    
-
+      updatedResponse("Payment Status Updated Successfully !");
       return redirect()->route('orders.index');
     }
 
@@ -177,37 +177,33 @@ class OrderController extends Controller
       $result = Order::with(['processedBy','deliveredBy','orderItems.item','deliveredAddress'])->find($id);
 
       
-      $data = [
-        'result' => $result
-      ];
-      //dd($result);
-      $pdf = PDF::loadView('admin.pdf.invoice1', $data);
-      return $pdf->download($result->order_unique_id.'.pdf');
-      //return view('admin.pdf.invoice',compact('result'));
+      $html = view('admin.pdf.invoice1',compact('result'))->render();
+      $pdf = \App::make('dompdf.wrapper'); 
+      $pdf->setPaper('a4', 'horizontal');     
+      $pdf->loadHTML($html);
+      return $pdf->download($result->order_unique_id.'.pdf');     
     }
 
      public function bulkInvoiceDownload(Request $request) {
 
       $rules = [
-        'captureArray' => 'required|array'
+        'invoiceIds' => 'required'
       ];
       $validator = Validator::make($request->all(),$rules);
 
-        if($validator->fails()) {
-          return response()->json(['message'=>'Validation Error !','errors'=>$validator->errors()]);
-        }
+      if($validator->fails()) {
+        return redirect()->back()->withError($validator->errors());
+      }
 
-      $orderIds = $request->get('captureArray');
+      $orderIds = json_decode($request->get('invoiceIds'),true);
 
       $orders = Order::with(['processedBy','deliveredBy','orderItems.item','deliveredAddress'])->find($orderIds);    
 
-      $data = [
-        'results' => $orders
-      ];
-
-      $pdf = PDF::loadView('admin.pdf.invoice1bulk', $data);
-      return $pdf->stream();
-      // return $pdf->download('Bulk-Invoice-'.date('d-m-Y').'.pdf');      
+      $html = view('admin.pdf.invoice1bulk',compact('orders'))->render();
+      $pdf = \App::make('dompdf.wrapper');
+      $pdf->loadHTML($html);
+      $pdf->setPaper('a4', 'horizontal');
+      return $pdf->download('Bulk-Invoice-'.date('d-m-Y').'.pdf');    
     }
     
 

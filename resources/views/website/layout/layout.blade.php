@@ -24,6 +24,10 @@
       <!-- <script src="{{asset('website/vendor/jquery/jquery-3.3.1.slim.min.js')}}" type="text/javascript"></script> -->
       <script src="{{asset('website/vendor/bootstrap/js/bootstrap.bundle.min.js')}}" type="text/javascript"></script>
 
+      <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+     <script type="text/javascript" src="{{asset('packa/theme/dist/js/pages/toastr.js')}}"></script>
+
    </head>  
    <body>
       @include('website.layout.top-navbar')
@@ -34,13 +38,21 @@
 
       @include('website.login')
       @include('website.register')
+      @include('admin.common.toastr')
 
+
+      <script>
+      		$(function(){
+      			@if(session()->has('create-account'))
+		            $("#register-modal").modal('show');
+		        @endif
+      		});
+      </script>
       
 
       <script src="{{asset('website/vendor/select2/js/select2.min.js')}}" type="text/javascript"></script>
       <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>  
       <script src="{{asset('website/vendor/owl-carousel/owl.carousel.js')}}" type="text/javascript"></script>
-      <script src="{{asset('website/js/custom.js')}}" type="text/javascript"></script>
       <script src="{{asset('website/js/custom.js')}}" type="text/javascript"></script>
       <script src="{{asset('js/website.js')}}" type="text/javascript"></script>
       

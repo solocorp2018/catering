@@ -43,11 +43,11 @@
                             </div>
 
                             <div class="form-group col-sm-4 col-xs-4">
-                                <label for="email" class="required">Email</label>
+                                <label for="email">Email</label>
                                 <input type="text" name="email" class="form-control" id="email" placeholder="Enter Email" value="{{old('email',$result->email)}}">
                             </div>
                             <div class="form-group col-sm-4 col-xs-4">
-                                <label for="contact_number">Contact Number </label>
+                                <label for="contact_number" class="required">Contact Number </label>
                                 <input type="text" name="contact_number" class="form-control" id="contact_number" placeholder="Enter Contact Number" value="{{old('contact_number',$result->contact_number)}}">
                             </div>
                         </div>
@@ -67,11 +67,11 @@
                             <table class="table table-hover">
                               <thead>
                                 <tr>
-                                  <th>Address Line 1</th>
+                                  <th class="required">Address Line 1</th>
                                   <th>Address Line 2</th>
-                                  <th>City</th>
-                                  <th>Pincode</th>
-                                  <th>Status</th>
+                                  <th class="required">City</th>
+                                  <th class="required">Pincode</th>
+                                  <th class="required">Status</th>
                                   <th>Action</th>
                                 </tr>
                               </thead>
@@ -125,22 +125,27 @@
                     <input type="hidden" name="user_id" value="{{$result->id}}">
                     <input type="text" name="address_line_1" placeholder="Address Line 1" id="address_line_1" class="form-control">
                   </div>
+                  <br>
                   <div class="form-label-group">
                     <input type="text" name="address_line_2" id="address_line_2" placeholder="Address Line 2" class="form-control">
                   </div>
+                  <br>
                   <div class="form-label-group">
                     <input type="text" name="city" id="city" placeholder="City" class="form-control">
                   </div>
+                  <br>
                   <div class="form-label-group">
                     <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Pincode">
                   </div>
+                  <br>
                   <div class="form-label-group">
-                      <select name="statusr" id="status_modal" class="form-control">
+                      <select name="status" id="status_modal" class="form-control">
                           @foreach($statuses as $key => $value)
                           <option value="{{$value}}">{{$key}}</option>
                           @endforeach
                       </select>
                   </div>
+                  <br>
                   <button class="btn btn-success waves-effect waves-light m-r-10" type="submit">Submit</button>
                 </form>
                 <br /><br />
@@ -156,7 +161,7 @@
      $('#address_line_2').val(jsonObject.address_line_2);
      $('#city').val(jsonObject.city);
      $('#pincode').val(jsonObject.pincode);
-     $('select[name^="statusr"] option[value='+jsonObject.status+']').attr("selected","selected");
+     $('select[name^="status"] option[value='+jsonObject.status+']').attr("selected","selected");
      var url = '{{ route("users.updateAddress", ":id") }}';
      url = url.replace(':id', jsonObject.id);
      $("#addressForm").attr('action', url);

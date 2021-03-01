@@ -67,7 +67,7 @@
                   </div>
                </div>
 
-               <div class="col-md-4">
+               <div class="col-md-4" id="home-cart">
                   @php
                      $showCheckout = 1;
                   @endphp

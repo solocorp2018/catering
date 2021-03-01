@@ -24,8 +24,9 @@
                <div class="card-body">
                   <div class="table-responsive m-t-40">
                      <div id="myTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                        <div class="row m-b-40">
-                           <div class="col-sm-6 col-md-6">
+                       <div class="row m-b-40">
+
+                           <div class="col-sm-12 col-md-6">
                               <div class="dataTables_length" id="myTable_length">
                                  <label>Show </label>
                                     <select name="pageLength" id="pageLength" aria-controls="myTable" on-change="searchFun()">
@@ -35,18 +36,16 @@
                                        <option value="100" {{SELECT('100',request('pageLength',100))}}>100</option>
                                     </select>
                               </div>
-
-	                           <div class="col-sm-6 col-md-6">
-	                              <div  class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="myTable" id="keyword" value="{{request('keyword')}}"></label></div>	                              
-		                           <input type="hidden" name="sortfield" id="sortfield" value="{{request('sortfield')}}"/>
-		                           <input type="hidden" name="sorttype" id="sorttype" value="{{request('sorttype')}}"/>
-	                           </div>
                            </div>
 
+                           <div class="col-sm-12 col-md-6">
+                              <div  class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="myTable" id="keyword" value="{{request('keyword')}}"></label></div>
+                           </div>
+                           <input type="hidden" name="sortfield" id="sortfield" value="{{request('sortfield')}}"/>
+                           <input type="hidden" name="sorttype" id="sorttype" value="{{request('sorttype')}}"/>
 
 
                         </div>
-
                         <div class="row">
                            <div class="col-sm-12">
                               <table class="table table-hover">

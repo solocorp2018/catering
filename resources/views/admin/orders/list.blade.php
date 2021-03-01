@@ -70,7 +70,7 @@
                            <thead>
                               <tr>
                                  <th><input type="checkbox" id="pickAll"/></th>
-                                 <th><a class="sort" data-column="order_no"><i class="fa fa-sort" aria-hidden="true"></i> &nbsp;Order No.</a></th>
+                                 <th><a class="sort" data-column="order_no"><i class="fa fa-sort" aria-hidden="true"></i> &nbsp;#Order No.</a></th>
                                  <th><a class="sort" data-column="date"><i class="fa fa-sort" aria-hidden="true"></i> &nbsp;Order Date</a></th>
                                  <th><a class="sort" data-column="amount"><i class="fa fa-sort" aria-hidden="true"></i> &nbsp;Order Amount</a></th>
                                  <th>Total Items</th>
@@ -84,7 +84,7 @@
                               @foreach($results as $result)
                               <tr>
                                  <td><input type="checkbox" name="capture_payment" {{(!empty($result->payment) && $result->payment->payment_status == 2)?'disabled=disabled':'class=capture_payment'}} value="{{$result->id}}" /></td>
-                                 <td>#{{$result->order_unique_id ?? '--'}}</td>
+                                 <td>{{$result->order_unique_id ?? '--'}}</td>
                                  <td>{{dateOf($result->order_date) ?? ''}}</td>
                                  <td>{{$result->total_amount ?? 0}}</td>
                                  <td>{{$result->orderItems->count() ?? 0}}</td>
@@ -203,11 +203,11 @@
             data: formData,
             success: function( data ) {                     
                 searchFun();
-                alert(data.message);                    
+                success(data.message);                    
             }
         }); 
     }   else {
-        alert('Please Select Atleast One Order to capture Payment.');
+        warning('Please Select Atleast One Order to capture Payment.');
     }
     });
     

@@ -128,6 +128,14 @@ use Carbon\Carbon;
 		return ($h * 3600) + ($m * 60) + $s;
 	}
 
+	function dateTimePickerFormat($datetime) {
+
+		return Carbon::parse($datetime)->toDateTimeLocalString();
+	}
 
 
-
+	function validateMobile($mobile)
+	{
+		$mobile = trim($mobile);
+	    return preg_match('/^[0-9]{10}+$/', $mobile);
+	}

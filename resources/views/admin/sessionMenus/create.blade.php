@@ -71,7 +71,7 @@
                               </div>
                               <div class="form-group col-sm-4 col-xs-4">
                                     <label for="status" class="required">Status </label>
-                                    <select name="status" id="status" class="form-control">
+                                    <select name="status" class="form-control">
                                         @foreach($statuses as $key => $value)
                                         <option value="{{$value}}" {{SELECT($value,old('status'))}}>{{$key}}</option>
                                         @endforeach
@@ -100,7 +100,7 @@
                                 <tr>
                                   <td>{{$i}}</td>
                                   <td>
-                                    <select class="form-control select2" Placeholder="Select Item" name="menu_items[{{$i}}][item_id]">
+                                    <select class="form-control select2 pickItem" Placeholder="Select Item" name="menu_items[{{$i}}][item_id]">
                                         <option value=""> -- Item -- </option>
                                       @foreach($menuItems as $key => $menuItem)
                                       <option value="{{$menuItem->id}}" {{SELECT($menuItem,old("menu_items[$i][item_id]"))}}>{{$menuItem->name}}</option>
@@ -108,10 +108,10 @@
                                     </select>
                                   </td>
                                   <td>
-                                    <input type="number" name="menu_items[{{$i}}][quantity]" class="form-control" Placeholder="Enter Quantity" value="{{old('menu_items[$i][quantity]')}}">
+                                    <input type="number" name="menu_items[{{$i}}][quantity]" class="form-control itemQuantity" Placeholder="Enter Quantity" value="{{old('menu_items[$i][quantity]')}}">
                                   </td>
                                   <td>
-                                      <select id="modal_quantity_type" class="form-control" name="menu_items[{{$i}}][quantity_type_id]">
+                                      <select class="form-control quantity_type_id" name="menu_items[{{$i}}][quantity_type_id]">
                                         <option value=""> -- Quantity -- </option>
                                       @foreach($quantityTypes as $quantity)
                                       <option value="{{$quantity->id}}" {{SELECT($quantity->id,old('menu_items[$i][quantity_type_id]'))}}>{{$quantity->name}}</option>
@@ -126,10 +126,11 @@
                                     </select>
                                   </td>
                                   <td>
-                                      <input type="text" name="menu_items[{{$i}}][price]" class="form-control" id="modalprice" placeholder="Enter Price" value="{{old('menu_items[$i][price]')}}">
+                                  	<input type="hidden" class="hidden_actual_price" value="0"/>
+                                      <input type="text" name="menu_items[{{$i}}][price]" class="form-control price" placeholder="Enter Price" value="{{old('menu_items[$i][price]')}}">
                                   </td>
                                   <td>
-                                    <input type="checkbox" name="menu_items[{{$i}}][status]" value="1" class="custom-checkbox" {{CHECKBOX(old('menu_items[$i][status]'))}}>
+                                    <input type="checkbox" name="menu_items[{{$i}}][status]" value="1" class="custom-checkbox status" {{CHECKBOX(old('menu_items[$i][status]'))}}>
                                   </td>
 
                                 </tr>

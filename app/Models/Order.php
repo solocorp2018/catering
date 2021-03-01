@@ -72,7 +72,7 @@ class Order extends Model
         $sortfield = ($sortfield == 'date')?'order_date':$sortfield;
         $sortfield = ($sortfield == 'amount')?'total_amount':$sortfield;
 
-        return $result->orderBy($sortfield,$sorttype)->get();
+        return $result->orderBy($sortfield,$sorttype);
     }
 
     public function placeOrder($deliveryId) {
@@ -114,7 +114,7 @@ class Order extends Model
 
     public function getOrderData($orderUniqueid) {
 
-        return $this->with(['orderItems.item','orderItems.quantityType','address','processedBy'])->where('order_unique_id',$orderUniqueid)->first();
+        return $this->with(['orderItems.item','sessionMenu.menuItem','orderItems.quantityType','address','processedBy'])->where('order_unique_id',$orderUniqueid)->first();
     }
 
     public function orderUniqueid() {

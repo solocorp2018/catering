@@ -82,7 +82,7 @@ class RegisterController extends Controller
             'otp' => 'required',
             'email' => 'sometimes|nullable|email|unique:users,email',
             'address_line_1' => 'required|min:2|max:100',
-            'address_line_2' => 'sometimes|min:2|max:100',
+            'address_line_2' => 'sometimes|nullable|min:2|max:100',
             'city' => 'required|min:2|max:50',
             'pincode' => 'required|min:5|max:8'
         ];
@@ -116,6 +116,8 @@ class RegisterController extends Controller
         UserAddress::create($userAddressData);
 
         Auth::loginUsingId($user->id);
+
+        createdResponse("Registered Successfully !");
 
         return response(['message' => 'User Registered Successfully !']);
     }

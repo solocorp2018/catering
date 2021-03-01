@@ -15,7 +15,21 @@
                            <div class="media">
                               <div class="mr-2"><i class="icofont-ui-press text-success food-item"></i></div>
                               <div class="media-body">
-                                 <p class="mt-1 mb-0 text-black">{{$cartItem->quantity}} * {{$cartItem->item->name}}</p>
+                              	 @php
+                              		$menuItem = collect();
+                              		if(isset($orderData->sessionMenu->menuItem)) {
+                              			$menuItem = $orderData->sessionMenu->menuItem->where('item_id',$cartItem->item_id)->first();
+                              		}                                 	
+                                 @endphp
+                                 <p class="mt-1 mb-0 text-black"> {{$cartItem->item->name}}</p>
+                                 @if(!empty($menuItem->toArray()))
+                                 <p class="mt-1 mb-0 text-black">
+                                 	{{$menuItem->quantity ?? ''}} {{$menuItem->quantityType->name ?? ''}} | {{$menuItem->price ?? ''}} INR
+                                 </p>
+                                  <p class="mt-1 mb-0 text-black">
+                                 	Added : {{$menuItem->quantity ?? ''}} {{$menuItem->quantityType->name ?? ''}} x {{$cartItem->quantity}}
+                                  </p>                                  
+                                @endif      
                               </div>
                            </div>
                         </div>
@@ -25,7 +39,7 @@
                      <div class="mb-2 bg-white rounded p-2 clearfix">
                         <img class="img-fluid float-left" src="{{asset('website/img/wallet-icon.png')}}">
                         <h6 class="font-weight-bold text-right mb-2">Subtotal : <span class="text-success">{{$cart->sum('quantity_price')}} INR</span></h6>
-                        <p class="seven-color mb-1 text-right">Free Delivery</p>
+                        <p class="seven-color mb-1 text-right">Delivery charges applicable</p>
                         <!-- <p class="text-black mb-0 text-right">You have saved $955 on the bill</p> -->
                      </div>
 

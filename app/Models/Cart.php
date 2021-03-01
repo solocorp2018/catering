@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Auth;
-use App\Models\Item;
+use App\Models\MenuItem;
 
 class Cart extends Model
 {
@@ -14,7 +14,7 @@ class Cart extends Model
 
 		$currentSessionId = 1;
 		$userId = Auth::user()->id;    	
-		$cartItems = static::with(['item'])
+		$cartItems = static::with(['item','session.menuItem'])
 							->where('user_id',$userId)
 	    				     // ->where('session_id',$currentSessionId)
 	    				     ->get();
@@ -26,7 +26,7 @@ class Cart extends Model
 
     		$userId = Auth::user()->id;
 
-    		$item = Item::find($itemId);
+    		$item = MenuItem::where('session_menu_id',$currentSessionId)->where('item_id',$itemId)->where('status',1)->first();
 
 	    	$cartItem = $this->where('item_id',$itemId)
 	    				     ->where('user_id',$userId)
@@ -95,5 +95,9 @@ class Cart extends Model
 
     public function item() {
     	return $this->belongsTo('App\Models\Item','item_id');
+    }
+
+    public function session() {
+    	return $this->belongsTo('App\Models\SessionMenu','session_id');
     }
 }

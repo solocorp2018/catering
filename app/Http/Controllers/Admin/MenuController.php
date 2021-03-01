@@ -149,8 +149,7 @@ class MenuController extends Controller
    {
        $result = SessionMenu::with(['menuItem','sessionType'])->find($id);
 
-
-        $allowToClone = Carbon::parse($result->session_date)->timezone("+05:30")->isPast();
+       $allowToClone = Carbon::parse($result->closing_time)->timezone("+05:30")->isPast();
 
        return view('admin.sessionMenus.show',compact('result','allowToClone'));
    }
@@ -310,6 +309,7 @@ class MenuController extends Controller
 
     $menuItemsInput = [
       'session_type_id' => $sessionMenu->session_type_id,
+      'session_code' => SessionMenu::sessionUniqueId(),
       //'session_date'=> now("+05:30"),
       'opening_time' => $sessionMenu->opening_time,
       'closing_time' => $sessionMenu->closing_time,
@@ -347,6 +347,8 @@ class MenuController extends Controller
       }
     }
 
+    updatedResponse("Session Cloned Successfully !");
+
     return redirect()->route('sessionMenus.index');
   }
 
@@ -365,7 +367,7 @@ class MenuController extends Controller
                                           ->whereNotNull('contact_number')
                                           ->pluck('contact_number')->toArray();
 
-            $message = "Hello from MR Grandson Caters :) Your homemade SPECIAL recipe is ready for orders. Place it now and enjoy it to the core. Ordering is simple, login ( http://mrgrandsoncaters.in), select the menu, place the order, and we will deliver at your doorstep!";
+            $message = "Hello from MR Grandson Caters. Your homemade SPECIAL recipe is ready. Login (mrgrandsoncaters.in), select menu, and place an order! We deliver to your door.";
 
             TextLocalSmsGateway::sendSms($customerMobileNumbers,$message);
 

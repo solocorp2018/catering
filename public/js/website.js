@@ -93,7 +93,7 @@ $(document).on('keyup','#otp', function(){
 		if($("#contact_number").val().length == 10) {
 			validateOtp();
 		} else {
-			alert("Please Enter Valid Mobile Number");
+			warning("Please Enter Valid Mobile Number");
 		}
 	}
 });
@@ -118,7 +118,6 @@ function triggerOtp() {
 		_token:token(),
 		contactNumber:contactNumber
 	};
-	console.log(formData);
 
 	$.ajax({
         method:"POST",
@@ -126,11 +125,11 @@ function triggerOtp() {
         data: formData,
         success: function( data ) {
         	if(data.status == 1) {
-        		alert( data.message );
+        		success( data.message );
         	}
 
 			if(data.status == 0) {
-        		alert( data.message );
+        		warning( data.message );
         	}
 
         }
@@ -158,7 +157,7 @@ function validateOtp() {
         url: feedUrl('/validate-otp'),
         data: formData,
         success: function( data ) {
-            alert( data.message );
+            success( data.message );
             $("#contact_number").attr('disable',true);
             $("#otp").attr('disable',true);
             $("#otpVerified").val(token());
@@ -185,11 +184,11 @@ function registerForm() {
         data: formData,
         success: function( data ) {
 					// $('#register-modal').modal('toggle');
-					if( data.message ) {
-						location.reload();
-					} else {
-							$('#errors').empty().append( data );
-					}
+			if( data.message ) {
+				location.reload();
+			} else {
+				$('#errors').empty().append( data );
+			}
         }
     });
 }
@@ -224,15 +223,13 @@ function loginForm() {
 				type: "POST",
 				url: feedUrl('/customer/login'),
 				data: formData,
-				success: function( data ) {
-					if( data.message ) {
-						location.reload();
+				success: function( data ) {					
+					info(data.message);
+					if(data.errors) {
+						$('#errors').empty().append( data.errors.error_view );
 					} else {
-							$('#errors').empty().append( data );
-					}
-				},
-				error: function( err ) {
-
+						location.reload();	
+					}						
 				}
 		});
 }

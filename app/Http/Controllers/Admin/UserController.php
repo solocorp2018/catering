@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Exports\CustomersExport;
 use Validator;
 use Auth;
+use App\Services\TextLocalSmsGateway;
 use App\Models\User;
 use App\Models\UserAddress;
 
@@ -180,13 +181,13 @@ class UserController extends Controller
 
         if($id) {
             $rules['name'] = "required|min:2|max:99";
-            $rules['email'] = "sometimes|unique:users,email,{$id},id|max:99";
-            $rules['contact_number'] = "required|unique:users,contact_number,{$id},id|min:10|max:10";
+            $rules['email'] = "sometimes|nullable|email|unique:users,email,{$id},id|max:99";
+            $rules['contact_number'] = "required|unique:users,contact_number,{$id},id|min:8|max:15";
 
         } else {
             $rules['name'] = "required|unique:users,name|min:2|max:99";
-            $rules['email'] = "sometimes|unique:users,email|max:99";
-            $rules['contact_number'] = "required|unique:users,contact_number|min:2|max:99";
+            $rules['email'] = "sometimes|nullable|email|unique:users,email|max:99";
+            $rules['contact_number'] = "required|unique:users,contact_number|min:8|max:15";
              $rules['address_line_1'] = 'required|min:15|max:200';
         $rules['address_line_2'] = 'sometimes|nullable|min:15|max:200';
         $rules['city'] = 'required|min:3|max:100';
@@ -226,7 +227,8 @@ class UserController extends Controller
               'state_id' => 1,
               'country_id' => 1,
               'is_current' => _active(),
-              'created_by'=> Auth::user()->id
+              'created_by'=> Auth::user()->id,
+              
           ];
       if($id != 0) {
         $address = UserAddress::find($id);
@@ -235,5 +237,44 @@ class UserController extends Controller
         UserAddress::create($input);
       }
       return back();
+    }
+
+    public function sendInvitation(Request $request) {
+
+        $validator = Validator::make($request->all(),['invite_numbers'=>'required']);
+
+        if($validator->fails()) {
+            session()->flash('error','Send Invitation Request Failured !');
+            return redirect()->back();
+        }
+
+        $concatedMobileNumbers = $request->get('invite_numbers');
+
+        $explodedMobileNumbers = explode(',', $concatedMobileNumbers);
+
+        $validMobileNumbers = array();
+
+        foreach ($explodedMobileNumbers as $key => $mobileNumber) {
+            
+            if(validateMobile($mobileNumber)) {
+
+                $validMobileNumbers[] = trim($mobileNumber);
+            }
+        }
+
+        $existingMobileNumbers = User::whereNotNull('contact_number')->pluck('contact_number')->toArray();
+
+        $validMobileNumbers = array_diff($validMobileNumbers, $existingMobileNumbers);
+
+        if(!empty($validMobileNumbers)) {
+
+            $message = "Greetings ! You are invited to MR Grandson Caters, do register, order and get delivered at doorstep. Registration Link : ".url('create-account')." .";
+
+            TextLocalSmsGateway::sendSms($validMobileNumbers,$message);
+
+            createdResponse("Invitation SMS Sent Successfully !");
+        }
+
+        return redirect()->back();
     }
 }

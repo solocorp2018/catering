@@ -91,24 +91,23 @@ class LoginController extends Controller
 
     public function customerLogin(Request $request) {
 
+      $validator = Validator::make($request->all(),['contact_number'=>'required|exists:users,contact_number,status,1'],['contact_number'=>'Mobile Number'],['contact_number.exists'=>"Mobile Number doesn't match with our records !."]);
+
+      if($validator->fails()) {
+            $errors = $validator->errors();
+
+            $error_view = view('website.common.validator-error',compact('errors'))->render();
+
+            return sendError(['_error_view'=>$error_view],"Mobile Number Doesn't match with our records !",404);
+        }
+
       $contact_number = $request->contact_number;
 
       $user = User::where('contact_number', $contact_number)->first();
 
-      if(!empty($user)) {
+      Auth::loginUsingId($user->id);
 
-        Auth::loginUsingId($user->id);
-
-        return response(['message'=>'Login successfull !']);
-
-      } else {
-
-        $errors = ['errors'=> 'Invalid credentials for login'];
-
-        return view('website.common.validator-error',compact('errors'));
-
-      }
-
+      return response(['message'=>'Login successfull !']);
     }
 
     public function login(Request $request) {

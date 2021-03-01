@@ -47,15 +47,23 @@
                                     <small class="form-text text-muted">Pick Session Type for Menu</small>
                                 </div>
 
+                                @php
+                                $opening_time = dateTimePickerFormat(old('opening_time',$result->opening_time));                                 
+                                $closing_time = dateTimePickerFormat(old('closing_time',$result->closing_time));
+
+                                $expected_delivery_time = dateTimePickerFormat(old('delivery_time',$result->expected_delivery_time));
+
+                                @endphp
+
                                 <div class="form-group col-sm-4 col-xs-4 bootstrap-timepicker timepicker">
-                                    <label for="opening_time" class="required">Session Opening Time</label> dfsdfsdf{{$result->opening_time}}
-                                    <input type="datetime-local" class="form-control input-small" name="opening_time" value="{{old('opening_time',$result->opening_time)}}">
+                                    <label for="opening_time" class="required">Session Opening Time</label> 
+                                    <input type="datetime-local" class="form-control input-small" name="opening_time" value="{{$opening_time}}">
                                      <small class="form-text text-muted">Please Pick a Valid Date</small>                
                                 </div>
 
                                 <div class="form-group col-sm-4 col-xs-4 bootstrap-timepicker timepicker">
                                     <label for="closing_time">Session Closing Time </label>
-                                     <input type="datetime-local" class="form-control input-small" name="closing_time" value="{{old('closing_time',$result->closing_time)}}">
+                                     <input type="datetime-local" class="form-control input-small" name="closing_time" value="{{$closing_time}}">
                                     <small class="form-text text-muted">Closing Date Time should be after Opening Time</small>
                                 </div>
                             </div>
@@ -63,7 +71,7 @@
                               
                               <div class="form-group col-sm-4 col-xs-4 bootstrap-timepicker timepicker">
                                   <label for="closing_time">Expected Delivery Time </label>
-                                   <input type="datetime-local" class="form-control input-small" name="delivery_time" value="{{old('delivery_time',$result->expected_delivery_time)}}">
+                                   <input type="datetime-local" class="form-control input-small" name="delivery_time" value="{{$expected_delivery_time}}">
                                   <small class="form-text text-muted">Delivery Date Time should be after Opening Time</small>
                               </div>
                               <div class="form-group col-sm-4 col-xs-4">
@@ -116,7 +124,7 @@
                                   <tr>
                                   <td>{{$i}}</td>
                                   <td>
-                                    <select class="form-control select2" Placeholder="Select Item" name="menu_items[{{$i}}][item_id]">
+                                    <select class="form-control select2 pickItem" Placeholder="Select Item" name="menu_items[{{$i}}][item_id]">
                                         <option value=""> -- Item -- </option>
                                       @foreach($menuItems as $key => $menuItem)
                                       <option value="{{$menuItem->id}}" {{SELECT($menuItem->id,old("menu_items[$i][item_id]",$menu->item_id ?? ''))}}>{{$menuItem->name}}</option>
@@ -124,10 +132,10 @@
                                     </select>
                                   </td>
                                   <td>
-                                    <input type="number" name="menu_items[{{$i}}][quantity]" class="form-control" Placeholder="Enter Quantity" value="{{old('menu_items[$i][quantity]',$menu->quantity ?? 0)}}">
+                                    <input type="number" name="menu_items[{{$i}}][quantity]" class="form-control itemQuantity" Placeholder="Enter Quantity" value="{{old('menu_items[$i][quantity]',$menu->quantity ?? 0)}}">
                                   </td>
                                   <td>
-                                      <select id="modal_quantity_type" class="form-control" name="menu_items[{{$i}}][quantity_type_id]">
+                                      <select class="form-control quantity_type_id" name="menu_items[{{$i}}][quantity_type_id]">
                                         <option value=""> -- Quantity -- </option>
                                       @foreach($quantityTypes as $quantity)
                                       <option value="{{$quantity->id}}" {{SELECT($quantity->id,old('menu_items[$i][quantity_type_id]',$menu->quantity_type_id ?? ''))}}>{{$quantity->name}}</option>
@@ -142,11 +150,12 @@
                                     </select>
                                   </td>
                                   <td>
-                                      <input type="text" name="menu_items[{{$i}}][price]" class="form-control" id="modalprice" placeholder="Enter Price" value="{{old('menu_items[$i][price]',$menu->price ?? '')}}">
+                                  		<input type="hidden" class="hidden_actual_price" value="0"/>
+                                      <input type="text" name="menu_items[{{$i}}][price]" class="form-control price"  placeholder="Enter Price" value="{{old('menu_items[$i][price]',$menu->price ?? '')}}">
                                   </td>
                                   
                                   <td>
-                                    <input type="checkbox" name="menu_items[{{$i}}][status]" value="1" class="custom-checkbox" {{CHECKBOX('menu_items[$i][status]',$menu->status ?? 0)}}>
+                                    <input type="checkbox" name="menu_items[{{$i}}][status]" value="1" class="custom-checkbox status" {{CHECKBOX('menu_items[$i][status]',$menu->status ?? 0)}}>
                                   </td>
                                   
                                 </tr>

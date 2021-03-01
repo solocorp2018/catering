@@ -11,6 +11,8 @@ use App\Models\UserAddress;
 use App\Models\Order;
 use Auth;   
 
+use App\Services\TextLocalSmsGateway;
+
 class HomePageController extends Controller
 {
 
@@ -35,6 +37,21 @@ class HomePageController extends Controller
     	return view('website.homepage',compact('todaysMenu','cart','userData'));   
     }
 
+     public function createAccount() {
+
+        $sessionMenu = new SessionMenu();
+        $todaysMenu = $sessionMenu->getTodayMenu();       
+        
+        $cart = $userData = collect();
+        if(Auth::user()){
+            $userData = $this->userModel->getUserData(Auth::user()->id);                
+            $cart = Cart::getCurrentUserCart();
+        }        
+        
+        session()->flash('create-account','Account Creation Temp Session');
+        
+        return view('website.homepage',compact('todaysMenu','cart','userData'));   
+    }
 
     public function userDashboard(Request $request) {
 
@@ -85,10 +102,12 @@ class HomePageController extends Controller
 
         UserAddress::create($userAddressData);
 
+        updatedResponse("New Address Added Successfully !");
+
         return redirect()->back();
     }
 
-    public function placeOrder(Request $request) {
+    public function placeOrder(Request $request) {       
 
         $rules = [            
             'delivery_address_id' => 'required',
@@ -98,7 +117,17 @@ class HomePageController extends Controller
         $order = new Order();
 
         $orderUniqueId = $order->placeOrder($request->delivery_address_id);
+
+        $mobileNumber = Auth::user()->contact_number;
+
+        $message = "Thank you for placing order with M R Grandson Caters, your order will be processed soon.";
+
+        if($mobileNumber) {
+        	TextLocalSmsGateway::sendSms($mobileNumber,$message);	
+        }        
         
+        updatedResponse("Order Placed Successfully !");
+
         return redirect('thankyou/'.$orderUniqueId);   
     }
 
@@ -120,9 +149,7 @@ class HomePageController extends Controller
 
         $order = new Order();
 
-        $orderData= $order->getOrderData($orderUniqueId);
-
-        
+        $orderData= $order->getOrderData($orderUniqueId);        
 
     	return view('website.track-order',compact('cart','orderUniqueId','orderData'));
     }   

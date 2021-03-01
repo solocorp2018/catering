@@ -162,6 +162,17 @@ class ItemController extends Controller
         return redirect()->route('items.index');
     }
 
+    public function getItemDetail(Request $request) {
+
+    	if($itemId = $request->get('itemId')) {
+
+    		$itemDetail = Item::findOrFail($itemId);
+
+    		return sendResponse($itemDetail); 
+    	}
+
+    	return sendError([],'Ok');
+    }
     /**
      * Remove the specified resource from storage.
      *

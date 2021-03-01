@@ -53,10 +53,27 @@
 
                               @if(!empty($orderData->orderItems))
                               @foreach($orderData->orderItems as $orderItems)
-                                 <p class="mb-2"><i class="icofont-ui-press text-success food-item"></i> {{$orderItems->quantity}} * {{$orderItems->item->name}} <span class="float-right text-secondary">{{$orderItems->total_amount}} INR</span></p>
+
+                              	@php
+                              		$menuItem = collect();
+                              		if(isset($orderData->sessionMenu->menuItem)) {
+                              			$menuItem = $orderData->sessionMenu->menuItem->where('item_id',$orderItems->menu_item_id)->first();
+                              		}                                 	
+                                 @endphp
+
+                                 <p class="mt-1 mb-0 text-black "><i class="icofont-ui-press text-success food-item"></i> &nbsp; {{$orderItems->item->name}} 
+                                 	@if(!empty($menuItem))
+                                 	<small> ({{$menuItem->quantity ?? ''}} {{$menuItem->quantityType->name ?? ''}} | {{$menuItem->price ?? ''}} INR) </small> x
+
+                                 	@endif
+
+                                 	{{$orderItems->quantity}}
+
+                                 	<span class="float-right text-secondary">{{$orderItems->total_amount}} INR</span>
+                                 </p>
                                  @endforeach
                               @endif
-                              
+                              <br>
                               <p class="mb-0 font-weight-bold text-black">TOTAL BILL <span class="float-right text-secondary">{{$orderData->total_amount}} INR</span></p>
                               <p class="mb-0 text-info"><small>Payment On Delivery
                                  <!-- <span class="float-right text-danger">$620 OFF</span> -->

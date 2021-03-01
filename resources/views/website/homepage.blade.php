@@ -97,7 +97,10 @@
                      	@if($menuCount1 > 0)
                         <div class="tab-pane {{($key1 == 0)?'show active':'fade' }}" id="pill{{$todayMenu->id}}000" role="tabpanel" aria-labelledby="pill{{$todayMenu->id}}000-tab">                         
                            <div class="row">
-                              <h5 class="mb-4 mt-3 col-md-12">{{$todayMenu->sessionType->type_name ?? '--'}} <small class="h6 text-black-50">{{$menuCount1}} ITEMS</small></h5>
+                              <h5 class="mb-4 mt-3 col-md-12">{{$todayMenu->sessionType->type_name ?? '--'}} <small class="h6 text-black-50">{{$menuCount1}} ITEMS</small>
+                              	<a class="float-right" href="tel:{{supportnumber()}}"><i class="fa fa-phone"></i>&nbsp; Order Support</a></h5>
+
+                                       
                               <div class="col-md-12">
                                  <div class="bg-white rounded border shadow-sm mb-4">
                                  	@foreach($todayMenu->menuItem as $menuItem)
@@ -110,6 +113,7 @@
                                        
                                        
                                        <a class="btn btn-outline-secondary btn-sm  float-right" onclick="updateItemToCart({{$menuItem->item_id}},{{$todayMenu->id}},1)">ADD</a>
+
                                        @endif
                                        
                                        <div class="media">
@@ -156,7 +160,7 @@
 
                                                 </h6>
                                                 
-                                             <p class="text-gray mb-0">{{$menuItem->Items->price ?? 0}} INR</p>
+                                             <p class="text-gray mb-0">{{$menuItem->quantity ?? 0}} {{$menuItem->quantityType->name ?? ''}} |  {{$menuItem->price ?? 0}} INR</p>
                                           </div>
                                        </div>
                                     </div>                                   

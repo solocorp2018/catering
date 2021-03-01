@@ -47,8 +47,8 @@
                                  </th>
                                  <th>Item(s)</th>
                                  <th><a class="sort" data-column="open"><i class="fa fa-sort" aria-hidden="true"></i>&nbsp;Opening Time</a></th>
-                                 <th><a class="sort" data-column="close"><i class="fa fa-sort" aria-hidden="true"></i>&nbsp;Closing Time</a></th>
-                                 <th>Delivery Time</th>
+                                 <th><a class="sort" data-column="close"><i class="fa fa-sort" aria-hidden="true"></i>&nbsp;Closing Time</a></th>                                        
+                                 <th>Live Status</th>
                                  <th>Status</th>
                                  <th>Actions</th>
                               </tr>
@@ -61,8 +61,16 @@
                                  <td>{{$result->session_code ?? ''}}</td>
                                  <td>{{$result->sessionItem->count() ?? 0}}</td>
                                  <td>{{dateOf($result->opening_time) ?? ''}}</td>
-                                 <td>{{dateOf($result->closing_time) ?? ''}}</td>
-                                 <td>{{dateOf($result->delivery_time) ?? ''}}</td>
+                                 <td>{{dateOf($result->closing_time) ?? ''}}</td>                                 
+                                 <td>
+                                    @if(isOpenForOrder($result->opening_time,$result->closing_time) == 1)
+                                    <a href="{{url('/')}}" target="_blank"><span class="text-success">Open</span></a>
+                                    @elseif(isOpenForOrder($result->opening_time,$result->closing_time) == 2)
+                                    <span class="text-warning">Upcoming</span>
+                                    @else
+                                    <span class="text-danger">Closed</span>
+                                    @endif
+                                 </td>
                                  <td>
                                     @if(isset($result->status) && $result->status == 1)
                                     <span class="text-success">Active</span>

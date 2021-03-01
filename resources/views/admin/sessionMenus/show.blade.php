@@ -27,18 +27,18 @@
                  <div class="col-md-3 col-xs-6 b-r"> <strong>Session Code</strong>
                      <br>
                      <p class="text-muted">{{$result->session_code ?? ''}}</p>
-                 </div>
-                 <div class="col-md-3 col-xs-6 b-r"> <strong>Session Date</strong>
-                     <br>
-                     <p class="text-muted">{{showDate($result->session_date,'d/M/y') ?? ''}}</p>
-                 </div>
+                 </div>                 
                  <div class="col-md-3 col-xs-6 b-r"> <strong>Opening Time</strong>
                      <br>
-                     <p class="text-muted">{{Time24to12($result->opening_time) ?? ''}}</p>
+                     <p class="text-success">{{dateOf($result->opening_time) ?? ''}}</p>
                  </div>
                  <div class="col-md-3 col-xs-6"> <strong>Closing Time</strong>
                      <br>
-                     <p class="text-muted">{{Time24to12($result->closing_time) ?? ''}}</p>
+                     <p class="text-danger">{{dateOf($result->closing_time) ?? ''}}</p>
+                 </div>
+                 <div class="col-md-3 col-xs-6"> <strong>Expected Delivery Time</strong>
+                     <br>
+                     <p class="text-muted">{{dateOf($result->delivery_time) ?? ''}}</p>
                  </div>
                  <div class="col-md-3 col-xs-6"> <strong>Status</strong>
                      <br>
@@ -51,7 +51,7 @@
                  <div class="col-md-3 col-xs-6"> <strong>Notify People</strong>
                   <br>
                     @if(isset($result->notify) && $result->notify == 1)
-                      <p class="text-muted">Notified</p>
+                      <p class="text-primary">Notification Sent</p>
                     @else
                       <a href="{{url('send-notification',$result->session_code)}}" class="btn btn-info d-none d-lg-block m-l-15">Send Notification</a>
                     @endif

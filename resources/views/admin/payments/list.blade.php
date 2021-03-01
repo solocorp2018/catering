@@ -47,7 +47,12 @@
                               <div  class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="myTable" id="keyword" value="{{request('keyword')}}"></label></div>
                            </div>
                            <div class="col-sm-12 col-md-6">
-                              <div  class="dataTables_filter"><a href="#" class="downloadAll">Download Invoices</a></div>
+                            <form action="{{url('bulk-invoice-download')}}" id="target" method="POST">
+                              @csrf
+                              <input type="hidden" name="invoiceIds" id="invoiceIds" value="">
+                              <button type="submit" class="btn btn-info d-none d-lg-block downloadAll">Download Invoices</button>
+                             <!--  <div  class="dataTables_filter"><a href="#" class="downloadAll">Download Invoices</a></div> -->
+                            </form>
                            </div>
                            <input type="hidden" name="sortfield" id="sortfield" value="{{request('sortfield')}}"/>
                            <input type="hidden" name="sorttype" id="sorttype" value="{{request('sorttype')}}"/>
@@ -136,29 +141,22 @@
     }       
     });
 
-  $(document).on('click','.downloadAll',function(){
-   
+  $(document).on('click','.downloadAll',function(e){
+      e.preventDefault();
             var captureArray = [];
     $("input:checkbox[name=capture_payment]:checked").each(function(){
             captureArray.push($(this).val());
     });
+
+
    
-            if(captureArray.length > 1) {
-        var formData = {
-            _token:feedToken(), 
-            captureArray:captureArray,  
-        };  
-        $.ajax({
-            type: "POST",
-            url: feedBaseUrl('/bulk-invoice-download'),
-            data: formData,
-            success: function( data ) {                     
-                searchFun();
-                alert(data.message);                    
-            }
-        }); 
+          if(captureArray.length > 1) {
+
+            $("#invoiceIds").val(JSON.stringify(captureArray));
+            $("#target").submit();
+       
     }   else {
-        alert('Please Select Atleast Two Payments to Download Bulk Invoice.');
+        warning('Please Select Atleast Two Payments to Download Bulk Invoice.');
     }
     });
 </script>

@@ -98,7 +98,7 @@
 
 <body>
     <div class="invoice-box">
-        @foreach($results as $result)
+        @foreach($orders as $result)
         <table cellpadding="0" cellspacing="0">
             <tr class="top">
                 <td colspan="4">
@@ -190,6 +190,7 @@
             </tr>
 
         </table>
+        <div style="page-break-after: always;"></div>
         @endforeach
     </div>
 </body>

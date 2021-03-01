@@ -10,6 +10,24 @@ File: js
 $(function() {
     "use strict";
 
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": false,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": false,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+
     $('.__success').click(function(){
     	
     	var message = ($(this).attr('data-toast'))?$(this).attr('data-toast'):'Request Successfull !';
@@ -33,53 +51,22 @@ $(function() {
 
 function success(message = '',heading='Success') {
 	
-		$.toast({
-            heading:heading,
-            text: message,
-            position: 'top-right',
-            loaderBg:'#ff6849',
-            icon: 'success',
-            hideAfter: 3000, 
-            stack: 2
-        });
+		toastr.success(message);
 }
 
 function error(message = '',heading='Oops!') {
-	
-		$.toast({
-            heading:heading,
-            text: message,
-            position: 'top-right',
-            loaderBg:'#ff6849',
-            icon: 'error',
-            hideAfter: 3000, 
-            stack: 2
-        });
+	    
+        toastr.error(message);
+		
 }
 
 function info(message = '',heading='Information') {
 	
-		$.toast({
-            heading:heading,
-            text: message,
-            position: 'top-right',
-            loaderBg:'#ff6849',
-            icon: 'info',
-            hideAfter: 3000, 
-            stack: 2
-        });
+		toastr.info(message);
 }
 
 
 function warning(message = '', heading='Warning !') {
 	
-		$.toast({	
-            heading:heading,
-            text: message,
-            position: 'top-right',
-            loaderBg:'#ff6849',
-            icon: 'warning',
-            hideAfter: 3000, 
-            stack: 2
-        });
+		toastr.warning(message);
 }

@@ -42,33 +42,33 @@
                         </div>
 
                         <div class="form-group col-sm-4 col-xs-4">
-                            <label for="email" class="required">Email</label>
+                            <label for="email">Email</label>
                             <input type="text" name="email" class="form-control" id="email" placeholder="Enter Email" value="{{old('email')}}">
                         </div>
                         <div class="form-group col-sm-4 col-xs-4">
-                            <label for="description">Contact Number </label>
+                            <label for="description" class="required">Contact Number </label>
                             <input type="text" name="contact_number" class="form-control" id="contact_number" placeholder="Enter Contact Number" value="{{old('contact_number')}}">
                         </div>
                     </div>
 
                     <div class="row pt-3">
                       <div class="form-group col-sm-6 col-xs-6">
-                          <label for="address1">Address Line 1 </label>
-                          <textarea class="form-control" name="address_line_1" rows="3">{{old('address1')}}</textarea>
+                          <label for="address1" class="required">Address Line 1 </label>
+                          <textarea class="form-control" name="address_line_1" rows="3">{{old('address_line_1')}}</textarea>
                       </div>
                       <div class="form-group col-sm-6 col-xs-6">
                           <label for="address2">Address Line 2 </label>
-                          <textarea class="form-control" name="address_line_2" rows="3">{{old('address2')}}</textarea>
+                          <textarea class="form-control" name="address_line_2" rows="3">{{old('address_line_2')}}</textarea>
                       </div>
                     </div>
 
                       <div class="row pt-3">
                           <div class="form-group col-sm-4 col-xs-4">
-                              <label for="city">City</label>
+                              <label for="city" class="required">City</label>
                               <input type="text" name="city" class="form-control" id="city" placeholder="Enter City" value="{{old('city')}}">
                           </div>
                           <div class="form-group col-sm-4 col-xs-4">
-                              <label for="pincode">Pincode</label>
+                              <label for="pincode" class="required">Pincode</label>
                               <input type="text" name="pincode" class="form-control" id="pincode" placeholder="Enter Pincode" value="{{old('pincode')}}">
                           </div>
                           <div class="form-group col-sm-4 col-xs-4">

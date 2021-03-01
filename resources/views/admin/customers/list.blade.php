@@ -13,11 +13,34 @@
                     <li class="breadcrumb-item"><a href="{{url('/dashboard')}}">Dashboard</a></li>
                     <li class="breadcrumb-item active">Customers</li>
                 </ol>
-                <a class="btn btn-info d-none d-lg-block m-l-15" href="{{route('customers.create')}}"><i class="fa fa-plus-circle"></i> Create New</a>
+                <a class="btn btn-info d-ntone d-lg-block m-l-15" href="{{route('customers.create')}}"><i class="fa fa-plus-circle"></i> Create New</a>
             </div>
         </div>
     </div>
       <div class="row">
+        <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Invite Customers</h4>
+                                <h6 class="card-subtitle"><code>If Customer Mobile Number is already registered with us, they will be skipped from invitation SMS</code>
+                                </h6>
+                                
+                                <form action="{{url('send-invitation')}}" method="post">
+                                  @csrf                                 
+                                  <div class="row">
+                                  <div class="col-md-12 tags-default">
+                                    <input type="text" class="form-control lg" data-role="tagsinput" name="invite_numbers" placeholder="Ex: 9999999999 , 9876543210" /> 
+                                  </div>
+
+                                  <div class="col-md-4 m-t-5">
+                                  <button type="submit" class="btn btn-info d-none d-lg-block m-l-15"><i class=" icon-action-redo"></i> Send Invitation</button>
+                                 </div>
+                                  </div>  
+                                </form>
+                                
+                            </div>
+                        </div>
+                    </div>
          <div class="col-lg-12">
             <!-- Table Html -->
             <div class="card">
@@ -65,8 +88,8 @@
                                     <tr>
 
                                        <td>{{$result->name ?? ''}}</td>
-                                       <td>{{$result->contact_number ?? ''}}</td>
-                                       <td>{{$result->email}}</td>
+                                       <td>@if($result->contact_number){{$result->country_code ?? ''}} {{$result->contact_number ?? ''}}@endif</td>
+                                       <td>{{$result->email ?? '--'}}</td>
                                        <td>
                                         @if(isset($result->status) && $result->status == 1)
                                         <span class="text-success">Active</span>

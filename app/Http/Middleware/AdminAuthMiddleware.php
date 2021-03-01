@@ -16,6 +16,7 @@ class AdminAuthMiddleware
     public function handle($request, Closure $next)
     {
         if(!$request->user()) {
+        	warningResponse("Invalid Access Token !");
             return redirect('/login');
         }
         if($request->user()->user_type_id == 1) {

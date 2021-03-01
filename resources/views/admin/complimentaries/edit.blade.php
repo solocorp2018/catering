@@ -78,7 +78,7 @@
                                                 <label for="is_visible" class="required">Show With Menu Item ? </label>
                                                 <select name="is_visible" id="is_visible" class="form-control">
                                                     @foreach($statuses as $key => $value)
-                                                    <option value="{{$value}}" {{SELECT($value,old('is_visible'))}}>{{$key}}</option>
+                                                    <option value="{{$value}}" {{SELECT($value,old('is_visible',$result->is_visible))}}>{{$key}}</option>
                                                     @endforeach                
                                                 </select>
                                             </div>

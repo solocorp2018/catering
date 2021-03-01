@@ -17,6 +17,7 @@
                       <div class="form-label-group">
                          <input type="text" id="contact_number" name="contact_number" class="form-control" placeholder="Enter Mobile Number">
                          <label for="contact_number" class="required">Mobile Number</label>
+                         <small>You will Recieve OTP after typing Mobile Number</small>
                       </div>
                       <div class="form-label-group">
                          <input type="text" id="otp" name="otp" class="form-control" placeholder="Enter OTP">

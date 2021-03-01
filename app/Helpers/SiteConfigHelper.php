@@ -29,5 +29,5 @@ function phonePayNumber() {
 }
 
 function supportnumber() {
-	return "+919894644631";
+	return "+919047531591 ";
 }

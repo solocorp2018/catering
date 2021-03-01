@@ -21,14 +21,12 @@ class SessionMenu extends Model
        return $query;
    }
 
-   public function getTodayMenu(){
+   public function getTodayMenu() {
 
       $result = $this->with(['sessionType','menuItem'])                    
                     ->orderBy('session_type_id','asc')
-                    ->where(function($whereQuery){
-                      $whereQuery->where('opening_time','>=',today());
-                      $whereQuery->orWhere('closing_time','<=',today());
-                    })
+                    ->where('opening_time','<=',now())
+                    ->where('closing_time','>=',now()->addHours(2))                    
                     ->get();
         
       return $result;
