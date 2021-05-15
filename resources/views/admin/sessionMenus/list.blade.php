@@ -24,10 +24,9 @@
                   <div class="dataTables_filter" aria-controls="myTable_wrapper">
                      <label>Show </label>
                      <select name="pageLength" id="pageLength" aria-controls="myTable" on-change="searchFun()">
-                     <option value="10" {{SELECT('10',request('pageLength',10))}}>10</option>
-                     <option value="25" {{SELECT('25',request('pageLength',25))}}>25</option>
-                     <option value="50" {{SELECT('50',request('pageLength',50))}}>50</option>
-                     <option value="100" {{SELECT('100',request('pageLength',100))}}>100</option>
+                           @foreach(getPageLenthArr() as $pageLenght)
+                            <option value="{{$pageLenght}}" {{SELECT($pageLenght,request('pageLength'))}}>{{$pageLenght}}</option>
+                            @endforeach   
                      </select>
                   </div>
                   <div class="dataTables_filter"  aria-controls="myTable_wrapper">
@@ -79,8 +78,12 @@
                                     @endif
                                  </td>
                                  <td>
-                                    <a class="waves-effect waves-dark" href="{{route('sessionMenus.show',$result->id)}}"><i class="fa fa-eye"></i></a>
-                                    <a class="waves-effect waves-dark" href="{{route('sessionMenus.edit',$result->id)}}"><i class="fa fa-edit"></i></a>
+                                    <a class="waves-effect waves-dark" href="{{route('sessionMenus.show',$result->id)}}" data-toggle="tooltip" data-original-title="View Menu"><i class="fa fa-eye"></i></a>
+                                    @if($result->orders_count == 0)
+                                    <a class="waves-effect waves-dark" href="{{route('sessionMenus.edit',$result->id)}}" data-toggle="tooltip" data-original-title="Edit Menu"><i class="fa fa-edit"></i></a>
+                                    @else
+                                    <a class="waves-effect waves-dark" data-toggle="tooltip" data-original-title="Order Started in this Menu, Cannot to Edit."><i class="fa fa-ban"></i></a>
+                                    @endif
                                  </td>
                               </tr>
                               @endforeach

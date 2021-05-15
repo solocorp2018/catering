@@ -24,4 +24,8 @@ class OrderDetail extends Model
 
     	return $this->belongsTo('App\Models\QuantityType','quantity_type_id');
     }
+
+    public function order() {
+        return $this->belongsTo('App\Models\Order','order_id');
+    }
 }

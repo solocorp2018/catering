@@ -344,3 +344,13 @@ $(document).on('click','.inc',function(){
 	$(this).attr("disabled",true);
 	}
 });
+
+$(document).on('click','.payment_method',function(){
+	var payment_method = $(this).attr('data-method');
+	$('.payment_method').removeClass('active');
+	$(this).addClass('active');
+	$("#payment_method").val(payment_method);	
+});
+
+
+

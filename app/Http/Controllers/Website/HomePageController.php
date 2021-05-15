@@ -110,13 +110,14 @@ class HomePageController extends Controller
     public function placeOrder(Request $request) {       
 
         $rules = [            
-            'delivery_address_id' => 'required',
+            'delivery_address_id' => 'required|integer',
+            'payment_method' => 'required|integer'
         ];
         $this->validate($request,$rules);        
 
         $order = new Order();
 
-        $orderUniqueId = $order->placeOrder($request->delivery_address_id);
+        $orderUniqueId = $order->placeOrder($request->delivery_address_id,$request->payment_method);
 
         $mobileNumber = Auth::user()->contact_number;
 

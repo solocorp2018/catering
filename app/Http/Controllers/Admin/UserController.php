@@ -262,13 +262,18 @@ class UserController extends Controller
             }
         }
 
-        $existingMobileNumbers = User::whereNotNull('contact_number')->pluck('contact_number')->toArray();
+        $existingMobileNumbers = User::whereIn('contact_number',$validMobileNumbers)->pluck('contact_number')->toArray();
 
-        $validMobileNumbers = array_diff($validMobileNumbers, $existingMobileNumbers);
+        if(!empty($existingMobileNumbers)) {
+          
+          session()->flash('warning','Some Number(s) are already exists as customer !');
+
+          $validMobileNumbers = array_diff($validMobileNumbers, $existingMobileNumbers);
+        } 
 
         if(!empty($validMobileNumbers)) {
 
-            $message = "Greetings ! You are invited to MR Grandson Caters, do register, order and get delivered at doorstep. Registration Link : ".url('create-account')." .";
+            $message = "Greetings ! You are invited to MR Grandson Caters, do register, order and get delivered at doorstep. Registration Link : ".url('create-account').".";
 
             TextLocalSmsGateway::sendSms($validMobileNumbers,$message);
 

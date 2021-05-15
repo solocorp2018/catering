@@ -24,16 +24,18 @@
                                 <h4 class="card-title">Invite Customers</h4>
                                 <h6 class="card-subtitle"><code>If Customer Mobile Number is already registered with us, they will be skipped from invitation SMS</code>
                                 </h6>
+                                <h5 class="card-subtitle"><code>Use Comma (,) as seperator for multiple numbers.</code>
+                                </h5>
                                 
                                 <form action="{{url('send-invitation')}}" method="post">
                                   @csrf                                 
                                   <div class="row">
                                   <div class="col-md-12 tags-default">
-                                    <input type="text" class="form-control lg" data-role="tagsinput" name="invite_numbers" placeholder="Ex: 9999999999 , 9876543210" /> 
+                                    <input type="text" class="form-control lg" data-role="tagsinput" name="invite_numbers" placeholder="Ex: 9876543210" /> 
                                   </div>
 
                                   <div class="col-md-4 m-t-5">
-                                  <button type="submit" class="btn btn-info d-none d-lg-block m-l-15"><i class=" icon-action-redo"></i> Send Invitation</button>
+                                  <button type="submit" class="btn btn-info d-lg-block m-l-15"><i class=" icon-action-redo"></i> Send Invitation</button>
                                  </div>
                                   </div>  
                                 </form>
@@ -53,10 +55,9 @@
                               <div class="dataTables_length" id="myTable_length">
                                  <label>Show </label>
                                     <select name="pageLength" id="pageLength" aria-controls="myTable" on-change="searchFun()">
-                                       <option value="10" {{SELECT('10',request('pageLength',10))}}>10</option>
-                                       <option value="25" {{SELECT('25',request('pageLength',25))}}>25</option>
-                                       <option value="50" {{SELECT('50',request('pageLength',50))}}>50</option>
-                                       <option value="100" {{SELECT('100',request('pageLength',100))}}>100</option>
+                                      @foreach(getPageLenthArr() as $pageLenght)
+                            <option value="{{$pageLenght}}" {{SELECT($pageLenght,request('pageLength'))}}>{{$pageLenght}}</option>
+                            @endforeach   
                                     </select>
                               </div>
                            </div>

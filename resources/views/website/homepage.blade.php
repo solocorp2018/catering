@@ -49,7 +49,7 @@
          <div class="container">
             <div class="row">
                <div class="col-md-12">
-                  @if(!empty($todaysMenu))
+                   @if(!empty($todaysMenu->toArray()))
                   <ul class="nav" id="pills-tab" role="tablist">
                   	@foreach($todaysMenu as $key => $todayMenu)
                   	@php
@@ -82,6 +82,7 @@
          </div>
       </section>
 
+      @if(!empty($todaysMenu->toArray()))
       <section class="offer-dedicated-body pt-2 pb-2 mt-4 mb-4">
          <div class="container">
             <div class="row">
@@ -182,7 +183,7 @@
                @if(Auth::user())
                <div class="col-md-4" id="home-cart">
                      @php
-                        $showCheckout = 1;
+                        $showCheckout = 0;
                      @endphp
                		@include('website.homepage-cart')
                </div>
@@ -190,6 +191,7 @@
             </div>
          </div>
       </section>
-<!-- @include('website.layout.quick-links') -->
+      @endif
+
 
 @endsection

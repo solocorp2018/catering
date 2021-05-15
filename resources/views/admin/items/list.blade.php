@@ -30,10 +30,9 @@
                               <div class="dataTables_length" id="myTable_length">
                                  <label>Show </label>
                                     <select name="pageLength" id="pageLength" aria-controls="myTable" on-change="searchFun()">
-                                       <option value="10" {{SELECT('10',request('pageLength',10))}}>10</option>
-                                       <option value="25" {{SELECT('25',request('pageLength',25))}}>25</option>
-                                       <option value="50" {{SELECT('50',request('pageLength',50))}}>50</option>
-                                       <option value="100" {{SELECT('100',request('pageLength',100))}}>100</option>
+                                      @foreach(getPageLenthArr() as $pageLenght)
+                            <option value="{{$pageLenght}}" {{SELECT($pageLenght,request('pageLength'))}}>{{$pageLenght}}</option>
+                            @endforeach   
                                     </select>
                               </div>
                            </div>

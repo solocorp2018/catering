@@ -21,7 +21,7 @@
                         <h4 class="mb-1">Choose a delivery address</h4>
                         <h6 class="mb-3 text-black-50">Multiple addresses in this location</h6>                        
                         <div class="row">
-                           @if(!empty($userData->userAddress))
+                           @if(!empty($userData->userAddress))                           
                            @foreach($userData->userAddress as $address)
                            <div class="col-md-6 mt-2">
                               <div class="bg-white card addresses-item border shadow {{($address->is_current == 1)?'border-success':''}}">
@@ -65,6 +65,7 @@
                      </div>
                      
                   </div>
+
                </div>
 
                <div class="col-md-4" id="home-cart">

@@ -39,7 +39,7 @@
 
 	//
 	function SELECT($left,$right) {
-
+		
 		if($left && $right && $left == $right) {
 			return 'selected';
 		} else {
@@ -134,5 +134,5 @@
 	}
 
 	function getPaymentModeArray() {
-		return array_flip(config('constant.payment_mode'));
+		return config('constant.payment_mode');
 	}

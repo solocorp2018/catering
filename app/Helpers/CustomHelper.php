@@ -2,11 +2,14 @@
 use Illuminate\Support\Str;
 use Carbon\Carbon;	
 	
-	function dateOf($date) {
+	function dateOf($date,$format='d/M/Y h:m A') {
 
-		$carbonDate = new Carbon($date);
-     $carbonDate->timezone = 'Asia/Kolkata';
-     return $carbonDate->toDayDateTimeString();
+		return Carbon::parse($date)->format($format);
+		
+	}
+
+	function amount($amount) {
+		return $amount. ' INR';
 	}
 	function showDate($time, $date_time_format='', $timezone='') {
 
@@ -138,4 +141,15 @@ use Carbon\Carbon;
 	{
 		$mobile = trim($mobile);
 	    return preg_match('/^[0-9]{10}+$/', $mobile);
+	}
+
+	function urlWithQueryString($url) {
+
+		$queries = request()->query();		
+		$queryString = url($url)."?".http_build_query($queries);
+		return $queryString;
+	}
+
+	function _today() {
+		return Carbon::parse(today())->format('Y-m-d');
 	}

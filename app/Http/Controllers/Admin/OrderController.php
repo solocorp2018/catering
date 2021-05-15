@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Exports\OrdersExport;
 use App\Models\Payment;
+use App\Models\SessionType;
+use App\Models\SessionMenu;
 use Auth;
 use PDF;
 use Validator;
@@ -22,13 +24,16 @@ class OrderController extends Controller
      */
 
     public function index()
-    {
+    { 
         $results = Order::getQueriedResult();
+
+        $sessionTypeModel = new SessionType();
         
+        $sessionType = $sessionTypeModel->getActiveRecord();        
         $paymentStatus = paymentStatuses();
         $paymentMode = paymentModes();
         //dd($results);
-        return view('admin.orders.list',compact('results','paymentStatus','paymentMode'));
+        return view('admin.orders.list',compact('results','sessionType','paymentStatus','paymentMode'));
     }
 
     /**
@@ -65,6 +70,79 @@ class OrderController extends Controller
         return view('admin.orders.show',compact('result'));
     }
 
+    public function orderSplitup() {
+
+      $sessionTypeModel = new SessionType();
+        
+      $sessionType = $sessionTypeModel->getActiveRecord();   
+
+      $results = SessionMenu::getOrderItemWiseCount();
+
+      $results = $this->splitupPreparation($results);
+
+      $activeSessionType = $sessionType->where('id',request('session'))->first();
+
+      return view('admin.orders.splitup',compact('results','sessionType','activeSessionType'));
+    }
+
+    public function splitupPreparation(array $data) {      
+      $splitupData = array();      
+      
+      foreach ($data as $key => $sessionData) {
+          
+          $sessionWiseData = array();
+          $sessionWiseData['session_type_name'] = $sessionData['session_type']['type_name'] ?? '';
+          $sessionWiseData['session_menu_id'] = $sessionData['id'] ?? '';
+          $sessionWiseData['session_code'] = $sessionData['session_code'] ?? '';
+          $sessionWiseData['menu_items'] = array();
+
+          foreach ($sessionData['menu_item'] as $key => $menuItem) {
+
+              $menuItemData = array();
+              $menuItemData['menu_item_id'] = $menuItem['id'] ?? '';              
+              $menuItemData['menu_quantity'] = $menuItem['quantity'] ?? '';
+              $menuItemData['menu_quantity_type_name'] = $menuItem['quantity_type']['name'] ?? '';              
+              $menuItemData['menu_price'] = $menuItem['price'] ?? '';
+
+              $menuItemData['item_id'] = $menuItem['items']['id'] ?? '';
+              $menuItemData['item_name'] = $menuItem['items']['name'] ?? '';
+              $menuItemData['item_name_lang_1'] = $menuItem['items']['lang1_name'] ?? '';
+              $menuItemData['item_unit_price'] = $menuItem['items']['price'] ?? '';
+              $menuItemData['item_image'] = $menuItem['items']['image_path'] ?? '';
+              $menuItemData['item_description'] = $menuItem['items']['description'] ?? '';
+              $menuItemData['item_description_lang_1'] = $menuItem['items']['lang1_description'] ?? '';
+              $menuItemData['item_quantity_type_name'] = $menuItem['quantity_type']['name'] ?? '';
+
+              $complimentaries = array();
+              if(!empty($menuItem['menu_complimentaries'])) {
+                foreach ($menuItem['menu_complimentaries'] as $key => $menuComplimentary) {
+                   $complimentaries[] = $menuComplimentary['complimentaries']['name'] ?? '';
+                }
+              }
+              
+              $menuItemData['complimentaries'] = implode(', ',$complimentaries);
+
+              $orderItemCount = 0;
+
+              if(!empty($sessionData['orders'])) {
+
+                  foreach ($sessionData['orders'] as $key => $orderItems) {
+                      $currentItemCount = 0;
+                      $currentItemCount = collect($orderItems['order_items'])->where('menu_item_id',$menuItemData['item_id'])->sum('quantity');
+                      $orderItemCount = $orderItemCount+$currentItemCount;                   
+                  }
+              }              
+             
+              $menuItemData['menu_item_order_quantity'] = $menuItemData['menu_quantity'] * $orderItemCount;
+
+              $sessionWiseData['menu_items'][] = $menuItemData;
+          }
+
+          $splitupData[] = $sessionWiseData;
+      }
+
+      return $splitupData;
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -166,7 +244,7 @@ class OrderController extends Controller
 
       $createPayment = Payment::create($input);    
       updatedResponse("Payment Status Updated Successfully !");
-      return redirect()->route('orders.index');
+      return redirect()->back();
     }
 
     

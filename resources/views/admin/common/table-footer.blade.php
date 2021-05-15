@@ -7,7 +7,7 @@
             @endif
     </div>  
     <div class="col-6 dataTables_paginate paging_simple_numbers">
-    {{ $results->links() }}          
+    {{ $results->appends(request()->query())->links() }}          
     </div>   
 	
 </div>

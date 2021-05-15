@@ -75,7 +75,7 @@
                               @endif
                               <br>
                               <p class="mb-0 font-weight-bold text-black">TOTAL BILL <span class="float-right text-secondary">{{$orderData->total_amount}} INR</span></p>
-                              <p class="mb-0 text-info"><small>Payment On Delivery
+                              <p class="mb-0 text-info"><small>Payment Mode : {{ findPaymentMode($orderData->payment_mode) }}
                                  <!-- <span class="float-right text-danger">$620 OFF</span> -->
                              </small>
                               </p>

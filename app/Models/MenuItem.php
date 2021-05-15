@@ -14,6 +14,7 @@ class MenuItem extends Model
      return $this->belongsTo('App\Models\Item','item_id');
     }
 
+
     public function menuComplimentaries() {
      return $this->hasMany('App\Models\MenuItemComplimentary','menu_item_id')->with('complimentaries');
     }
@@ -22,4 +23,7 @@ class MenuItem extends Model
     	return $this->belongsTo('App\Models\QuantityType','quantity_type_id');
     }
 
+    public function orderItems() {
+        return $this->hasMany('App\Models\OrderDetail','menu_item_id');
+    }
 }

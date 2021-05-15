@@ -17,7 +17,7 @@ return [
 	],
 	"constant_page_length" => 10,
 
-	'default_page_length' => 10,
+	'default_page_length' => 25,
 
 	//length to show the column text in list page. this will use in string lenght helpers
 	'default_string_length' => 20,
@@ -31,6 +31,11 @@ return [
 	'user_type' => [
 		1 => 'admin',
 		2 => 'user'
+	],
+
+	'payment_mode' => [
+		1 => 'COD',
+		2 => 'UPI (Gpay / Phonepe)'
 	],
 
 

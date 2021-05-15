@@ -8,9 +8,9 @@
                         <!-- Logo icon --><b>
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="{{logo()}}" alt="logo" class="dark-logo" style="width: 100px;height: 40px;" />
+                            <img src="{{logo()}}" alt="logo" class="dark-logo" style="width: 100px;height: 40px;padding-left: 10px;" />
                             <!-- Light Logo icon -->
-                            <img src="{{logo()}}" alt="logo" class="light-logo" style="width: 100px;height: 40px;"/>
+                            <img src="{{logo()}}" alt="logo" class="light-logo" style="width: 100px;height: 40px;padding-left: 10px;"/>
                         </b>                        
                         
                     </a>

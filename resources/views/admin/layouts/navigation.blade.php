@@ -13,8 +13,11 @@
             <li class="nav-small-cap">--- Manage</li>
             <li> <a class="waves-effect waves-dark" href="{{url('/customers')}}"><i class="fa fa-users" aria-hidden="true"></i><span class="hide-menu">&nbsp;Customers</span></a>
             </li>
+           
+            <li> <a class="waves-effect waves-dark" href="{{route('orders.index',['from' => _today(),'to'=>_today()])}}"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i><span class="hide-menu">&nbsp;Orders</span></a>
+            </li>
 
-            <li> <a class="waves-effect waves-dark" href="{{url('/orders')}}"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i><span class="hide-menu">&nbsp;Orders</span></a>
+            <li> <a class="waves-effect waves-dark" href="{{route('orders.splitup',['session' => 1,'order_date'=>_today()])}}"><i class="fa fa-shopping-bag" aria-hidden="true"></i><span class="hide-menu">&nbsp;Order Splitup</span></a>
             </li>
 
             <li> <a class="waves-effect waves-dark" href="{{url('/payments')}}"><i class="fa fa-donate" aria-hidden="true"></i><span class="hide-menu">&nbsp;Payments</span></a>

@@ -162,8 +162,12 @@ class MenuController extends Controller
    */
   public function edit($id)
   {
-      $result = SessionMenu::with(['menuItem','sessionType'])->find($id);
+      $result = SessionMenu::with(['menuItem','sessionType'])->withCount('orders')->find($id);
       
+      if($result->orders_count > 0) {
+          return redirect()->back();
+      }
+
       $statuses = _getGlobalStatus();
       $allowedItemCount = config('catering.allowed_item_limit_for_menu');
 

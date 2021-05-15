@@ -34,6 +34,7 @@ class OrdersExport implements FromQuery,WithMapping, WithHeadings
             
             'Order Id',
             'Order Date',
+            'Session',
             'Session Code',
             'Item',
             'Quantity',
@@ -58,6 +59,7 @@ class OrdersExport implements FromQuery,WithMapping, WithHeadings
             $return[] = [
                 $order->order_unique_id,            
                 \Carbon\Carbon::parse($order->order_date)->format('d/m/Y'),
+                $order->sessionMenu->sessionType->type_name ?? 'Not Found',
                 $order->sessionMenu->session_code ?? 'Not Found',
                 $Items->item->name,
                 $Items->quantity,

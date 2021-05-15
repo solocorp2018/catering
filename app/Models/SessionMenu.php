@@ -21,12 +21,29 @@ class SessionMenu extends Model
        return $query;
    }
 
+   public function scopeActive($query) {
+      return $query->where('status',_active());
+   }
+
+
+   public function scopeSessionType($query) {
+
+      if($sessionType = request('session')) {
+        $query->where('session_type_id',$sessionType);
+      }
+
+      return $query;
+   }
+
    public function getTodayMenu() {
 
-      $result = $this->with(['sessionType','menuItem'])                    
+      $result = $this->with(['sessionType','menuItem'=>function($menuItem){
+                      $menuItem->where('status',_active());
+                    }])                    
                     ->orderBy('session_type_id','asc')
                     ->where('opening_time','<=',now())
-                    ->where('closing_time','>=',now()->addHours(2))                    
+                    ->where('closing_time','>=',now()->addHours(2))      
+                    ->where('status',_active())              
                     ->get();
         
       return $result;
@@ -43,10 +60,7 @@ class SessionMenu extends Model
                     ->whereRaw("TIME_TO_SEC(closing_time) <= $currentTimeSecond")
                     ->orderBy('id','desc')
                     ->select("id")                    
-                    ->first();
-
-
-      dd($results);
+                    ->first();      
         
       return !empty($result)?$result->id:0;
    }
@@ -73,16 +87,37 @@ class SessionMenu extends Model
 
     list($sortfield,$sorttype) = getSorting('created_at');
 
-    $result = static::with(['sessionType','sessionItem'])->filter();
+    $result = static::with(['sessionType','sessionItem'])->withCount('orders')->filter();
 
     $sortfield = ($sortfield == 'date')?'created_at':$sortfield;
     $sortfield = ($sortfield == 'code')?'session_code':$sortfield;
     $sortfield = ($sortfield == 'open')?'opening_time':$sortfield;
     $sortfield = ($sortfield == 'close')?'closing_time':$sortfield;
 
+    
     return $result->orderBy($sortfield,$sorttype)->paginate($page_length);
 
    }
+
+    public static function getOrderItemWiseCount(){
+        $result = static::select(['id','session_type_id','session_code'])
+                      ->with(['sessionType'=>function($sesionType){
+                          $sesionType->select(['id','type_name']);
+                      },'menuItem','orders.orderItems'])->active();
+
+        if($sessionType = request('session')) {
+          $result = $result->where('session_type_id',$sessionType);
+        }
+
+        if($orderDate = request('order_date')) {
+            $result = $result->whereHas('orders',function($orderQuery) use($orderDate){
+                $orderQuery = $orderQuery->whereDate('order_date',$orderDate);
+            });
+            
+        }
+
+        return $result->get()->toArray();
+    }
 
    public function sessionType() {
     return $this->belongsTo('App\Models\SessionType','session_type_id');
@@ -92,7 +127,11 @@ class SessionMenu extends Model
       return $this->hasMany('App\Models\MenuItem','session_menu_id');
    }
    public function menuItem() {
-    return $this->hasMany('App\Models\MenuItem')->with(['Items','quantityType','menuComplimentaries'])->where('status',1);
+    return $this->hasMany('App\Models\MenuItem')->with(['Items','quantityType','menuComplimentaries']);
+   }
+
+   public function orders() {
+      return $this->hasMany('App\Models\Order')->active();
    }
 
    public function menuItemComplimentary() {

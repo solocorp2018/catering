@@ -41,11 +41,8 @@ function findOrderStatus($id) {
 function paymentModes() {
 
 	return [
-		['id' => 1, 'name'=>'Gpay'],
-		['id' => 2, 'name'=>'Phonepay'],	
-		['id' => 3, 'name'=>'Account Transfer'],	
-		['id' => 4, 'name'=>'Cash'],	
-		['id' => 5, 'name'=>'Other'],	
+		['id' => 1, 'name'=>'COD'],
+		['id' => 2, 'name'=>'UPI (Gpay/Phonepe)']		
 	];
 }
 

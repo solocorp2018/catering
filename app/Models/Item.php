@@ -23,6 +23,10 @@ class Item extends Model
         return $query;
     }
 
+    public function scopeActive($query) {
+        return $query->where('status',_active());
+    }
+
 
     public static function getQueriedResult() {
 
@@ -37,9 +41,9 @@ class Item extends Model
     	$sortfield = ($sortfield == 'amount')?'price':$sortfield;
 
     	return $result->orderBy($sortfield,$sorttype)->paginate($page_length);
-    }
+    }    
 
-		public function getActiveRecord() {
+    public function getActiveRecord() {
       return $this->where('status',_active())->get();
     }
 

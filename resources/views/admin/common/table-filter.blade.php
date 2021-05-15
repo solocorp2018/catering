@@ -4,11 +4,12 @@
 
                          <div>
                             <label>Show 
-                            <select name="pageLength" class="form-control form-control-line" id="pageLength" on-change="searchFun()">                                   
-                            <option value="10" {{SELECT('10',request('pageLength',10))}}>10</option>
-                            <option value="25" {{SELECT('25',request('pageLength',25))}}>25</option>
-                            <option value="50" {{SELECT('50',request('pageLength',50))}}>50</option>
-                            <option value="100" {{SELECT('100',request('pageLength',100))}}>100</option>
+                            <select name="pageLength" class="form-control form-control-line" id="pageLength" on-change="searchFun()">
+
+                            @foreach(getPageLenthArr() as $pageLenght)
+                            <option value="{{$pageLenght}}" {{SELECT($pageLenght,request('pageLength'))}}>{{$pageLenght}}</option>
+                            @endforeach                                   
+                           
                             </select>  
                             </label>
                          </div>

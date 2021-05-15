@@ -38,10 +38,20 @@
                      </div>
                      <div class="mb-2 bg-white rounded p-2 clearfix">
                         <img class="img-fluid float-left" src="{{asset('website/img/wallet-icon.png')}}">
-                        <h6 class="font-weight-bold text-right mb-2">Subtotal : <span class="text-success">{{$cart->sum('quantity_price')}} INR</span></h6>
+                        <h6 class="font-weight-bold text-right mb-2">Subtotal : <span class="text-success">{{$cart->sum('quantity_price')}} INR</span></h6>                        
                         <p class="seven-color mb-1 text-right">Delivery charges applicable</p>
                         <!-- <p class="text-black mb-0 text-right">You have saved $955 on the bill</p> -->
                      </div>
+
+                     @if(!empty($showCheckout) && $showCheckout == 1)
+                      <div class="mb-2 bg-white rounded p-2 clearfix">
+                           <p class="seven-color mb-3 text-left">Preferred Payment method</p>
+                           
+                           @foreach(paymentModes() as $paymentMode)
+                           <button class="btn btn-default btn-outline-info btn-sm payment_method {{($paymentMode['id'] == 1)?'active':''}}" type="button" data-method="{{$paymentMode['id']}}"><i class="icofont-card"></i> {{$paymentMode['name']}}</button> &nbsp;                  
+                        @endforeach
+                     </div>
+                     @endif
 
                      @if(!empty($cart) && $cart->count() > 0)
                      @if(!empty($showCheckout) && $showCheckout == 1)
@@ -51,6 +61,7 @@
                      @endphp
                      <form action="{{route('place.order')}}" method="post">
                         @csrf                        
+                        <input type="hidden" name="payment_method" id="payment_method" value="1"/>
                         <input type="hidden" name="delivery_address_id" id="delivery_address_id" value="{{$currentAddressId}}"/>
                         <button type="Submit" class="btn btn-success btn-block btn-lg">Place Order <i class="icofont-long-arrow-right"></i></a>
                      </form>

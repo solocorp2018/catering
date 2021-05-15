@@ -15,7 +15,7 @@ class Order extends Model
 	use SoftDeletes;
 
 
-    protected $fillable = ['id', 'session_menu_id','address_id','order_unique_id', 'customer_id', 'order_date', 'total_amount', 'order_status', 'confirmed_by', 'order_processed_by', 'delivered_by', 'status'];
+    protected $fillable = ['id', 'session_menu_id','address_id','payment_mode','order_unique_id', 'customer_id', 'order_date', 'total_amount', 'order_status', 'confirmed_by', 'order_processed_by', 'delivered_by', 'status'];
 
 
 
@@ -24,11 +24,12 @@ class Order extends Model
          if($keyword = request('keyword')) {
              $query->where('order_unique_id','like','%'.$keyword.'%');
              $query->orWhere('total_amount','like','%'.$keyword.'%');
-         }
+         }         
 
          if($fromDate = request('from')) {
              $query->whereDate('order_date','>=',$fromDate);             
          }
+
          if($toDate = request('to')) {             
               $query->whereDate('order_date','<=',$toDate);
          }
@@ -43,8 +44,17 @@ class Order extends Model
               }
          }
 
+
+         if($payment_type = request('payment_type')) {             
+             $query->where('payment_mode',$payment_type);
+         }
+
          return $query;
     }
+
+    public function scopeActive($query) {
+      return $query->where('status',_active());
+   }
 
 
     public static function getQueriedResult() {
@@ -53,7 +63,7 @@ class Order extends Model
 
      	list($sortfield,$sorttype) = getSorting();
 
-     	$result = static::with(['orderItems','sessionMenu','processedBy:id,name','deliveredBy:id,name','payment','customer'])->filter();
+     	$result = static::with(['orderItems','sessionMenu','processedBy:id,name','deliveredBy:id,name','payment','customer'])->has('sessionMenu')->filter();
 
      	$sortfield = ($sortfield == 'order_no')?'order_unique_id':$sortfield;
      	$sortfield = ($sortfield == 'date')?'order_date':$sortfield;
@@ -70,12 +80,12 @@ class Order extends Model
 
         $sortfield = ($sortfield == 'order_no')?'order_unique_id':$sortfield;
         $sortfield = ($sortfield == 'date')?'order_date':$sortfield;
-        $sortfield = ($sortfield == 'amount')?'total_amount':$sortfield;
+        $sortfield = ($sortfield == 'amount')?'total_amount':$sortfield;       
 
         return $result->orderBy($sortfield,$sorttype);
     }
 
-    public function placeOrder($deliveryId) {
+    public function placeOrder($deliveryId,$paymentMethod) {
 
         $cartData = Cart::getCurrentUserCart();
         $sessionMenu = new SessionMenu();
@@ -88,6 +98,7 @@ class Order extends Model
         $order['session_menu_id'] = $lastRowofCartSession;
         $order['customer_id'] = Auth::user()->id;
         $order['address_id'] = $deliveryId;
+        $order['payment_mode'] = $paymentMethod;
         $order['order_date'] = today();
         $order['total_amount'] = $cartData->sum('quantity_price');
         $order['order_status'] = _active();
@@ -150,7 +161,7 @@ class Order extends Model
     }
 
     public function sessionMenu() {
-        return $this->belongsTo('App\Models\SessionMenu','session_menu_id');
+        return $this->belongsTo('App\Models\SessionMenu','session_menu_id')->sessionType();
     }
 
     public function deliveredBy() {

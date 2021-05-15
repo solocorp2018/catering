@@ -23,6 +23,7 @@ Route::middleware(['admin'])->group(function () {
 	Route::get('/customers-export','Admin\UserController@export')->name('customers.export');
 
 	Route::resource('/orders','Admin\OrderController');
+	Route::get('/orders-splitup','Admin\OrderController@orderSplitup')->name('orders.splitup');
 	Route::get('/orders-export','Admin\OrderController@export')->name('orders.export');
 
 	Route::get('/payments','Admin\PaymentController@index')->name('payments.index');
